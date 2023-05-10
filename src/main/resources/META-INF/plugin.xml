@@ -1,18 +1,25 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.paolobd.intellijplugintemplate</id>
-    <name>intellij-plugin-template Template</name>
-    <vendor>paolobd</vendor>
+    <name>Testing GUI Gamification</name>
+    <vendor>Paolo Stefanut Bodnarescul</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.paolobd.intellijplugintemplate.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <toolWindow id="Gamification"
+                    secondary="true"
+                    icon="AllIcons.Toolwindows.ToolWindowFavorites"
+                    anchor="right"
+                    factoryClass="com.github.paolobd.intellijplugintemplate.views.UserInterfaceFactory"/>
+        <notificationGroup id="Achievement Notification Group"
+                           displayType="STICKY_BALLOON"/>
     </extensions>
 
-    <applicationListeners>
-        <listener class="com.github.paolobd.intellijplugintemplate.listeners.MyFrameStateListener" topic="com.intellij.ide.FrameStateListener"/>
-    </applicationListeners>
+    <projectListeners>
+        <listener class="com.github.paolobd.intellijplugintemplate.listeners.MyTestListener"
+                  topic="com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener"/>
+    </projectListeners>
 </idea-plugin>

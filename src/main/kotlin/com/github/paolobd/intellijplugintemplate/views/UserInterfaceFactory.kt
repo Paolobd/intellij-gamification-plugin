@@ -1,20 +1,13 @@
-package com.github.paolobd.intellijplugintemplate.toolWindow
+package com.github.paolobd.intellijplugintemplate.views
 
-import com.intellij.openapi.components.service
-import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
-import com.intellij.ui.components.JBLabel
-import com.intellij.ui.components.JBPanel
-import com.intellij.ui.content.ContentFactory
-import com.github.paolobd.intellijplugintemplate.MyBundle
-import com.github.paolobd.intellijplugintemplate.services.MyProjectService
-import javax.swing.JButton
 
 
-class MyToolWindowFactory : ToolWindowFactory {
+class UserInterfaceFactory : ToolWindowFactory {
 
+    /*
     init {
         thisLogger().warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.")
     }
@@ -43,5 +36,13 @@ class MyToolWindowFactory : ToolWindowFactory {
                 }
             })
         }
+    }
+     */
+
+    override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
+        val userInterface = UserInterface(project);
+        val contentManager = toolWindow.contentManager;
+        val content = contentManager.factory.createContent(userInterface.getContent(), null, false)
+        toolWindow.contentManager.addContent(content);
     }
 }
