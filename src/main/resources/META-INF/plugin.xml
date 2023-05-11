@@ -15,7 +15,7 @@
                     anchor="right"
                     factoryClass="com.github.paolobd.intellijplugintemplate.views.UserInterfaceFactory"/>
         <notificationGroup id="Achievement Notification Group"
-                           displayType="BAlLOON"/>
+                           displayType="BALLOON"/>
     </extensions>
 
     <projectListeners>
