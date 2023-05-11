@@ -1,6 +1,7 @@
 package com.github.paolobd.intellijplugintemplate.views
 
 import com.github.paolobd.intellijplugintemplate.objects.Achievement
+import com.github.paolobd.intellijplugintemplate.objects.AchievementList
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.openapi.util.IconLoader
@@ -28,7 +29,8 @@ import java.net.URLClassLoader
 
 class UserInterface(val project: Project) {
     private var mainUI: JBTabbedPane = JBTabbedPane()
-    private val achievementList = mutableListOf<Achievement>()
+    //val achievementList = mutableListOf<Achievement>()
+    private val achievementList = AchievementList().getList()
 
     fun getContent(): JBTabbedPane {
         return mainUI
@@ -161,7 +163,7 @@ class UserInterface(val project: Project) {
         con.gridx = 1
         con.gridwidth = 3
         con.weightx = 0.0
-        var button = JButton("Increase 10 exp achievement 1")
+        /*var button = JButton("Increase 10 exp achievement 1")
 
         button.addActionListener{
             achievementList.first { it.id == 1 }.addExperience(10)
@@ -175,7 +177,7 @@ class UserInterface(val project: Project) {
         button.addActionListener{
             achievementList.first { it.id == 3 }.addExperience(50)
         }
-        panel.add(button, con)
+        panel.add(button, con)*/
 
         con.gridy++
 
@@ -197,16 +199,17 @@ class UserInterface(val project: Project) {
         val goldTrophy = IconLoader.getIcon("userInterface/GoldTrophy.svg", javaClass)
 
         achievementList.add(
-            Achievement(1, goldTrophy, "Test 1", "Lorem ipsum dolor sit amet, consectetur adipiscing elit", 0, 250)
+            Achievement(1, goldTrophy, "Click!!!", "Click the buttons", 0, 20)
         )
 
-        achievementList.add(
+
+        /*achievementList.add(
             Achievement(2, silverTrophy, "Test 2", "Integer auctor vulputate rutrum. Curabitur porttitor tempor egestas", 100, 300)
         )
 
         achievementList.add(
             Achievement(3, bronzeTrophy, "Test 3", "Phasellus mattis quam purus, non maximus ante fringilla vitae", 50, 100)
-        )
+        )*/
 
         mainUI.addTab("Profile", createProfileTab())
         mainUI.addTab("Achievements", createAchievementsTab())
