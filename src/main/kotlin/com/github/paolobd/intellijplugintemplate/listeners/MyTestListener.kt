@@ -1,6 +1,7 @@
 package com.github.paolobd.intellijplugintemplate.listeners
 
-import com.github.paolobd.intellijplugintemplate.objects.AchievementList
+import com.github.paolobd.intellijplugintemplate.objects.AchievementValues
+import com.github.paolobd.intellijplugintemplate.services.MyStatePersistence
 import com.github.paolobd.intellijplugintemplate.views.MyNotifier
 import com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener
 import com.intellij.execution.testframework.sm.runner.SMTestProxy
@@ -18,17 +19,21 @@ internal class MyTestListener(private val project: Project) : SMTRunnerEventsLis
     }
 
     override fun onTestingFinished(testsRoot: SMTestProxy.SMRootTestProxy) {
-        var text = String()
+        val text: String
         var file: VirtualFile? = null
         ApplicationManager.getApplication().runReadAction{
-            file = FilenameIndex.getVirtualFilesByName("stats.txt", GlobalSearchScope.projectScope(project)).first()
-            //VfsUtil.markDirtyAndRefresh(false, false, false, file)
+            file = FilenameIndex.getVirtualFilesByName("stats.txt", GlobalSearchScope.projectScope(project)).firstOrNull()
         }
 
         if (file == null) return
 
         file!!.refresh(false, false)
         text = file!!.readText()
+
+        /*ApplicationManager.getApplication().runWriteAction{
+            file!!.delete(null)
+        }*/
+
         var countClicks = 0
         val scanner = Scanner(text)
         while(scanner.hasNextLine()){
@@ -41,7 +46,8 @@ internal class MyTestListener(private val project: Project) : SMTRunnerEventsLis
 
         println("text stats: $text")
         println("NUM CLICKS: $countClicks")
-        AchievementList().getList().find { it.id == 1 }!!.addExperience(countClicks)
+        MyStatePersistence.getInstance(project).addExp(AchievementValues.NUM_CLICKS, countClicks)
+        //MyStatePersistence.getInstance(project).addExp(AchievementValues.NUM_CLICKS, countClicks)
     }
 
     override fun onTestsCountInSuite(count: Int) {
@@ -56,7 +62,6 @@ internal class MyTestListener(private val project: Project) : SMTRunnerEventsLis
     }
 
     override fun onTestFinished(test: SMTestProxy) {
-
     }
 
     override fun onTestFailed(test: SMTestProxy) {

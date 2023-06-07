@@ -9,13 +9,17 @@
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
+        
         <toolWindow id="Gamification"
                     secondary="true"
                     icon="AllIcons.Toolwindows.ToolWindowFavorites"
                     anchor="right"
                     factoryClass="com.github.paolobd.intellijplugintemplate.views.UserInterfaceFactory"/>
+        
         <notificationGroup id="Achievement Notification Group"
                            displayType="BALLOON"/>
+        
+        <projectService serviceImplementation="com.github.paolobd.intellijplugintemplate.services.MyStatePersistence"/>
     </extensions>
 
     <projectListeners>

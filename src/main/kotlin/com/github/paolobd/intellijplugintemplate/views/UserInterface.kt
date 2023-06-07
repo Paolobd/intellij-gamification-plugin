@@ -1,36 +1,25 @@
 package com.github.paolobd.intellijplugintemplate.views
 
-import com.github.paolobd.intellijplugintemplate.objects.Achievement
-import com.github.paolobd.intellijplugintemplate.objects.AchievementList
+import com.github.paolobd.intellijplugintemplate.objects.AchievementUI
+import com.github.paolobd.intellijplugintemplate.services.MyStatePersistence
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.openapi.util.IconLoader
-import com.intellij.psi.PsiFileFactory
-import com.intellij.psi.PsiManager
 import com.intellij.ui.JBColor
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.util.ui.JBUI
-import java.awt.*
+import java.awt.Component
+import java.awt.GridBagConstraints
+import java.awt.GridBagLayout
 import javax.swing.*
-import com.intellij.lang.*
-import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.fileEditor.FileDocumentManager
-import com.intellij.openapi.fileEditor.FileEditorManager
-import com.intellij.openapi.roots.ModuleRootModel
-import com.intellij.openapi.roots.ModuleRootModificationUtil
-import com.intellij.openapi.roots.OrderRootType
-import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar
-import com.intellij.openapi.vfs.LocalFileSystem
-import com.intellij.openapi.vfs.VirtualFileManager
-import com.intellij.psi.PsiDocumentManager
-import java.io.File
-import java.net.URLClassLoader
 
 class UserInterface(val project: Project) {
     private var mainUI: JBTabbedPane = JBTabbedPane()
     //val achievementList = mutableListOf<Achievement>()
-    private val achievementList = AchievementList().getList()
+    //private val achievementList = project.service<MyStatePersistence>().state.achievementList
+    private val achievementList = MyStatePersistence.getInstance(project).state.achievementList
+    private val achievementUIList = mutableListOf<AchievementUI>()
 
     fun getContent(): JBTabbedPane {
         return mainUI
@@ -108,27 +97,30 @@ class UserInterface(val project: Project) {
         //Border between elements in the grid
         con.insets = JBUI.insets(5)
 
-        for(achievement in achievementList){
-            val showAchievementIcon = JLabel(achievement.icon)
+        for(achievement in achievementList) {
+
+            val showAchievementIcon = JLabel(IconLoader.getIcon(achievement.iconName, javaClass))
             val borderAchievementIcon = BorderFactory.createLineBorder(JBColor.BLACK, 1)
             val emptyBorder = JBUI.Borders.empty(2)
             showAchievementIcon.border = BorderFactory.createCompoundBorder(borderAchievementIcon, emptyBorder)
 
-            val titleLabel = JLabel(achievement.title)
+            val titleLabel = JLabel(achievement.achievementName)
 
             //The problem is I cannot resize the svg if I load it directly from AllIcons
             //val tooltipIcon = JLabel(AllIcons.General.QuestionDialog)
             //This svg is resized in userInterface folder
             val tooltipIcon = JLabel(IconLoader.getIcon("userInterface/Question-icon.svg", javaClass))
-            tooltipIcon.toolTipText = achievement.description
+            tooltipIcon.toolTipText = achievement.achievementDescription
 
             val progressBar = JProgressBar(0, achievement.maxExp)
             progressBar.value = achievement.currentExp
 
             val progressLabel = JLabel("${achievement.currentExp} / ${achievement.maxExp}")
 
-            achievement.progressBar = progressBar
-            achievement.progressLabel = progressLabel
+
+            achievementUIList.add( AchievementUI(achievement.achievementName, progressBar, progressLabel))
+            //achievement.progressBar = progressBar
+            //achievement.progressLabel = progressLabel
 
             //Inserting the achievement icon
             con.gridx = 0
@@ -194,6 +186,7 @@ class UserInterface(val project: Project) {
     }
 
     init {
+        /*
         val bronzeTrophy = IconLoader.getIcon("userInterface/BronzeTrophy.svg", javaClass)
         val silverTrophy = IconLoader.getIcon("userInterface/SilverTrophy.svg", javaClass)
         val goldTrophy = IconLoader.getIcon("userInterface/GoldTrophy.svg", javaClass)
@@ -203,7 +196,7 @@ class UserInterface(val project: Project) {
         )
 
 
-        /*achievementList.add(
+        achievementList.add(
             Achievement(2, silverTrophy, "Test 2", "Integer auctor vulputate rutrum. Curabitur porttitor tempor egestas", 100, 300)
         )
 
