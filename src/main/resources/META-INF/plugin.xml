@@ -5,6 +5,7 @@
     <vendor>Paolo Stefanut Bodnarescul</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java-capable</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 

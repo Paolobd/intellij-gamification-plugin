@@ -1,25 +1,21 @@
 package com.github.paolobd.intellijplugintemplate.objects
 
-import com.intellij.openapi.util.IconLoader
-
-class AchievementList {
-
-    fun getAchievementList(): MutableList<Achievement>{
-        return list
-    }
-
-    companion object Initialize{
-        val list = mutableListOf<Achievement>()
-
-        init {
-            val bronzeTrophy = IconLoader.getIcon("userInterface/BronzeTrophy.svg", Initialize::class.java)
-            val silverTrophy = IconLoader.getIcon("userInterface/SilverTrophy.svg", Initialize::class.java)
-            val goldTrophy = IconLoader.getIcon("userInterface/GoldTrophy.svg", Initialize::class.java)
-
-            list.add(
-                Achievement(1, goldTrophy, "Click!!!", "Click the buttons", 0, 10)
-            )
-        }
-    }
-
+enum class AchievementList(
+    val achievementName: String,
+    val achievementDescription: String,
+    val iconName: String,
+    val maxExp: Int
+) {
+    NUM_CLICKS(
+        "Number of clicks",
+        "Number of button clicks you've made in this project",
+        "userInterface/BronzeTrophy.svg",
+        100
+    ),
+    NUM_SITES(
+        "Number of sites",
+        "Number of sites you've visited in this project",
+        "userInterface/SilverTrophy.png",
+        50
+    )
 }

@@ -1,6 +1,6 @@
 package com.github.paolobd.intellijplugintemplate.listeners
 
-import com.github.paolobd.intellijplugintemplate.objects.AchievementValues
+import com.github.paolobd.intellijplugintemplate.objects.AchievementList
 import com.github.paolobd.intellijplugintemplate.services.MyStatePersistence
 import com.github.paolobd.intellijplugintemplate.views.MyNotifier
 import com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener
@@ -21,8 +21,9 @@ internal class MyTestListener(private val project: Project) : SMTRunnerEventsLis
     override fun onTestingFinished(testsRoot: SMTestProxy.SMRootTestProxy) {
         val text: String
         var file: VirtualFile? = null
-        ApplicationManager.getApplication().runReadAction{
-            file = FilenameIndex.getVirtualFilesByName("stats.txt", GlobalSearchScope.projectScope(project)).firstOrNull()
+        ApplicationManager.getApplication().runReadAction {
+            file =
+                FilenameIndex.getVirtualFilesByName("stats.txt", GlobalSearchScope.projectScope(project)).firstOrNull()
         }
 
         if (file == null) return
@@ -36,17 +37,17 @@ internal class MyTestListener(private val project: Project) : SMTRunnerEventsLis
 
         var countClicks = 0
         val scanner = Scanner(text)
-        while(scanner.hasNextLine()){
+        while (scanner.hasNextLine()) {
             val line = scanner.nextLine()
 
-            if(line.contains("CLICK")){
+            if (line.contains("CLICK")) {
                 countClicks++
             }
         }
 
         println("text stats: $text")
         println("NUM CLICKS: $countClicks")
-        MyStatePersistence.getInstance(project).addExp(AchievementValues.NUM_CLICKS, countClicks)
+        MyStatePersistence.getInstance(project).addExp(AchievementList.NUM_CLICKS, countClicks)
         //MyStatePersistence.getInstance(project).addExp(AchievementValues.NUM_CLICKS, countClicks)
     }
 

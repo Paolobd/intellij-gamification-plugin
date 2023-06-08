@@ -1,5 +1,6 @@
 package com.github.paolobd.intellijplugintemplate.views
 
+import com.github.paolobd.intellijplugintemplate.objects.AchievementList
 import com.github.paolobd.intellijplugintemplate.objects.AchievementUI
 import com.github.paolobd.intellijplugintemplate.services.MyStatePersistence
 import com.intellij.openapi.project.Project
@@ -14,12 +15,8 @@ import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import javax.swing.*
 
-class UserInterface(val project: Project) {
+class UserInterface(private val project: Project) {
     private var mainUI: JBTabbedPane = JBTabbedPane()
-    //val achievementList = mutableListOf<Achievement>()
-    //private val achievementList = project.service<MyStatePersistence>().state.achievementList
-    private val achievementList = MyStatePersistence.getInstance(project).state.achievementList
-    private val achievementUIList = mutableListOf<AchievementUI>()
 
     fun getContent(): JBTabbedPane {
         return mainUI
@@ -43,25 +40,25 @@ class UserInterface(val project: Project) {
 
         //val createFileButton = JButton("Add library")
 
-/*        createFileButton.addActionListener{
-            val projectLibraryTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project)
-            val projectLibraryModel = projectLibraryTable.modifiableModel
+        /*        createFileButton.addActionListener{
+                    val projectLibraryTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project)
+                    val projectLibraryModel = projectLibraryTable.modifiableModel
 
-            val library = projectLibraryModel.createLibrary("prova-0.0.1")
-            val libraryModel = library.modifiableModel
-            val pathUrl = VirtualFileManager.constructUrl(LocalFileSystem.PROTOCOL, "/Users/prova-0.0.1")
-            val file = VirtualFileManager.getInstance().findFileByUrl(pathUrl)
+                    val library = projectLibraryModel.createLibrary("prova-0.0.1")
+                    val libraryModel = library.modifiableModel
+                    val pathUrl = VirtualFileManager.constructUrl(LocalFileSystem.PROTOCOL, "/Users/prova-0.0.1")
+                    val file = VirtualFileManager.getInstance().findFileByUrl(pathUrl)
 
-            if(file != null) {
-                libraryModel.addRoot(file, OrderRootType.CLASSES)
+                    if(file != null) {
+                        libraryModel.addRoot(file, OrderRootType.CLASSES)
 
-                ApplicationManager.getApplication().runWriteAction {
-                    libraryModel.commit()
-                    projectLibraryModel.commit()
-                }
-            }
+                        ApplicationManager.getApplication().runWriteAction {
+                            libraryModel.commit()
+                            projectLibraryModel.commit()
+                        }
+                    }
 
-        }*/
+                }*/
 
         //panel.add(Box.createVerticalGlue()); // space above button
         panel.add(button)
@@ -97,28 +94,36 @@ class UserInterface(val project: Project) {
         //Border between elements in the grid
         con.insets = JBUI.insets(5)
 
-        for(achievement in achievementList) {
+        for (achievement in MyStatePersistence.getInstance(project).state.achievementList) {
 
-            val showAchievementIcon = JLabel(IconLoader.getIcon(achievement.iconName, javaClass))
+            //achEnum contains achievement Name, Description, MaxExp, IconName
+            //achievement.value contains currentExp
+            val achEnum = AchievementList.values()[achievement.key]
+
+            val showAchievementIcon = JLabel(IconLoader.getIcon(achEnum.iconName, javaClass))
             val borderAchievementIcon = BorderFactory.createLineBorder(JBColor.BLACK, 1)
             val emptyBorder = JBUI.Borders.empty(2)
             showAchievementIcon.border = BorderFactory.createCompoundBorder(borderAchievementIcon, emptyBorder)
 
-            val titleLabel = JLabel(achievement.achievementName)
+            val titleLabel = JLabel(achEnum.achievementName)
 
             //The problem is I cannot resize the svg if I load it directly from AllIcons
             //val tooltipIcon = JLabel(AllIcons.General.QuestionDialog)
             //This svg is resized in userInterface folder
             val tooltipIcon = JLabel(IconLoader.getIcon("userInterface/Question-icon.svg", javaClass))
-            tooltipIcon.toolTipText = achievement.achievementDescription
+            tooltipIcon.toolTipText = achEnum.achievementDescription
 
-            val progressBar = JProgressBar(0, achievement.maxExp)
-            progressBar.value = achievement.currentExp
+            val progressBar = JProgressBar(0, achEnum.maxExp)
+            progressBar.value = achievement.value
 
-            val progressLabel = JLabel("${achievement.currentExp} / ${achievement.maxExp}")
+            val progressLabel = JLabel("${achievement.value} / ${achEnum.maxExp}")
 
+            AchievementUI.getList().add(
+                AchievementUI(
+                    achievement.key, progressBar, progressLabel
+                )
+            )
 
-            achievementUIList.add( AchievementUI(achievement.achievementName, progressBar, progressLabel))
             //achievement.progressBar = progressBar
             //achievement.progressLabel = progressLabel
 
@@ -155,21 +160,6 @@ class UserInterface(val project: Project) {
         con.gridx = 1
         con.gridwidth = 3
         con.weightx = 0.0
-        /*var button = JButton("Increase 10 exp achievement 1")
-
-        button.addActionListener{
-            achievementList.first { it.id == 1 }.addExperience(10)
-        }
-        panel.add(button, con)
-
-        con.gridy++
-
-        button = JButton("Increase 50 exp achievement 3")
-
-        button.addActionListener{
-            achievementList.first { it.id == 3 }.addExperience(50)
-        }
-        panel.add(button, con)*/
 
         con.gridy++
 
@@ -186,24 +176,6 @@ class UserInterface(val project: Project) {
     }
 
     init {
-        /*
-        val bronzeTrophy = IconLoader.getIcon("userInterface/BronzeTrophy.svg", javaClass)
-        val silverTrophy = IconLoader.getIcon("userInterface/SilverTrophy.svg", javaClass)
-        val goldTrophy = IconLoader.getIcon("userInterface/GoldTrophy.svg", javaClass)
-
-        achievementList.add(
-            Achievement(1, goldTrophy, "Click!!!", "Click the buttons", 0, 20)
-        )
-
-
-        achievementList.add(
-            Achievement(2, silverTrophy, "Test 2", "Integer auctor vulputate rutrum. Curabitur porttitor tempor egestas", 100, 300)
-        )
-
-        achievementList.add(
-            Achievement(3, bronzeTrophy, "Test 3", "Phasellus mattis quam purus, non maximus ante fringilla vitae", 50, 100)
-        )*/
-
         mainUI.addTab("Profile", createProfileTab())
         mainUI.addTab("Achievements", createAchievementsTab())
     }
