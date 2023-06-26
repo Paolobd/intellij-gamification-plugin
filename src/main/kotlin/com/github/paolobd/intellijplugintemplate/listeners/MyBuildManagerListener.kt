@@ -7,5 +7,9 @@ import java.util.*
 class MyBuildManagerListener(private val project: Project) : BuildManagerListener {
     override fun beforeBuildProcessStarted(project: Project, sessionId: UUID) {
         super.beforeBuildProcessStarted(project, sessionId)
+
+        println("Before building!")
+
+        //ReferencesSearch.search(PsiType)
     }
 }

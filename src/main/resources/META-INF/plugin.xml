@@ -5,7 +5,10 @@
     <vendor>Paolo Stefanut Bodnarescul</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+    <!--
     <depends>com.intellij.modules.java-capable</depends>
+    -->
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
@@ -26,5 +29,7 @@
     <projectListeners>
         <listener class="com.github.paolobd.intellijplugintemplate.listeners.MyTestListener"
                   topic="com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener"/>
+        <listener class="com.github.paolobd.intellijplugintemplate.listeners.MyBuildManagerListener"
+                  topic="com.intellij.compiler.server.BuildManagerListener"/>
     </projectListeners>
 </idea-plugin>

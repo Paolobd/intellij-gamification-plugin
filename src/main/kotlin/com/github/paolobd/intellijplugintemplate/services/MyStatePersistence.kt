@@ -29,15 +29,10 @@ class MyStatePersistence : PersistentStateComponent<ProjectState> {
 
     fun resetState() {
         myProjectState = ProjectState()
+        AchievementUI.getList().forEach{ it.updateProgress(0) }
     }
 
     fun addExp(achEnum: AchievementList, exp: Int) {
-        /*val achievement = state.achievementList.first { it.achievementName == ach.achievementName }
-        val oldExp = achievement.currentExp
-        achievement.currentExp = if (achievement.currentExp + exp > achievement.maxExp) achievement.maxExp
-            else achievement.currentExp + exp*/
-
-        //state.achievementList.list.first { it.achievementName == ach.achievementName }.currentExp += exp
 
         //achEnum contains achievement Name, Description, maxExp, iconName
         //achievement contains currentExp
@@ -45,13 +40,16 @@ class MyStatePersistence : PersistentStateComponent<ProjectState> {
 
         val oldExp = achievement.value
 
+        //update the value in the state
         achievement.setValue(
             if (achievement.value + exp > achEnum.maxExp) achEnum.maxExp
             else achievement.value + exp
         )
 
+        //update the value in the UI
         AchievementUI.getList().first { achEnum.ordinal == it.id }.updateProgress(achievement.value)
 
+        //prepare to send the notification
         var notificationText: String? = null
         val oldPercentage = oldExp.toFloat() / achEnum.maxExp * 100
         val currPercentage = achievement.value.toFloat() / achEnum.maxExp * 100
@@ -69,9 +67,6 @@ class MyStatePersistence : PersistentStateComponent<ProjectState> {
         if (notificationText != null) {
             MyNotifier.notifyAchievement(null, notificationText!!)
         }
-
-        //achievement.progressBar!!.value = achievement.currentExp
-        //achievement.  progressLabel!!.text = "${achievement.currentExp}/${achievement.maxExp}"
     }
 
     companion object {

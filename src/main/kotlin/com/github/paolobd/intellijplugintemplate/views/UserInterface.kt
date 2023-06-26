@@ -28,14 +28,14 @@ class UserInterface(private val project: Project) {
         val panel = JPanel()
         panel.layout = BoxLayout(panel, BoxLayout.Y_AXIS)
 
-        val button = JButton("Click me!")
+        val button = JButton("Reset values!")
         button.alignmentX = 0.5f // center button
 
         val text = JLabel("")
         text.alignmentX = 0.5f // center label
 
         button.addActionListener {
-            text.text = "You've clicked me!"
+            MyStatePersistence.getInstance(project).resetState()
         }
 
         //val createFileButton = JButton("Add library")
@@ -85,7 +85,7 @@ class UserInterface(private val project: Project) {
 
         //Title of the achievements page that takes all the 4 columns
         con.gridwidth = numColumn
-        panel.add(JLabel("Questa é la lista dei tuoi achievements"), con)
+        panel.add(JLabel("Your Project Achievements List"), con)
 
         //We only occupy one column each time now and pass on next row
         con.gridwidth = 1
