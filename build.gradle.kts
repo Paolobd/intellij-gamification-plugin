@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.seleniumhq.selenium:selenium-java:4.9.0")
+    implementation("org.seleniumhq.selenium:selenium-java:4.10.0")
     implementation("com.codeborne:selenide:6.13.0")
 }
 
