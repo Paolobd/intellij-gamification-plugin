@@ -1,5 +1,6 @@
 package com.github.paolobd.intellijplugintemplate.listeners
 
+import com.codeborne.selenide.WebDriverRunner
 import com.github.paolobd.intellijplugintemplate.objects.AchievementList
 import com.github.paolobd.intellijplugintemplate.services.MyStatePersistence
 import com.github.paolobd.intellijplugintemplate.views.MyNotifier
@@ -11,6 +12,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.readText
 import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.GlobalSearchScope
+import org.openqa.selenium.WebDriver
 import java.util.*
 
 internal class MyTestListener(private val project: Project) : SMTRunnerEventsListener {
@@ -55,11 +57,11 @@ internal class MyTestListener(private val project: Project) : SMTRunnerEventsLis
     }
 
     override fun onTestStarted(test: SMTestProxy) {
-        //var driver:WebDriver = ChromeDriver()
-        //ApplicationManager.getApplication().runReadAction {
-        //    driver = WebDriverRunner.getWebDriver()
-        //}
-        //println("driver: $driver")
+        var driver: WebDriver? = null
+        ApplicationManager.getApplication().runReadAction {
+            driver = WebDriverRunner.getAndCheckWebDriver()
+        }
+        println("driver: $driver , current url${driver?.currentUrl}")
     }
 
     override fun onTestFinished(test: SMTestProxy) {

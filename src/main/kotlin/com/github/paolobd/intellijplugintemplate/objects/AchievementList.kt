@@ -9,13 +9,13 @@ enum class AchievementList(
     NUM_CLICKS(
         "Number of clicks",
         "Number of button clicks you've made in this project",
-        "userInterface/BronzeTrophy.svg",
+        "/userInterface/BronzeTrophy.svg",
         100
     ),
     NUM_SITES(
         "Number of sites",
         "Number of sites you've visited in this project",
-        "userInterface/SilverTrophy.png",
+        "/userInterface/SilverTrophy.png",
         50
     )
 }
