@@ -1,10 +1,14 @@
 package com.github.paolobd.intellijplugintemplate.listeners
 
 import com.intellij.compiler.server.BuildManagerListener
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.roots.ProjectFileIndex
-import com.intellij.openapi.vfs.readText
+import com.intellij.psi.*
+import com.intellij.psi.search.FilenameIndex
+import com.intellij.psi.search.GlobalSearchScope
 import java.util.*
+
 
 class MyBuildManagerListener(private val project: Project) : BuildManagerListener {
     override fun beforeBuildProcessStarted(project: Project, sessionId: UUID) {
@@ -21,11 +25,49 @@ class MyBuildManagerListener(private val project: Project) : BuildManagerListene
 
         println("Build Started!")
 
-        ProjectFileIndex.getInstance(project).iterateContent{
-            println("File type: ${it.fileType}")
-            println("File content: ${it.readText()}")
-            true
+        val variables: MutableList<PsiLocalVariable> = mutableListOf()
+
+        ApplicationManager.getApplication().runReadAction {
+            val file =
+                FilenameIndex.getVirtualFilesByName("MainPageTest.java", GlobalSearchScope.projectScope(project)).firstOrNull()
+
+            val psiFile = PsiManager.getInstance(project).findFile(file!!)
+
+            //println("File type: ${file.fileType}")
+            //println("File content: ${file.readText()}")
+
+            println("File name: ${file.name}")
+
+            psiFile!!.accept(object : JavaRecursiveElementVisitor() {
+                override fun visitLocalVariable(variable: PsiLocalVariable) {
+                    super.visitLocalVariable(variable)
+                    println("Found a variable '${variable.name}' at offset ${variable.textRange.startOffset}")
+                    variables.add(variable)
+                }
+            })
+
+            //percorrere ricorsivamente TUTTO il file
+            psiFile.accept(object : PsiRecursiveElementWalkingVisitor(){
+                override fun visitElement(element: PsiElement) {
+                    super.visitElement(element)
+                    //if (element.elementType == WebDriver::javaClass)
+                }
+            })
         }
+
+        WriteCommandAction.runWriteCommandAction(project){
+            variables.forEach{
+               //do nothing
+            }
+        }
+
+
+
+//        ProjectFileIndex.getInstance(project).iterateContent{
+//            println("File type: ${it.fileType}")
+//            println("File content: ${it.readText()}")
+//            true
+//        }
     }
 
     override fun buildFinished(project: Project, sessionId: UUID, isAutomake: Boolean) {

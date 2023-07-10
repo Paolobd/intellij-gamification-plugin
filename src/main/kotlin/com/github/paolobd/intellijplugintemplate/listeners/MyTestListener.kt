@@ -7,6 +7,7 @@ import com.github.paolobd.intellijplugintemplate.views.MyNotifier
 import com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener
 import com.intellij.execution.testframework.sm.runner.SMTestProxy
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.readText
@@ -33,9 +34,9 @@ internal class MyTestListener(private val project: Project) : SMTRunnerEventsLis
         file!!.refresh(false, false)
         text = file!!.readText()
 
-        /*ApplicationManager.getApplication().runWriteAction{
+        WriteCommandAction.runWriteCommandAction(project){
             file!!.delete(null)
-        }*/
+        }
 
         var countClicks = 0
         val scanner = Scanner(text)
