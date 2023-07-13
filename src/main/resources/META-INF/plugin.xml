@@ -24,6 +24,7 @@
                            displayType="BALLOON"/>
         
         <projectService serviceImplementation="com.github.paolobd.intellijplugintemplate.services.MyStatePersistence"/>
+
     </extensions>
 
     <projectListeners>
