@@ -29,7 +29,7 @@ repositories {
 
 dependencies {
     implementation("org.seleniumhq.selenium:selenium-java:4.10.0")
-    implementation("com.codeborne:selenide:6.16.0")
+    implementation("com.codeborne:selenide:6.16.1")
     //implementation("org.aspectj:aspectjrt:1.9.19")
     //implementation("org.aspectj:aspectjweaver:1.9.19")
 }
