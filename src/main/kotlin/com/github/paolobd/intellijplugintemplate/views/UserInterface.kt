@@ -38,32 +38,14 @@ class UserInterface(private val project: Project) {
             MyStatePersistence.getInstance(project).resetState()
         }
 
-        //val createFileButton = JButton("Add library")
-
-        /*        createFileButton.addActionListener{
-                    val projectLibraryTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project)
-                    val projectLibraryModel = projectLibraryTable.modifiableModel
-
-                    val library = projectLibraryModel.createLibrary("prova-0.0.1")
-                    val libraryModel = library.modifiableModel
-                    val pathUrl = VirtualFileManager.constructUrl(LocalFileSystem.PROTOCOL, "/Users/prova-0.0.1")
-                    val file = VirtualFileManager.getInstance().findFileByUrl(pathUrl)
-
-                    if(file != null) {
-                        libraryModel.addRoot(file, OrderRootType.CLASSES)
-
-                        ApplicationManager.getApplication().runWriteAction {
-                            libraryModel.commit()
-                            projectLibraryModel.commit()
-                        }
-                    }
-
-                }*/
+        val button2 = JButton("Add GUI Library")
+        button2.alignmentX = 0.5f;
 
         //panel.add(Box.createVerticalGlue()); // space above button
         panel.add(button)
+        panel.add(button2)
         panel.add(Box.createVerticalStrut(10)) // space below button
-        panel.add(text)
+        //panel.add(text)
         //panel.add(Box.createVerticalGlue()) // space below label
         //panel.add(createFileButton)
 
@@ -94,38 +76,37 @@ class UserInterface(private val project: Project) {
         //Border between elements in the grid
         con.insets = JBUI.insets(5)
 
-        for (achievement in MyStatePersistence.getInstance(project).state.achievementList) {
+        val stateAchievements = MyStatePersistence.getInstance(project).state.achievementList
 
-            //achEnum contains achievement Name, Description, MaxExp, IconName
-            //achievement.value contains currentExp
-            val achEnum = AchievementList.values()[achievement.key]
+        for (achievement in AchievementList.values()) {
 
-            val showAchievementIcon = JLabel(IconLoader.getIcon(achEnum.iconName, javaClass))
+            //achievement contains achievement Name, Description, MaxExp, IconName
+
+            val showAchievementIcon = JLabel(IconLoader.getIcon(achievement.iconName, javaClass))
             val borderAchievementIcon = BorderFactory.createLineBorder(JBColor.BLACK, 1)
             val emptyBorder = JBUI.Borders.empty(2)
             showAchievementIcon.border = BorderFactory.createCompoundBorder(borderAchievementIcon, emptyBorder)
 
-            val titleLabel = JLabel(achEnum.achievementName)
+            val titleLabel = JLabel(achievement.achievementName)
 
             //The problem is I cannot resize the svg if I load it directly from AllIcons
             //val tooltipIcon = JLabel(AllIcons.General.QuestionDialog)
             //This svg is resized in userInterface folder
             val tooltipIcon = JLabel(IconLoader.getIcon("userInterface/Question-icon.svg", javaClass))
-            tooltipIcon.toolTipText = achEnum.achievementDescription
+            tooltipIcon.toolTipText = achievement.achievementDescription
 
-            val progressBar = JProgressBar(0, achEnum.maxExp)
-            progressBar.value = achievement.value
+            val exp = stateAchievements.getOrPut(achievement.ordinal) {0}
 
-            val progressLabel = JLabel("${achievement.value} / ${achEnum.maxExp}")
+            val progressBar = JProgressBar(0, achievement.maxExp)
+            progressBar.value = exp
+
+            val progressLabel = JLabel("$exp / ${achievement.maxExp}")
 
             AchievementUI.getList().add(
                 AchievementUI(
-                    achievement.key, progressBar, progressLabel
+                    achievement.ordinal, progressBar, progressLabel
                 )
             )
-
-            //achievement.progressBar = progressBar
-            //achievement.progressLabel = progressLabel
 
             //Inserting the achievement icon
             con.gridx = 0

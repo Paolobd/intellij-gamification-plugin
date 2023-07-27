@@ -29,9 +29,10 @@ repositories {
 
 dependencies {
     implementation("org.seleniumhq.selenium:selenium-java:4.10.0")
-    implementation("com.codeborne:selenide:6.16.0")
-    //implementation("org.aspectj:aspectjrt:1.9.19")
-    //implementation("org.aspectj:aspectjweaver:1.9.19")
+    implementation("com.codeborne:selenide:6.16.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.15.2")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.15.2")
 }
 
 // Set the JVM language level used to build the project. Use Java 11 for 2020.3+, and Java 17 for 2022.2+.

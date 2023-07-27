@@ -1,6 +1,9 @@
 package com.github.paolobd.intellijplugintemplate.listeners
 
-import com.codeborne.selenide.WebDriverRunner
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.paolobd.intellijplugintemplate.library.Event
+import com.github.paolobd.intellijplugintemplate.library.EventType
 import com.github.paolobd.intellijplugintemplate.objects.AchievementList
 import com.github.paolobd.intellijplugintemplate.services.MyStatePersistence
 import com.github.paolobd.intellijplugintemplate.views.MyNotifier
@@ -13,8 +16,6 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.readText
 import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.GlobalSearchScope
-import org.openqa.selenium.WebDriver
-import java.util.*
 
 internal class MyTestListener(private val project: Project) : SMTRunnerEventsListener {
     override fun onTestingStarted(testsRoot: SMTestProxy.SMRootTestProxy) {
@@ -22,11 +23,25 @@ internal class MyTestListener(private val project: Project) : SMTRunnerEventsLis
     }
 
     override fun onTestingFinished(testsRoot: SMTestProxy.SMRootTestProxy) {
+    }
+
+    override fun onTestsCountInSuite(count: Int) {
+    }
+
+    override fun onTestStarted(test: SMTestProxy) {
+        /*var driver: WebDriver? = null
+        ApplicationManager.getApplication().runReadAction {
+            driver = WebDriverRunner.getAndCheckWebDriver()
+        }
+        println("driver: $driver , current url${driver?.currentUrl}")*/
+    }
+
+    override fun onTestFinished(test: SMTestProxy) {
         val text: String
         var file: VirtualFile? = null
         ApplicationManager.getApplication().runReadAction {
             file =
-                FilenameIndex.getVirtualFilesByName("stats.txt", GlobalSearchScope.projectScope(project)).firstOrNull()
+                FilenameIndex.getVirtualFilesByName("stats.json", GlobalSearchScope.projectScope(project)).firstOrNull()
         }
 
         if (file == null) return
@@ -38,43 +53,47 @@ internal class MyTestListener(private val project: Project) : SMTRunnerEventsLis
             file!!.delete(null)
         }
 
-        var countClicks = 0
-        val scanner = Scanner(text)
-        while (scanner.hasNextLine()) {
-            val line = scanner.nextLine()
+        val expUpdate = MutableList(AchievementList.values().size){0}
 
-            if (line.contains("CLICK")) {
-                countClicks++
+        val objectMapper = ObjectMapper()
+
+        val eventList = objectMapper.readValue(text, object: TypeReference<List<Event>>() {})
+
+        for (event in eventList){
+            when(event.eventType){
+                EventType.CLICK -> expUpdate[AchievementList.NUM_CLICKS.ordinal] ++
+                EventType.LOCATOR_ID -> {
+                    expUpdate[AchievementList.NUM_LOCATOR_ID.ordinal] ++
+                    expUpdate[AchievementList.NUM_LOCATOR_ALL.ordinal] ++
+                }
+                EventType.LOCATOR_CSS -> {
+                    expUpdate[AchievementList.NUM_LOCATOR_CSS.ordinal] ++
+                    expUpdate[AchievementList.NUM_LOCATOR_ALL.ordinal] ++
+                }
+                EventType.LOCATOR_XPATH -> {
+                    expUpdate[AchievementList.NUM_LOCATOR_XPATH.ordinal] ++
+                    expUpdate[AchievementList.NUM_LOCATOR_ALL.ordinal] ++
+                }
+                else -> {}
             }
         }
 
-        println("text stats: $text")
-        println("NUM CLICKS: $countClicks")
-        MyStatePersistence.getInstance(project).addExp(AchievementList.NUM_CLICKS, countClicks)
-        //MyStatePersistence.getInstance(project).addExp(AchievementValues.NUM_CLICKS, countClicks)
-    }
+        val persistence = MyStatePersistence.getInstance(project)
 
-    override fun onTestsCountInSuite(count: Int) {
-    }
-
-    override fun onTestStarted(test: SMTestProxy) {
-        var driver: WebDriver? = null
-        ApplicationManager.getApplication().runReadAction {
-            driver = WebDriverRunner.getAndCheckWebDriver()
+        for ((index, exp) in expUpdate.withIndex()){
+            if (exp != 0) persistence.addExp(AchievementList.values()[index], exp)
         }
-        println("driver: $driver , current url${driver?.currentUrl}")
-    }
-
-    override fun onTestFinished(test: SMTestProxy) {
     }
 
     override fun onTestFailed(test: SMTestProxy) {
+        println("Test failed ${test.name}")
     }
 
     override fun onTestIgnored(test: SMTestProxy) {
     }
 
     override fun onSuiteFinished(suite: SMTestProxy) {
+        println("Suite of ${suite.children.size} finished")
     }
 
     override fun onSuiteStarted(suite: SMTestProxy) {
