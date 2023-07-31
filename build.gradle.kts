@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.seleniumhq.selenium:selenium-java:4.10.0")
+    implementation("org.seleniumhq.selenium:selenium-java:4.11.0")
     implementation("com.codeborne:selenide:6.16.1")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
     implementation("com.fasterxml.jackson.core:jackson-core:2.15.2")
