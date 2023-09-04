@@ -15,6 +15,7 @@ import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import javax.swing.*
 
+
 class UserInterface(private val project: Project) {
     private var mainUI: JBTabbedPane = JBTabbedPane()
 
@@ -95,7 +96,8 @@ class UserInterface(private val project: Project) {
             val tooltipIcon = JLabel(IconLoader.getIcon("userInterface/Question-icon.svg", javaClass))
             tooltipIcon.toolTipText = achievement.achievementDescription
 
-            val exp = stateAchievements.getOrPut(achievement.ordinal) {0}
+            //val exp = stateAchievements.getOrPut(achievement.ordinal) {0}
+            val exp = stateAchievements.first{ achievement.ordinal == it.id }.currentExp
 
             val progressBar = JProgressBar(0, achievement.maxExp)
             progressBar.value = exp
@@ -156,9 +158,105 @@ class UserInterface(private val project: Project) {
         return toolWindowPanel
     }
 
+    private fun createProvaTab(): Component {
+        val toolWindowPanel = SimpleToolWindowPanel(true, true)
+
+        val achievementContainer = JPanel()
+        achievementContainer.layout = GridBagLayout()
+        val constraint = GridBagConstraints()
+
+        constraint.insets = JBUI.insets(3, 0)
+        constraint.gridy = 0
+        constraint.fill = GridBagConstraints.HORIZONTAL
+        constraint.weightx = 1.0
+
+        val stateAchievements = MyStatePersistence.getInstance(project).state.achievementList
+
+        // Create achievement cards
+        for (achievement in AchievementList.values()) {
+            val achievementCard: JPanel = AchievementUI.createAchievementCard(
+                achievement.ordinal,
+                achievement.iconName,
+                achievement.achievementName,
+                achievement.achievementDescription,
+                achievement.maxExp,
+                stateAchievements.first{ achievement.ordinal == it.id }.currentExp)
+
+            achievementContainer.add(achievementCard, constraint)
+            constraint.gridy ++
+        }
+        constraint.weighty = 1.0
+        achievementContainer.add(JLabel(), constraint)
+
+        val scrollPane = JBScrollPane(achievementContainer)
+        toolWindowPanel.setContent(scrollPane)
+
+        return toolWindowPanel
+    }
+
+    /*private fun createAchievementCard(id: Int, iconName: String, achievementName: String,
+                                      achievementDescription: String, maxExp: Int): JPanel{
+        val card = JPanel()
+        card.border = BorderFactory.createCompoundBorder(
+            BorderFactory.createEtchedBorder(),
+            BorderFactory.createEmptyBorder(3, 3, 3, 5)
+        )
+        card.layout = BorderLayout()
+
+        // Left panel for the achievement icon (square)
+        val iconPanel = JPanel()
+        val icon = JLabel(IconLoader.getIcon(iconName, javaClass))
+
+        iconPanel.add(icon)
+
+        // Center panel for title and description
+        val centerPanel = JPanel()
+        centerPanel.layout = BoxLayout(centerPanel, BoxLayout.Y_AXIS)
+
+        val titleLabel = JLabel(achievementName)
+        titleLabel.font = Font(titleLabel.font.name, Font.BOLD, 14)
+        val descriptionLabel = JLabel(achievementDescription)
+        descriptionLabel.font = Font(descriptionLabel.font.name, Font.PLAIN, 12)
+
+        centerPanel.add(Box.createVerticalGlue())
+        centerPanel.add(titleLabel)
+        centerPanel.add(descriptionLabel)
+        centerPanel.add(Box.createVerticalGlue())
+
+        // Right panel for progress bar, progress label and xp
+        val rightPanel = JPanel()
+        rightPanel.layout = BoxLayout(rightPanel, BoxLayout.Y_AXIS)
+
+        val progressBar = JProgressBar(0, maxExp)
+        val exp = MyStatePersistence.getInstance(project).state.achievementList.first{ id == it.id }.currentExp
+        progressBar.value = exp
+
+        val progressLabel = JLabel("$exp / $maxExp") // Placeholder for progress label
+        progressLabel.font = Font(progressLabel.font.name, Font.PLAIN, 12)
+        progressLabel.alignmentX = JLabel.CENTER_ALIGNMENT
+
+        // Bottom right panel for XP value
+        val xpLabel = JLabel("XP: 10")
+        xpLabel.font = Font(xpLabel.font.name, Font.ITALIC, 11)
+        xpLabel.alignmentX = Component.CENTER_ALIGNMENT
+
+        rightPanel.add(Box.createVerticalGlue())
+        rightPanel.add(progressBar)
+        rightPanel.add(progressLabel)
+        rightPanel.add(xpLabel)
+
+        // Add components to the card
+        card.add(iconPanel, BorderLayout.WEST)
+        card.add(centerPanel, BorderLayout.CENTER)
+        card.add(rightPanel, BorderLayout.EAST)
+
+        return card
+    }*/
+
     init {
-        mainUI.addTab("Profile", createProfileTab())
-        mainUI.addTab("Achievements", createAchievementsTab())
+        //mainUI.addTab("Achievements", createAchievementsTab())
+        mainUI.addTab("Achievements", createProvaTab())
+        mainUI.addTab("Dev Tools", createProfileTab())
     }
 
 }

@@ -19,7 +19,7 @@ class MyStatePersistence : PersistentStateComponent<ProjectState> {
 
     @Nullable
     override fun getState(): ProjectState {
-        println("Project State: $myProjectState")
+        //println("Project State: $myProjectState")
         return myProjectState
     }
 
@@ -36,23 +36,31 @@ class MyStatePersistence : PersistentStateComponent<ProjectState> {
 
         //achEnum contains achievement Name, Description, maxExp, iconName
         //achievement contains currentExp
-        val achievement = myProjectState.achievementList.entries.first { it.key == achEnum.ordinal }
+        //val achievement = myProjectState.achievementList.entries.first { it.key == achEnum.ordinal }
+        val achievement = myProjectState.achievementList.first{ it.id == achEnum.ordinal }
 
-        val oldExp = achievement.value
+        //val oldExp = achievement.value
+
+        val oldExp = achievement.currentExp
 
         //update the value in the state
-        achievement.setValue(
+       /* achievement.setValue(
             if (achievement.value + exp > achEnum.maxExp) achEnum.maxExp
             else achievement.value + exp
-        )
+        )*/
+
+        achievement.currentExp = if (achievement.currentExp + exp > achEnum.maxExp) achEnum.maxExp
+            else achievement.currentExp + exp
 
         //update the value in the UI
-        AchievementUI.getList().first { achEnum.ordinal == it.id }.updateProgress(achievement.value)
+        //AchievementUI.getList().first { achEnum.ordinal == it.id }.updateProgress(achievement.value)
+        AchievementUI.getList().first { achEnum.ordinal == it.id }.updateProgress(achievement.currentExp)
 
         //prepare to send the notification
         var notificationText: String? = null
         val oldPercentage = oldExp.toFloat() / achEnum.maxExp * 100
-        val currPercentage = achievement.value.toFloat() / achEnum.maxExp * 100
+        //val currPercentage = achievement.value.toFloat() / achEnum.maxExp * 100
+        val currPercentage = achievement.currentExp.toFloat() / achEnum.maxExp * 100
 
         intArrayOf(25, 50, 75, 100).forEach {
             if (oldPercentage < it && currPercentage >= it) {

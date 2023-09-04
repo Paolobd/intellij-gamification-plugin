@@ -10,7 +10,6 @@ import com.github.paolobd.intellijplugintemplate.views.MyNotifier
 import com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener
 import com.intellij.execution.testframework.sm.runner.SMTestProxy
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.readText
@@ -49,9 +48,11 @@ internal class MyTestListener(private val project: Project) : SMTRunnerEventsLis
         file!!.refresh(false, false)
         text = file!!.readText()
 
-        WriteCommandAction.runWriteCommandAction(project){
+        /*WriteCommandAction.runWriteCommandAction(project){
             file!!.delete(null)
-        }
+        }*/
+
+        val persistence = MyStatePersistence.getInstance(project)
 
         val expUpdate = MutableList(AchievementList.values().size){0}
 
@@ -59,7 +60,39 @@ internal class MyTestListener(private val project: Project) : SMTRunnerEventsLis
 
         val eventList = objectMapper.readValue(text, object: TypeReference<List<Event>>() {})
 
+        val newEvents = mutableListOf<Event>()
+
+        println("EventList: $eventList")
+
         for (event in eventList){
+            val found = persistence.state.eventList.contains(event)
+
+            if(!found){
+                newEvents.add(event)
+                persistence.state.eventList.add(event)
+
+                when(event.eventType){
+                    EventType.CLICK -> expUpdate[AchievementList.NUM_CLICKS.ordinal] ++
+                    EventType.LOCATOR -> expUpdate[AchievementList.NUM_LOCATOR_ALL.ordinal]++
+                    EventType.NAVIGATION -> expUpdate[AchievementList.NUM_SITES.ordinal]++
+                    EventType.LOCATOR_ID -> {
+                        expUpdate[AchievementList.NUM_LOCATOR_ID.ordinal] ++
+                        expUpdate[AchievementList.NUM_LOCATOR_ALL.ordinal] ++
+                    }
+                    EventType.LOCATOR_CSS -> {
+                        expUpdate[AchievementList.NUM_LOCATOR_CSS.ordinal] ++
+                        expUpdate[AchievementList.NUM_LOCATOR_ALL.ordinal] ++
+                    }
+                    EventType.LOCATOR_XPATH -> {
+                        expUpdate[AchievementList.NUM_LOCATOR_XPATH.ordinal] ++
+                        expUpdate[AchievementList.NUM_LOCATOR_ALL.ordinal] ++
+                    }
+                }
+
+            }
+        }
+
+        /*for (event in eventList){
             when(event.eventType){
                 EventType.CLICK -> expUpdate[AchievementList.NUM_CLICKS.ordinal] ++
                 EventType.LOCATOR_ID -> {
@@ -76,9 +109,7 @@ internal class MyTestListener(private val project: Project) : SMTRunnerEventsLis
                 }
                 else -> {}
             }
-        }
-
-        val persistence = MyStatePersistence.getInstance(project)
+        }*/
 
         for ((index, exp) in expUpdate.withIndex()){
             if (exp != 0) persistence.addExp(AchievementList.values()[index], exp)
