@@ -1,7 +1,7 @@
 package com.github.paolobd.intellijplugintemplate.services
 
-import com.github.paolobd.intellijplugintemplate.objects.AchievementList
 import com.github.paolobd.intellijplugintemplate.objects.AchievementUI
+import com.github.paolobd.intellijplugintemplate.objects.ProjectAchievementList
 import com.github.paolobd.intellijplugintemplate.objects.ProjectState
 import com.github.paolobd.intellijplugintemplate.views.MyNotifier
 import com.intellij.openapi.components.PersistentStateComponent
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull
 import javax.annotation.Nullable
 
 @State(name = "ProjectState", storages = [Storage("GamificationGUIProjectState.xml")])
-class MyStatePersistence : PersistentStateComponent<ProjectState> {
+class ProjectStatePersistence : PersistentStateComponent<ProjectState> {
 
     private var myProjectState: ProjectState = ProjectState()
 
@@ -32,7 +32,7 @@ class MyStatePersistence : PersistentStateComponent<ProjectState> {
         AchievementUI.getList().forEach{ it.updateProgress(0) }
     }
 
-    fun addExp(achEnum: AchievementList, exp: Int) {
+    fun addExp(achEnum: ProjectAchievementList, exp: Int) {
 
         //achEnum contains achievement Name, Description, maxExp, iconName
         //achievement contains currentExp
@@ -49,7 +49,7 @@ class MyStatePersistence : PersistentStateComponent<ProjectState> {
             else achievement.value + exp
         )*/
 
-        achievement.currentExp = if (achievement.currentExp + exp > achEnum.maxExp) achEnum.maxExp
+        achievement.currentExp = if (achievement.currentExp + exp > achEnum.total) achEnum.total
             else achievement.currentExp + exp
 
         //update the value in the UI
@@ -58,15 +58,15 @@ class MyStatePersistence : PersistentStateComponent<ProjectState> {
 
         //prepare to send the notification
         var notificationText: String? = null
-        val oldPercentage = oldExp.toFloat() / achEnum.maxExp * 100
+        val oldPercentage = oldExp.toFloat() / achEnum.total * 100
         //val currPercentage = achievement.value.toFloat() / achEnum.maxExp * 100
-        val currPercentage = achievement.currentExp.toFloat() / achEnum.maxExp * 100
+        val currPercentage = achievement.currentExp.toFloat() / achEnum.total * 100
 
         intArrayOf(25, 50, 75, 100).forEach {
             if (oldPercentage < it && currPercentage >= it) {
                 notificationText =
-                    if (it == 100) "Congratulations! You've completed '${achEnum.achievementName}'"
-                    else "You've reached $it% of '${achEnum.achievementName}'"
+                    if (it == 100) "Congratulations! You've completed '${achEnum.title}'"
+                    else "You've reached $it% of '${achEnum.title}'"
             }
         }
 
@@ -79,9 +79,7 @@ class MyStatePersistence : PersistentStateComponent<ProjectState> {
 
     companion object {
         @JvmStatic
-        fun getInstance(project: Project): MyStatePersistence = project.getService(MyStatePersistence::class.java)
+        fun getInstance(project: Project): ProjectStatePersistence = project.getService(ProjectStatePersistence::class.java)
 
-        //@JvmStatic
-        //fun getInstance(project: Project): MyStatePersistence = project.service<MyStatePersistence>()
     }
 }

@@ -19,8 +19,8 @@ class AchievementUI(val id: Int, private var progressBar: JProgressBar, private 
         fun getList(): MutableList<AchievementUI> = list
 
         @JvmStatic
-        fun createAchievementCard(id: Int, iconName: String, achievementName: String,
-                                  achievementDescription: String, maxExp: Int, currentExp: Int): JPanel {
+        fun createAchievementCard(id: Int, iconUrl: String, title: String,
+                                  description: String, total: Int, userExp: Int, current: Int): JPanel {
             val card = JPanel()
             card.border = BorderFactory.createCompoundBorder(
                 BorderFactory.createEtchedBorder(),
@@ -30,7 +30,7 @@ class AchievementUI(val id: Int, private var progressBar: JProgressBar, private 
 
             // Left panel for the achievement icon (square)
             val iconPanel = JPanel()
-            val icon = JLabel(IconLoader.getIcon(iconName, AchievementUI::class.java))
+            val icon = JLabel(IconLoader.getIcon(iconUrl, AchievementUI::class.java))
 
             iconPanel.add(icon)
 
@@ -38,9 +38,9 @@ class AchievementUI(val id: Int, private var progressBar: JProgressBar, private 
             val centerPanel = JPanel()
             centerPanel.layout = BoxLayout(centerPanel, BoxLayout.Y_AXIS)
 
-            val titleLabel = JLabel(achievementName)
+            val titleLabel = JLabel(title)
             titleLabel.font = Font(titleLabel.font.name, Font.BOLD, 14)
-            val descriptionLabel = JLabel(achievementDescription)
+            val descriptionLabel = JLabel(description)
             descriptionLabel.font = Font(descriptionLabel.font.name, Font.PLAIN, 12)
 
             centerPanel.add(Box.createVerticalGlue())
@@ -52,16 +52,16 @@ class AchievementUI(val id: Int, private var progressBar: JProgressBar, private 
             val rightPanel = JPanel()
             rightPanel.layout = BoxLayout(rightPanel, BoxLayout.Y_AXIS)
 
-            val progressBar = JProgressBar(0, maxExp)
-            progressBar.value = currentExp
+            val progressBar = JProgressBar(0, total)
+            progressBar.value = current
 
-            val progressLabel = JLabel("$currentExp / $maxExp") // Placeholder for progress label
+            val progressLabel = JLabel("$current / $total") // Placeholder for progress label
             progressLabel.font = Font(progressLabel.font.name, Font.PLAIN, 12)
             progressLabel.alignmentX = JLabel.CENTER_ALIGNMENT
 
             // Bottom right panel for XP value
-            val xpLabel = JLabel("Gain $ exp")
-            xpLabel.font = Font(xpLabel.font.name, Font.ITALIC, 8)
+            val xpLabel = JLabel("Gives $userExp")
+            xpLabel.font = Font(xpLabel.font.name, Font.ITALIC, 10)
             xpLabel.alignmentX = Component.CENTER_ALIGNMENT
 
             rightPanel.add(Box.createVerticalGlue())

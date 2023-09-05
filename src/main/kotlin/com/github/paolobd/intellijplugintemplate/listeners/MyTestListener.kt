@@ -4,12 +4,13 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.paolobd.intellijplugintemplate.library.Event
 import com.github.paolobd.intellijplugintemplate.library.EventType
-import com.github.paolobd.intellijplugintemplate.objects.AchievementList
-import com.github.paolobd.intellijplugintemplate.services.MyStatePersistence
+import com.github.paolobd.intellijplugintemplate.objects.ProjectAchievementList
+import com.github.paolobd.intellijplugintemplate.services.ProjectStatePersistence
 import com.github.paolobd.intellijplugintemplate.views.MyNotifier
 import com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener
 import com.intellij.execution.testframework.sm.runner.SMTestProxy
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.readText
@@ -19,9 +20,12 @@ import com.intellij.psi.search.GlobalSearchScope
 internal class MyTestListener(private val project: Project) : SMTRunnerEventsListener {
     override fun onTestingStarted(testsRoot: SMTestProxy.SMRootTestProxy) {
         MyNotifier.notifyAchievement(null, "Testing started!")
+
+        //Aprire server
     }
 
     override fun onTestingFinished(testsRoot: SMTestProxy.SMRootTestProxy) {
+        //Chiudere server
     }
 
     override fun onTestsCountInSuite(count: Int) {
@@ -48,13 +52,13 @@ internal class MyTestListener(private val project: Project) : SMTRunnerEventsLis
         file!!.refresh(false, false)
         text = file!!.readText()
 
-        /*WriteCommandAction.runWriteCommandAction(project){
+        WriteCommandAction.runWriteCommandAction(project){
             file!!.delete(null)
-        }*/
+        }
 
-        val persistence = MyStatePersistence.getInstance(project)
+        val persistence = ProjectStatePersistence.getInstance(project)
 
-        val expUpdate = MutableList(AchievementList.values().size){0}
+        val expUpdate = MutableList(ProjectAchievementList.values().size){0}
 
         val objectMapper = ObjectMapper()
 
@@ -72,20 +76,20 @@ internal class MyTestListener(private val project: Project) : SMTRunnerEventsLis
                 persistence.state.eventList.add(event)
 
                 when(event.eventType){
-                    EventType.CLICK -> expUpdate[AchievementList.NUM_CLICKS.ordinal] ++
-                    EventType.LOCATOR -> expUpdate[AchievementList.NUM_LOCATOR_ALL.ordinal]++
-                    EventType.NAVIGATION -> expUpdate[AchievementList.NUM_SITES.ordinal]++
+                    EventType.CLICK -> expUpdate[ProjectAchievementList.NUM_CLICKS.ordinal] ++
+                    EventType.LOCATOR -> expUpdate[ProjectAchievementList.NUM_LOCATOR_ALL.ordinal]++
+                    EventType.NAVIGATION -> expUpdate[ProjectAchievementList.NUM_SITES.ordinal]++
                     EventType.LOCATOR_ID -> {
-                        expUpdate[AchievementList.NUM_LOCATOR_ID.ordinal] ++
-                        expUpdate[AchievementList.NUM_LOCATOR_ALL.ordinal] ++
+                        expUpdate[ProjectAchievementList.NUM_LOCATOR_ID.ordinal] ++
+                        expUpdate[ProjectAchievementList.NUM_LOCATOR_ALL.ordinal] ++
                     }
                     EventType.LOCATOR_CSS -> {
-                        expUpdate[AchievementList.NUM_LOCATOR_CSS.ordinal] ++
-                        expUpdate[AchievementList.NUM_LOCATOR_ALL.ordinal] ++
+                        expUpdate[ProjectAchievementList.NUM_LOCATOR_CSS.ordinal] ++
+                        expUpdate[ProjectAchievementList.NUM_LOCATOR_ALL.ordinal] ++
                     }
                     EventType.LOCATOR_XPATH -> {
-                        expUpdate[AchievementList.NUM_LOCATOR_XPATH.ordinal] ++
-                        expUpdate[AchievementList.NUM_LOCATOR_ALL.ordinal] ++
+                        expUpdate[ProjectAchievementList.NUM_LOCATOR_XPATH.ordinal] ++
+                        expUpdate[ProjectAchievementList.NUM_LOCATOR_ALL.ordinal] ++
                     }
                 }
 
@@ -112,7 +116,7 @@ internal class MyTestListener(private val project: Project) : SMTRunnerEventsLis
         }*/
 
         for ((index, exp) in expUpdate.withIndex()){
-            if (exp != 0) persistence.addExp(AchievementList.values()[index], exp)
+            if (exp != 0) persistence.addExp(ProjectAchievementList.values()[index], exp)
         }
     }
 

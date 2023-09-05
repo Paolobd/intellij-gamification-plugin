@@ -1,18 +1,15 @@
 package com.github.paolobd.intellijplugintemplate.views
 
-import com.github.paolobd.intellijplugintemplate.objects.AchievementList
 import com.github.paolobd.intellijplugintemplate.objects.AchievementUI
-import com.github.paolobd.intellijplugintemplate.services.MyStatePersistence
+import com.github.paolobd.intellijplugintemplate.objects.ProjectAchievementList
+import com.github.paolobd.intellijplugintemplate.services.ProjectStatePersistence
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.openapi.util.IconLoader
-import com.intellij.ui.JBColor
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.util.ui.JBUI
-import java.awt.Component
-import java.awt.GridBagConstraints
-import java.awt.GridBagLayout
+import java.awt.*
 import javax.swing.*
 
 
@@ -23,7 +20,7 @@ class UserInterface(private val project: Project) {
         return mainUI
     }
 
-    private fun createProfileTab(): Component {
+    private fun createDevTab(): Component {
         val toolWindowPanel = SimpleToolWindowPanel(true, true)
 
         val panel = JPanel()
@@ -36,11 +33,11 @@ class UserInterface(private val project: Project) {
         text.alignmentX = 0.5f // center label
 
         button.addActionListener {
-            MyStatePersistence.getInstance(project).resetState()
+            ProjectStatePersistence.getInstance(project).resetState()
         }
 
         val button2 = JButton("Add GUI Library")
-        button2.alignmentX = 0.5f;
+        button2.alignmentX = 0.5f
 
         //panel.add(Box.createVerticalGlue()); // space above button
         panel.add(button)
@@ -55,7 +52,7 @@ class UserInterface(private val project: Project) {
         return toolWindowPanel
     }
 
-    private fun createAchievementsTab(): Component {
+    /*private fun createAchievementsTab(): Component {
         val numColumn = 5
         val toolWindowPanel = SimpleToolWindowPanel(true, true)
 
@@ -156,10 +153,12 @@ class UserInterface(private val project: Project) {
         val scroll = JBScrollPane(panel)
         toolWindowPanel.add(scroll)
         return toolWindowPanel
-    }
+    }*/
 
     private fun createProvaTab(): Component {
         val toolWindowPanel = SimpleToolWindowPanel(true, true)
+
+        val tabbedPane = JBTabbedPane()
 
         val achievementContainer = JPanel()
         achievementContainer.layout = GridBagLayout()
@@ -170,16 +169,17 @@ class UserInterface(private val project: Project) {
         constraint.fill = GridBagConstraints.HORIZONTAL
         constraint.weightx = 1.0
 
-        val stateAchievements = MyStatePersistence.getInstance(project).state.achievementList
+        val stateAchievements = ProjectStatePersistence.getInstance(project).state.achievementList
 
         // Create achievement cards
-        for (achievement in AchievementList.values()) {
+        for (achievement in ProjectAchievementList.values()) {
             val achievementCard: JPanel = AchievementUI.createAchievementCard(
                 achievement.ordinal,
-                achievement.iconName,
-                achievement.achievementName,
-                achievement.achievementDescription,
-                achievement.maxExp,
+                achievement.iconUrl,
+                achievement.title,
+                achievement.description,
+                achievement.total,
+                achievement.userExp,
                 stateAchievements.first{ achievement.ordinal == it.id }.currentExp)
 
             achievementContainer.add(achievementCard, constraint)
@@ -189,74 +189,131 @@ class UserInterface(private val project: Project) {
         achievementContainer.add(JLabel(), constraint)
 
         val scrollPane = JBScrollPane(achievementContainer)
-        toolWindowPanel.setContent(scrollPane)
+        //toolWindowPanel.setContent(scrollPane)
+        toolWindowPanel.add(tabbedPane)
+
+        tabbedPane.addTab("Project", achievementContainer)
+        tabbedPane.addTab("Global", JLabel("Oh you touch my tralala"))
 
         return toolWindowPanel
     }
 
-    /*private fun createAchievementCard(id: Int, iconName: String, achievementName: String,
-                                      achievementDescription: String, maxExp: Int): JPanel{
-        val card = JPanel()
-        card.border = BorderFactory.createCompoundBorder(
-            BorderFactory.createEtchedBorder(),
-            BorderFactory.createEmptyBorder(3, 3, 3, 5)
-        )
-        card.layout = BorderLayout()
+    private fun createProfileTab(): Component {
+        val toolWindowPanel = SimpleToolWindowPanel(true, true)
 
-        // Left panel for the achievement icon (square)
-        val iconPanel = JPanel()
-        val icon = JLabel(IconLoader.getIcon(iconName, javaClass))
+        val wrapperPanel = JPanel(GridBagLayout())
 
-        iconPanel.add(icon)
+        val leftPanel = JPanel(BorderLayout())
 
-        // Center panel for title and description
-        val centerPanel = JPanel()
-        centerPanel.layout = BoxLayout(centerPanel, BoxLayout.Y_AXIS)
+        // Placeholder for profile picture (a circular panel)
+        /*val profilePicturePanel: JPanel = object : JPanel() {
+            override fun paintComponent(g: Graphics) {
+                super.paintComponent(g)
+                g.color = JBColor.BLUE // Placeholder color
+                g.fillOval(0, 0, width, height)
+            }
+        }
+        profilePicturePanel.preferredSize = Dimension(150, 150)*/
 
-        val titleLabel = JLabel(achievementName)
-        titleLabel.font = Font(titleLabel.font.name, Font.BOLD, 14)
-        val descriptionLabel = JLabel(achievementDescription)
-        descriptionLabel.font = Font(descriptionLabel.font.name, Font.PLAIN, 12)
+        val profilePicturePanel = JLabel(IconLoader.getIcon("/userInterface/user.svg", javaClass))
+        //profilePicturePanel.preferredSize = Dimension(100, 100)
 
-        centerPanel.add(Box.createVerticalGlue())
-        centerPanel.add(titleLabel)
-        centerPanel.add(descriptionLabel)
-        centerPanel.add(Box.createVerticalGlue())
 
-        // Right panel for progress bar, progress label and xp
-        val rightPanel = JPanel()
-        rightPanel.layout = BoxLayout(rightPanel, BoxLayout.Y_AXIS)
+        val changePictureButton = JButton("Change Picture")
+        leftPanel.add(profilePicturePanel, BorderLayout.CENTER)
+        leftPanel.add(changePictureButton, BorderLayout.SOUTH)
 
-        val progressBar = JProgressBar(0, maxExp)
-        val exp = MyStatePersistence.getInstance(project).state.achievementList.first{ id == it.id }.currentExp
-        progressBar.value = exp
+        // Right Panel for User Information
+        val rightPanel = JPanel(GridBagLayout())
 
-        val progressLabel = JLabel("$exp / $maxExp") // Placeholder for progress label
-        progressLabel.font = Font(progressLabel.font.name, Font.PLAIN, 12)
-        progressLabel.alignmentX = JLabel.CENTER_ALIGNMENT
+        val gbc = GridBagConstraints()
+        gbc.gridx = 0
+        gbc.gridy = 0
+        gbc.gridwidth = 1
+        gbc.fill = GridBagConstraints.HORIZONTAL
+        gbc.insets = JBUI.insets(5)
 
-        // Bottom right panel for XP value
-        val xpLabel = JLabel("XP: 10")
-        xpLabel.font = Font(xpLabel.font.name, Font.ITALIC, 11)
-        xpLabel.alignmentX = Component.CENTER_ALIGNMENT
+        val usernameLabel = JTextField("Paolobd")
+        usernameLabel.font = Font(usernameLabel.font.name, Font.BOLD, 14)
+        rightPanel.add(usernameLabel, gbc)
 
-        rightPanel.add(Box.createVerticalGlue())
-        rightPanel.add(progressBar)
-        rightPanel.add(progressLabel)
-        rightPanel.add(xpLabel)
+        gbc.gridy++
+        val userTitleLabel = JLabel("Always asleep")
+        userTitleLabel.font = Font(userTitleLabel.font.name, Font.PLAIN, 12)
+        rightPanel.add(userTitleLabel, gbc)
 
-        // Add components to the card
-        card.add(iconPanel, BorderLayout.WEST)
-        card.add(centerPanel, BorderLayout.CENTER)
-        card.add(rightPanel, BorderLayout.EAST)
+        gbc.gridy++
+        val levelPanel = JPanel(BorderLayout())
+        val progressBar = JProgressBar(0, 100)
+        progressBar.value = 75 // Placeholder progress value
 
-        return card
-    }*/
+        val levelNumberLabel = JLabel("Level 5") // Placeholder level number
+
+        levelPanel.add(progressBar, BorderLayout.NORTH)
+        levelPanel.add(levelNumberLabel, BorderLayout.SOUTH)
+        rightPanel.add(levelPanel, gbc)
+
+        // Achievement Squares Panel
+
+        // Achievement Squares Panel
+        val achievementPanel = JPanel() // 1 row, 5 columns
+        achievementPanel.layout = BoxLayout(achievementPanel, BoxLayout.X_AXIS)
+
+        achievementPanel.add(Box.createHorizontalGlue())
+
+        // Create achievement squares (placeholders)
+        for (i in 1..5) {
+
+            val achievement = JPanel()
+            achievement.border = BorderFactory.createEtchedBorder()
+            val icon = JLabel(IconLoader.getIcon("/userInterface/GoldTrophy.svg", javaClass))
+            achievement.add(icon)
+
+            achievementPanel.add(achievement)
+            achievementPanel.add(Box.createHorizontalGlue())
+
+            /*val achievementSquare = JPanel(BorderLayout())
+            achievementSquare.border = BorderFactory.createLineBorder(JBColor.BLACK)
+            val achievementIconLabel = JLabel("Achievement $i", SwingConstants.CENTER)
+            achievementIconLabel.foreground = JBColor.BLUE // Placeholder color
+            achievementSquare.add(achievementIconLabel, BorderLayout.CENTER)
+            val achievementNameLabel = JLabel("Achievement Name $i", SwingConstants.CENTER)
+            achievementSquare.add(achievementNameLabel, BorderLayout.SOUTH)
+            achievementPanel.add(achievementSquare)*/
+        }
+
+        // Add leftPanel and rightPanel to the main panel
+        val mainPanel = JPanel(BorderLayout())
+        mainPanel.add(leftPanel, BorderLayout.WEST)
+        mainPanel.add(rightPanel, BorderLayout.CENTER)
+
+        val gbc2 = GridBagConstraints()
+        gbc2.gridwidth = 1
+        gbc2.gridx = 0
+        gbc2.fill = GridBagConstraints.HORIZONTAL
+        gbc2.gridy = 0
+        gbc2.weightx = 1.0
+
+        wrapperPanel.add(mainPanel, gbc2)
+        gbc2.gridy = 1
+        wrapperPanel.add(achievementPanel, gbc2)
+        gbc2.gridy = 2
+        gbc2.weighty = 1.0
+        wrapperPanel.add(JLabel(), gbc2)
+
+
+
+        toolWindowPanel.add(wrapperPanel)
+
+        return toolWindowPanel
+    }
 
     init {
         //mainUI.addTab("Achievements", createAchievementsTab())
+
+        mainUI.addTab("Profile", createProfileTab())
         mainUI.addTab("Achievements", createProvaTab())
-        mainUI.addTab("Dev Tools", createProfileTab())
+        mainUI.addTab("Dev Tools", createDevTab())
     }
 
 }

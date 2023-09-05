@@ -9,7 +9,7 @@ data class ProjectState(
     }.toList()*/
     //var achievementList: MutableMap<Int, Int> = AchievementList.values().map { it.ordinal }.associateWith { 0 }.toMutableMap()
 
-    var achievementList: List<Achievement> = AchievementList.values().map{
+    var achievementList: List<Achievement> = ProjectAchievementList.values().map{
         Achievement(it.ordinal, 0, false)
     },
     var eventList: MutableList<Event> = mutableListOf()

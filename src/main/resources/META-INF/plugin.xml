@@ -23,7 +23,9 @@
         <notificationGroup id="Achievement Notification Group"
                            displayType="BALLOON"/>
         
-        <projectService serviceImplementation="com.github.paolobd.intellijplugintemplate.services.MyStatePersistence"/>
+        <projectService serviceImplementation="com.github.paolobd.intellijplugintemplate.services.ProjectStatePersistence"/>
+
+        <applicationService serviceImplementation="com.github.paolobd.intellijplugintemplate.services.ApplicationStatePersistence"/>
 
     </extensions>
 
