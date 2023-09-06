@@ -1,20 +1,23 @@
 package com.github.paolobd.intellijplugintemplate.views
 
-import com.github.paolobd.intellijplugintemplate.objects.AchievementUI
-import com.github.paolobd.intellijplugintemplate.objects.ProjectAchievementList
+import com.github.paolobd.intellijplugintemplate.objects.*
+import com.github.paolobd.intellijplugintemplate.services.ApplicationStatePersistence
 import com.github.paolobd.intellijplugintemplate.services.ProjectStatePersistence
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.openapi.util.IconLoader
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.util.ui.JBUI
 import java.awt.*
+import java.awt.event.ActionListener
 import javax.swing.*
 
 
 class UserInterface(private val project: Project) {
     private var mainUI: JBTabbedPane = JBTabbedPane()
+    private var achievementPane = JBTabbedPane()
 
     fun getContent(): JBTabbedPane {
         return mainUI
@@ -52,148 +55,88 @@ class UserInterface(private val project: Project) {
         return toolWindowPanel
     }
 
-    /*private fun createAchievementsTab(): Component {
-        val numColumn = 5
-        val toolWindowPanel = SimpleToolWindowPanel(true, true)
-
-        val panel = JPanel()
-
-        panel.layout = GridBagLayout()
-        val con = GridBagConstraints()
-        con.gridx = 0
-        con.gridy = 0
-
-        //Title of the achievements page that takes all the 4 columns
-        con.gridwidth = numColumn
-        panel.add(JLabel("Your Project Achievements List"), con)
-
-        //We only occupy one column each time now and pass on next row
-        con.gridwidth = 1
-        con.gridy++
-
-        //Border between elements in the grid
-        con.insets = JBUI.insets(5)
-
-        val stateAchievements = MyStatePersistence.getInstance(project).state.achievementList
-
-        for (achievement in AchievementList.values()) {
-
-            //achievement contains achievement Name, Description, MaxExp, IconName
-
-            val showAchievementIcon = JLabel(IconLoader.getIcon(achievement.iconName, javaClass))
-            val borderAchievementIcon = BorderFactory.createLineBorder(JBColor.BLACK, 1)
-            val emptyBorder = JBUI.Borders.empty(2)
-            showAchievementIcon.border = BorderFactory.createCompoundBorder(borderAchievementIcon, emptyBorder)
-
-            val titleLabel = JLabel(achievement.achievementName)
-
-            //The problem is I cannot resize the svg if I load it directly from AllIcons
-            //val tooltipIcon = JLabel(AllIcons.General.QuestionDialog)
-            //This svg is resized in userInterface folder
-            val tooltipIcon = JLabel(IconLoader.getIcon("userInterface/Question-icon.svg", javaClass))
-            tooltipIcon.toolTipText = achievement.achievementDescription
-
-            //val exp = stateAchievements.getOrPut(achievement.ordinal) {0}
-            val exp = stateAchievements.first{ achievement.ordinal == it.id }.currentExp
-
-            val progressBar = JProgressBar(0, achievement.maxExp)
-            progressBar.value = exp
-
-            val progressLabel = JLabel("$exp / ${achievement.maxExp}")
-
-            AchievementUI.getList().add(
-                AchievementUI(
-                    achievement.ordinal, progressBar, progressLabel
-                )
-            )
-
-            //Inserting the achievement icon
-            con.gridx = 0
-            con.fill = GridBagConstraints.NONE
-            con.weightx = 0.05
-            panel.add(showAchievementIcon, con)
-
-            con.gridx++
-            con.fill = GridBagConstraints.NONE
-            con.weightx = 0.30
-            panel.add(titleLabel, con)
-
-            con.gridx++
-            con.fill = GridBagConstraints.NONE
-            con.weightx = 0.05
-            panel.add(tooltipIcon, con)
-
-            con.gridx++
-            con.fill = GridBagConstraints.HORIZONTAL
-            con.weightx = 0.50
-            panel.add(progressBar, con)
-
-            con.gridx++
-            con.fill = GridBagConstraints.NONE
-            con.weightx = 0.10
-            panel.add(progressLabel, con)
-
-            //Go to next row
-            con.gridy++
-        }
-
-        con.gridx = 1
-        con.gridwidth = 3
-        con.weightx = 0.0
-
-        con.gridy++
-
-        //Insert empty element so that the others are pushed to the top
-        con.gridx = 0
-        con.gridwidth = numColumn
-        con.weightx = 0.0
-        con.weighty = 1.0
-        panel.add(JLabel(), con)
-
-        val scroll = JBScrollPane(panel)
-        toolWindowPanel.add(scroll)
-        return toolWindowPanel
-    }*/
-
-    private fun createProvaTab(): Component {
-        val toolWindowPanel = SimpleToolWindowPanel(true, true)
-
-        val tabbedPane = JBTabbedPane()
-
+    private fun createAchievementsTab(achievements: MutableList<AchievementCard>, sort: Int): Component {
         val achievementContainer = JPanel()
         achievementContainer.layout = GridBagLayout()
         val constraint = GridBagConstraints()
 
-        constraint.insets = JBUI.insets(3, 0)
         constraint.gridy = 0
+        constraint.anchor = GridBagConstraints.EAST
+        val items = arrayOf("Default", "A-Z", "Z-A", "Completion % up", "Completion % down")
+        val dropdown = ComboBox(items)
+        dropdown.selectedIndex = sort
+        achievementContainer.add(dropdown, constraint)
+
+        dropdown.addActionListener {
+            when(dropdown.selectedIndex) {
+                0 -> orderByDefault()
+                1 -> orderByAlphabet(true)
+                2 -> orderByAlphabet(false)
+                3 -> orderByCompletionRate(true)
+                4 -> orderByCompletionRate(false)
+            }
+        }
+
+        constraint.gridy++
+        constraint.anchor = GridBagConstraints.CENTER
+        constraint.insets = JBUI.insets(3, 0)
         constraint.fill = GridBagConstraints.HORIZONTAL
         constraint.weightx = 1.0
 
-        val stateAchievements = ProjectStatePersistence.getInstance(project).state.achievementList
-
-        // Create achievement cards
-        for (achievement in ProjectAchievementList.values()) {
-            val achievementCard: JPanel = AchievementUI.createAchievementCard(
-                achievement.ordinal,
-                achievement.iconUrl,
-                achievement.title,
-                achievement.description,
-                achievement.total,
-                achievement.userExp,
-                stateAchievements.first{ achievement.ordinal == it.id }.currentExp)
-
-            achievementContainer.add(achievementCard, constraint)
-            constraint.gridy ++
+        for(achievement in achievements){
+            achievementContainer.add(achievement.card, constraint)
+            constraint.gridy++
         }
+
         constraint.weighty = 1.0
         achievementContainer.add(JLabel(), constraint)
 
         val scrollPane = JBScrollPane(achievementContainer)
-        //toolWindowPanel.setContent(scrollPane)
-        toolWindowPanel.add(tabbedPane)
+        scrollPane.border = null
 
-        tabbedPane.addTab("Project", achievementContainer)
-        tabbedPane.addTab("Global", JLabel("Oh you touch my tralala"))
+        return scrollPane
+    }
+
+    private fun createAllAchievementsTab(): Component {
+        val toolWindowPanel = SimpleToolWindowPanel(true, true)
+
+        val projectStateAchievements = ProjectStatePersistence.getInstance(project).state.achievementList
+        val applicationStateAchievements = ApplicationStatePersistence.getInstance().state.globalAchievements
+
+        for(achievement in ApplicationAchievementList.values()){
+            globalAchievementCards.add(
+                AchievementCard(
+                    achievement.ordinal,
+                    achievement.iconUrl,
+                    achievement.title,
+                    achievement.description,
+                    achievement.total,
+                    achievement.userExp,
+                    applicationStateAchievements.first { achievement.ordinal == it.id }.currentExp
+                )
+            )
+        }
+
+        for(achievement in ProjectAchievementList.values()){
+            projectAchievementCards.add(
+                AchievementCard(
+                    achievement.ordinal,
+                    achievement.iconUrl,
+                    achievement.title,
+                    achievement.description,
+                    achievement.total,
+                    achievement.userExp,
+                    projectStateAchievements.first { achievement.ordinal == it.id }.currentExp
+                )
+            )
+        }
+
+        achievementPane = JBTabbedPane()
+
+        achievementPane.addTab("Global", createAchievementsTab(globalAchievementCards, 0))
+        achievementPane.addTab("Project", createAchievementsTab(projectAchievementCards, 0))
+
+        toolWindowPanel.add(achievementPane)
 
         return toolWindowPanel
     }
@@ -312,8 +255,65 @@ class UserInterface(private val project: Project) {
         //mainUI.addTab("Achievements", createAchievementsTab())
 
         mainUI.addTab("Profile", createProfileTab())
-        mainUI.addTab("Achievements", createProvaTab())
+        mainUI.addTab("Achievements", createAllAchievementsTab())
         mainUI.addTab("Dev Tools", createDevTab())
     }
 
+    private fun orderByDefault(){
+        projectAchievementCards.sortBy{ it.id }
+        globalAchievementCards.sortBy{ it.id }
+
+        val projectPane = createAchievementsTab(projectAchievementCards, 0)
+        val applicationPane = createAchievementsTab(globalAchievementCards, 0)
+
+        achievementPane.setComponentAt(0, applicationPane)
+        achievementPane.setComponentAt(1, projectPane)
+    }
+
+    private fun orderByAlphabet(asc: Boolean){
+        when(asc){
+            true -> {
+                projectAchievementCards.sortBy{ it.titleLabel.text }
+                globalAchievementCards.sortBy{ it.titleLabel.text }
+            }
+            false -> {
+                projectAchievementCards.sortByDescending{ it.titleLabel.text }
+                globalAchievementCards.sortByDescending{ it.titleLabel.text }
+            }
+        }
+
+        val selected = if (asc) 1 else 2
+
+        val projectPane = createAchievementsTab(projectAchievementCards, selected)
+        val applicationPane = createAchievementsTab(globalAchievementCards, selected)
+
+        achievementPane.setComponentAt(0, applicationPane)
+        achievementPane.setComponentAt(1, projectPane)
+    }
+
+    private fun orderByCompletionRate(asc: Boolean){
+        when(asc){
+            true -> {
+                projectAchievementCards.sortBy{ it.progressBar.value.toFloat() / it.progressBar.maximum }
+                globalAchievementCards.sortBy{ it.progressBar.value.toFloat() / it.progressBar.maximum }
+            }
+            false -> {
+                projectAchievementCards.sortByDescending{ it.progressBar.value.toFloat() / it.progressBar.maximum }
+                globalAchievementCards.sortByDescending{ it.progressBar.value.toFloat() / it.progressBar.maximum }
+            }
+        }
+
+        val selected = if (asc) 3 else 4
+
+        val projectPane = createAchievementsTab(projectAchievementCards, selected)
+        val applicationPane = createAchievementsTab(globalAchievementCards, selected)
+
+        achievementPane.setComponentAt(0, applicationPane)
+        achievementPane.setComponentAt(1, projectPane)
+    }
+
+    companion object {
+        var projectAchievementCards = mutableListOf<AchievementCard>()
+        var globalAchievementCards = mutableListOf<AchievementCard>()
+    }
 }

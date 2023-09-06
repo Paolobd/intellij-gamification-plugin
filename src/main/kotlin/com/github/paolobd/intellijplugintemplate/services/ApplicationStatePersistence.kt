@@ -9,7 +9,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 import org.jetbrains.annotations.NotNull
 import javax.annotation.Nullable
 
-@State(name = "ApplicationState", storages = [Storage("GamificationGUIApplicationState")])
+@State(name = "ApplicationState", storages = [Storage("GamificationGUIApplicationState.xml")])
 class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
 
     private var myApplicationState = ApplicationState()
