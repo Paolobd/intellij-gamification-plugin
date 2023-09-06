@@ -8,44 +8,44 @@ enum class ApplicationAchievementList (
     val userExp: Int
 ) {
     NUM_CLICKS(
-        "Number of clicks",
-        "Number of button clicks you've made in total",
-        "/userInterface/click.svg",
-        10,
-        20
+        "Night Owl",
+        "Execute a test between 11 p.m and 3 a.m",
+        "/userInterface/global/owl.svg",
+        1,
+        100
     ),
     NUM_SITES(
-        "Number of sites",
-        "Number of sites you've visited",
-        "/userInterface/sites.svg",
+        "Slow Testing",
+        "A test took more than 1 minute",
+        "/userInterface/global/slow.svg",
         5,
         20
     ),
     NUM_LOCATOR_ALL(
-        "Elements found using locators",
-        "Number of WebElements found",
-        "/userInterface/GoldTrophy.png",
+        "Fast Testing",
+        "A test took more than 1 second",
+        "/userInterface/global/fast.svg",
         200,
         30
     ),
     NUM_LOCATOR_ID(
-        "Elements found by Id",
-        "Number of WebElements found using an id",
-        "/userInterface/SilverTrophy.png",
+        "High Success!",
+        "Number of tests passed",
+        "/userInterface/global/success.svg",
         100,
         30
     ),
     NUM_LOCATOR_XPATH(
-        "Elements found by Xpath",
-        "Number of WebElements found using xpath",
-        "/userInterface/SilverTrophy.png",
+        "Failure",
+        "Number of tests failed",
+        "/userInterface/global/failed.svg",
         100,
         30
     ),
     NUM_LOCATOR_CSS(
-        "Elements found by CSS",
-        "Number of WebElements found using css",
-        "/userInterface/SilverTrophy.png",
+        "More Testing!",
+        "Executed a suite with more than 10 test",
+        "/userInterface/global/test.svg",
         100,
         30
     ),

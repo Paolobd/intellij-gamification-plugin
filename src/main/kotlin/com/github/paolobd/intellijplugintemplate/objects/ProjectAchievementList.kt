@@ -8,44 +8,44 @@ enum class ProjectAchievementList(
     val userExp: Int
 ) {
     NUM_CLICKS(
-        "Number of clicks",
-        "Number of button clicks you've made in this project",
-        "/userInterface/click.svg",
+        "Button Masher",
+        "Number of clicks made in this project",
+        "/userInterface/project/click.svg",
         10,
         20
     ),
     NUM_SITES(
-        "Number of sites",
-        "Number of sites you've visited in this project",
-        "/userInterface/sites.svg",
+        "Web Surfer",
+        "Number of sites visited in this project",
+        "/userInterface/project/site.svg",
         5,
         20
     ),
     NUM_LOCATOR_ALL(
-        "Elements found using locators",
-        "Number of WebElements found",
-        "/userInterface/GoldTrophy.png",
+        "Gotta find 'em all!",
+        "Total of WebElements found",
+        "/userInterface/project/locator.svg",
         200,
         30
     ),
     NUM_LOCATOR_ID(
-        "Elements found by Id",
-        "Number of WebElements found using an id",
-        "/userInterface/SilverTrophy.png",
+        "ID Expert",
+        "Different WebElements found using id",
+        "/userInterface/project/id.svg",
         100,
         30
     ),
     NUM_LOCATOR_XPATH(
-        "Elements found by Xpath",
-        "Number of WebElements found using xpath",
-        "/userInterface/SilverTrophy.png",
+        "XPATH Expert",
+        "Different WebElements found using xpath",
+        "/userInterface/project/xpath.svg",
         100,
         30
     ),
     NUM_LOCATOR_CSS(
-        "Elements found by CSS",
-        "Number of WebElements found using css",
-        "/userInterface/SilverTrophy.png",
+        "CSS Expert",
+        "Different WebElements found using css",
+        "/userInterface/project/css.svg",
         100,
         30
     ),

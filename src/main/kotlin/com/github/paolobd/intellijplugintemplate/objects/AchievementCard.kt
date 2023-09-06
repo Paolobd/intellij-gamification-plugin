@@ -56,7 +56,7 @@ class AchievementCard(
         progressLabel.alignmentX = JLabel.CENTER_ALIGNMENT
 
         // Bottom right panel for XP value
-        xpLabel = JLabel("Gives $userExp")
+        xpLabel = JLabel("Gives $userExp xp")
         xpLabel.font = Font(xpLabel.font.name, Font.ITALIC, 10)
         xpLabel.alignmentX = Component.CENTER_ALIGNMENT
 

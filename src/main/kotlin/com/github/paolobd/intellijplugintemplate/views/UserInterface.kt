@@ -143,46 +143,32 @@ class UserInterface(private val project: Project) {
 
     private fun createProfileTab(): Component {
         val toolWindowPanel = SimpleToolWindowPanel(true, true)
-
         val wrapperPanel = JPanel(GridBagLayout())
 
         val leftPanel = JPanel(BorderLayout())
 
-        // Placeholder for profile picture (a circular panel)
-        /*val profilePicturePanel: JPanel = object : JPanel() {
-            override fun paintComponent(g: Graphics) {
-                super.paintComponent(g)
-                g.color = JBColor.BLUE // Placeholder color
-                g.fillOval(0, 0, width, height)
-            }
-        }
-        profilePicturePanel.preferredSize = Dimension(150, 150)*/
-
         val profilePicturePanel = JLabel(IconLoader.getIcon("/userInterface/user.svg", javaClass))
-        //profilePicturePanel.preferredSize = Dimension(100, 100)
+        profilePicturePanel.alignmentX = Component.CENTER_ALIGNMENT
+        profilePicturePanel.alignmentY = Component.CENTER_ALIGNMENT
 
-
-        val changePictureButton = JButton("Change Picture")
         leftPanel.add(profilePicturePanel, BorderLayout.CENTER)
-        leftPanel.add(changePictureButton, BorderLayout.SOUTH)
 
         // Right Panel for User Information
         val rightPanel = JPanel(GridBagLayout())
 
-        val gbc = GridBagConstraints()
-        gbc.gridx = 0
+        var gbc = GridBagConstraints()
         gbc.gridy = 0
-        gbc.gridwidth = 1
+        gbc.anchor = GridBagConstraints.WEST
         gbc.fill = GridBagConstraints.HORIZONTAL
         gbc.insets = JBUI.insets(5)
 
-        val usernameLabel = JTextField("Paolobd")
-        usernameLabel.font = Font(usernameLabel.font.name, Font.BOLD, 14)
+        val usernameLabel = JLabel("Paolobd")
+        usernameLabel.font = Font(usernameLabel.font.name, Font.BOLD, 16)
         rightPanel.add(usernameLabel, gbc)
 
         gbc.gridy++
         val userTitleLabel = JLabel("Always asleep")
-        userTitleLabel.font = Font(userTitleLabel.font.name, Font.PLAIN, 12)
+        userTitleLabel.font = Font(userTitleLabel.font.name, Font.PLAIN, 14)
         rightPanel.add(userTitleLabel, gbc)
 
         gbc.gridy++
@@ -190,61 +176,93 @@ class UserInterface(private val project: Project) {
         val progressBar = JProgressBar(0, 100)
         progressBar.value = 75 // Placeholder progress value
 
-        val levelNumberLabel = JLabel("Level 5") // Placeholder level number
+        val levelNumberLabel = JLabel("1") // Placeholder level number
+        levelNumberLabel.border = BorderFactory.createEmptyBorder(0, 10, 0, 0)
 
-        levelPanel.add(progressBar, BorderLayout.NORTH)
-        levelPanel.add(levelNumberLabel, BorderLayout.SOUTH)
+        val levelExp = JLabel("Exp: 75 / 100")
+        levelExp.alignmentX = Component.CENTER_ALIGNMENT
+
+        levelPanel.add(progressBar, BorderLayout.WEST)
+        levelPanel.add(levelNumberLabel, BorderLayout.EAST)
+        levelPanel.add(levelExp, BorderLayout.SOUTH)
         rightPanel.add(levelPanel, gbc)
 
         // Achievement Squares Panel
+        val showcasePanel = JPanel() // 1 row, 5 columns
+        showcasePanel.layout = BoxLayout(showcasePanel, BoxLayout.Y_AXIS)
+        val showcaseLabel = JLabel("Showcase")
+        showcaseLabel.font = Font(showcaseLabel.font.name, Font.PLAIN, 14)
+        showcaseLabel.alignmentX = Component.CENTER_ALIGNMENT
+        showcaseLabel.border = BorderFactory.createEmptyBorder(0, 0, 10, 0)
 
-        // Achievement Squares Panel
-        val achievementPanel = JPanel() // 1 row, 5 columns
+        val achievementPanel = JPanel()
         achievementPanel.layout = BoxLayout(achievementPanel, BoxLayout.X_AXIS)
-
         achievementPanel.add(Box.createHorizontalGlue())
 
         // Create achievement squares (placeholders)
         for (i in 1..5) {
-
             val achievement = JPanel()
             achievement.border = BorderFactory.createEtchedBorder()
             val icon = JLabel(IconLoader.getIcon("/userInterface/GoldTrophy.svg", javaClass))
             achievement.add(icon)
-
             achievementPanel.add(achievement)
             achievementPanel.add(Box.createHorizontalGlue())
-
-            /*val achievementSquare = JPanel(BorderLayout())
-            achievementSquare.border = BorderFactory.createLineBorder(JBColor.BLACK)
-            val achievementIconLabel = JLabel("Achievement $i", SwingConstants.CENTER)
-            achievementIconLabel.foreground = JBColor.BLUE // Placeholder color
-            achievementSquare.add(achievementIconLabel, BorderLayout.CENTER)
-            val achievementNameLabel = JLabel("Achievement Name $i", SwingConstants.CENTER)
-            achievementSquare.add(achievementNameLabel, BorderLayout.SOUTH)
-            achievementPanel.add(achievementSquare)*/
         }
 
+        showcasePanel.add(showcaseLabel)
+        showcasePanel.add(achievementPanel)
+
+        val dailyPanel = JPanel()
+        dailyPanel.layout = BoxLayout(dailyPanel, BoxLayout.Y_AXIS)
+        val dailyLabel = JLabel("Daily Task")
+        dailyLabel.font = Font(dailyLabel.font.name, Font.PLAIN, 14)
+        dailyLabel.alignmentX = Component.CENTER_ALIGNMENT
+        dailyLabel.border = BorderFactory.createEmptyBorder(20, 0, 10, 0)
+        val ach = ApplicationAchievementList.NUM_CLICKS
+        val dailyAchievement = AchievementCard(
+            ach.ordinal,
+            ach.iconUrl,
+            ach.title,
+            ach.description,
+            ach.total,
+            ach.userExp,
+            0
+        )
+
+        dailyPanel.add(dailyLabel)
+        dailyPanel.add(dailyAchievement.card)
+
         // Add leftPanel and rightPanel to the main panel
-        val mainPanel = JPanel(BorderLayout())
-        mainPanel.add(leftPanel, BorderLayout.WEST)
-        mainPanel.add(rightPanel, BorderLayout.CENTER)
+        val mainPanel = JPanel()
+        mainPanel.layout = BoxLayout(mainPanel, BoxLayout.X_AXIS)
+        mainPanel.add(leftPanel)
+        mainPanel.add(rightPanel)
 
-        val gbc2 = GridBagConstraints()
-        gbc2.gridwidth = 1
-        gbc2.gridx = 0
-        gbc2.fill = GridBagConstraints.HORIZONTAL
-        gbc2.gridy = 0
-        gbc2.weightx = 1.0
+        gbc = GridBagConstraints()
+        gbc.anchor = GridBagConstraints.EAST
+        gbc.gridy = 0
 
-        wrapperPanel.add(mainPanel, gbc2)
-        gbc2.gridy = 1
-        wrapperPanel.add(achievementPanel, gbc2)
-        gbc2.gridy = 2
-        gbc2.weighty = 1.0
-        wrapperPanel.add(JLabel(), gbc2)
+        val editIcon = JLabel(IconLoader.getIcon("/userInterface/edit.svg", javaClass))
+        wrapperPanel.add(editIcon, gbc)
 
+        gbc.anchor = GridBagConstraints.CENTER
+        gbc.fill = GridBagConstraints.HORIZONTAL
+        gbc.gridy ++
+        gbc.weightx = 1.0
+        wrapperPanel.add(mainPanel, gbc)
 
+        gbc.gridy ++
+        wrapperPanel.add(Box.createVerticalStrut(20), gbc)
+
+        gbc.gridy ++
+        wrapperPanel.add(showcasePanel, gbc)
+
+        gbc.gridy ++
+        wrapperPanel.add(dailyPanel, gbc)
+
+        gbc.gridy ++
+        gbc.weighty = 1.0
+        wrapperPanel.add(JLabel(), gbc)
 
         toolWindowPanel.add(wrapperPanel)
 
@@ -256,7 +274,7 @@ class UserInterface(private val project: Project) {
 
         mainUI.addTab("Profile", createProfileTab())
         mainUI.addTab("Achievements", createAllAchievementsTab())
-        mainUI.addTab("Dev Tools", createDevTab())
+        //mainUI.addTab("Dev Tools", createDevTab())
     }
 
     private fun orderByDefault(){
