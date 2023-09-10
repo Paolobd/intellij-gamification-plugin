@@ -27,12 +27,14 @@ repositories {
     mavenCentral()
 }
 
+val ktorVersion: String by project
+
 dependencies {
     implementation("org.seleniumhq.selenium:selenium-java:4.12.0")
     implementation("com.codeborne:selenide:6.17.2")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
-    implementation("com.fasterxml.jackson.core:jackson-core:2.15.2")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:2.15.2")
+    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
 }
 
 // Set the JVM language level used to build the project. Use Java 11 for 2020.3+, and Java 17 for 2022.2+.

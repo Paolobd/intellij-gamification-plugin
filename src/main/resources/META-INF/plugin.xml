@@ -22,7 +22,9 @@
         
         <notificationGroup id="Achievement Notification Group"
                            displayType="BALLOON"/>
-        
+
+        <postStartupActivity implementation="com.github.paolobd.intellijplugintemplate.services.MyStartUpActivity" />
+
         <projectService serviceImplementation="com.github.paolobd.intellijplugintemplate.services.ProjectStatePersistence"/>
 
         <applicationService serviceImplementation="com.github.paolobd.intellijplugintemplate.services.ApplicationStatePersistence"/>

@@ -4,13 +4,13 @@ import com.github.paolobd.intellijplugintemplate.library.Event
 
 // Var variables or cannot be serialized
 data class ProjectState(
-    /*var achievementList: List<Achievement> = AchievementValues.values().map{
-        Achievement(it.achievementName, it.achievementDescription, it.iconName, it.maxExp)
+    /*var achievementList: List<AchievementState> = AchievementValues.values().map{
+        AchievementState(it.achievementName, it.achievementDescription, it.iconName, it.maxExp)
     }.toList()*/
     //var achievementList: MutableMap<Int, Int> = AchievementList.values().map { it.ordinal }.associateWith { 0 }.toMutableMap()
 
-    var achievementList: List<Achievement> = ProjectAchievementList.values().map{
-        Achievement(it.ordinal, 0, false)
+    var achievementList: List<AchievementState> = ProjectAchievement.values().map{
+        AchievementState(it.ordinal, 0, false)
     },
     var eventList: MutableList<Event> = mutableListOf()
 )
@@ -18,7 +18,7 @@ data class ProjectState(
 // Leave default values or can't be serialized
 //Not used anymore because we save just the achievement id and current exp. Maybe used in the future to have a
 //more complex value (e.g. currentexp, unlocked true false)
-data class Achievement(
+data class AchievementState(
     /*var achievementName: String = "",
     var achievementDescription: String = "",
     var iconName: String = "",

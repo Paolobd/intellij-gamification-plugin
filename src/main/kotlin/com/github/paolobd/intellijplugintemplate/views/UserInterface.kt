@@ -11,13 +11,19 @@ import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.util.ui.JBUI
 import java.awt.*
-import java.awt.event.ActionListener
 import javax.swing.*
 
 
 class UserInterface(private val project: Project) {
     private var mainUI: JBTabbedPane = JBTabbedPane()
     private var achievementPane = JBTabbedPane()
+
+    init {
+        //mainUI.addTab("Achievements", createAchievementsTab())
+        mainUI.addTab("Profile", userTab.toolWindow)
+        mainUI.addTab("Achievements", createAllAchievementsTab())
+        //mainUI.addTab("Dev Tools", createDevTab())
+    }
 
     fun getContent(): JBTabbedPane {
         return mainUI
@@ -68,7 +74,7 @@ class UserInterface(private val project: Project) {
         achievementContainer.add(dropdown, constraint)
 
         dropdown.addActionListener {
-            when(dropdown.selectedIndex) {
+            when (dropdown.selectedIndex) {
                 0 -> orderByDefault()
                 1 -> orderByAlphabet(true)
                 2 -> orderByAlphabet(false)
@@ -83,7 +89,7 @@ class UserInterface(private val project: Project) {
         constraint.fill = GridBagConstraints.HORIZONTAL
         constraint.weightx = 1.0
 
-        for(achievement in achievements){
+        for (achievement in achievements) {
             achievementContainer.add(achievement.card, constraint)
             constraint.gridy++
         }
@@ -103,30 +109,32 @@ class UserInterface(private val project: Project) {
         val projectStateAchievements = ProjectStatePersistence.getInstance(project).state.achievementList
         val applicationStateAchievements = ApplicationStatePersistence.getInstance().state.globalAchievements
 
-        for(achievement in ApplicationAchievementList.values()){
+        for (achievementEnum in GlobalAchievement.values()) {
+            val achievement = achievementEnum.achievement
             globalAchievementCards.add(
                 AchievementCard(
-                    achievement.ordinal,
-                    achievement.iconUrl,
-                    achievement.title,
+                    achievementEnum.ordinal,
+                    achievement.iconPath,
+                    achievement.name,
                     achievement.description,
-                    achievement.total,
-                    achievement.userExp,
-                    applicationStateAchievements.first { achievement.ordinal == it.id }.currentExp
+                    achievement.milestone,
+                    achievement.userExperience,
+                    projectStateAchievements.first { achievementEnum.ordinal == it.id }.currentExp
                 )
             )
         }
 
-        for(achievement in ProjectAchievementList.values()){
+        for (achievementEnum in ProjectAchievement.values()) {
+            val achievement = achievementEnum.achievement
             projectAchievementCards.add(
                 AchievementCard(
-                    achievement.ordinal,
-                    achievement.iconUrl,
-                    achievement.title,
+                    achievementEnum.ordinal,
+                    achievement.iconPath,
+                    achievement.name,
                     achievement.description,
-                    achievement.total,
-                    achievement.userExp,
-                    projectStateAchievements.first { achievement.ordinal == it.id }.currentExp
+                    achievement.milestone,
+                    achievement.userExperience,
+                    applicationStateAchievements.first { achievementEnum.ordinal == it.id }.currentExp
                 )
             )
         }
@@ -147,7 +155,7 @@ class UserInterface(private val project: Project) {
 
         val leftPanel = JPanel(BorderLayout())
 
-        val profilePicturePanel = JLabel(IconLoader.getIcon("/userInterface/user.svg", javaClass))
+        val profilePicturePanel = JLabel(IconLoader.getIcon("/userInterface/user/user.svg", javaClass))
         profilePicturePanel.alignmentX = Component.CENTER_ALIGNMENT
         profilePicturePanel.alignmentY = Component.CENTER_ALIGNMENT
 
@@ -177,7 +185,7 @@ class UserInterface(private val project: Project) {
         progressBar.value = 75 // Placeholder progress value
 
         val levelNumberLabel = JLabel("1") // Placeholder level number
-        levelNumberLabel.border = BorderFactory.createEmptyBorder(0, 10, 0, 0)
+            levelNumberLabel.border = BorderFactory.createEmptyBorder(0, 10, 0, 0)
 
         val levelExp = JLabel("Exp: 75 / 100")
         levelExp.alignmentX = Component.CENTER_ALIGNMENT
@@ -218,15 +226,10 @@ class UserInterface(private val project: Project) {
         dailyLabel.font = Font(dailyLabel.font.name, Font.PLAIN, 14)
         dailyLabel.alignmentX = Component.CENTER_ALIGNMENT
         dailyLabel.border = BorderFactory.createEmptyBorder(20, 0, 10, 0)
-        val ach = ApplicationAchievementList.NUM_CLICKS
+        val achEnum = GlobalAchievement.NUM_CLICKS
+        val ach = achEnum.achievement
         val dailyAchievement = AchievementCard(
-            ach.ordinal,
-            ach.iconUrl,
-            ach.title,
-            ach.description,
-            ach.total,
-            ach.userExp,
-            0
+            achEnum.ordinal, ach.iconPath, ach.name, ach.description, ach.milestone, ach.userExperience, 0
         )
 
         dailyPanel.add(dailyLabel)
@@ -242,25 +245,30 @@ class UserInterface(private val project: Project) {
         gbc.anchor = GridBagConstraints.EAST
         gbc.gridy = 0
 
-        val editIcon = JLabel(IconLoader.getIcon("/userInterface/edit.svg", javaClass))
+        val editIcon = JButton(IconLoader.getIcon("/userInterface/edit.svg", javaClass))
+
+        editIcon.addActionListener {
+            EditUserDialog().show()
+        }
+
         wrapperPanel.add(editIcon, gbc)
 
         gbc.anchor = GridBagConstraints.CENTER
         gbc.fill = GridBagConstraints.HORIZONTAL
-        gbc.gridy ++
+        gbc.gridy++
         gbc.weightx = 1.0
         wrapperPanel.add(mainPanel, gbc)
 
-        gbc.gridy ++
+        gbc.gridy++
         wrapperPanel.add(Box.createVerticalStrut(20), gbc)
 
-        gbc.gridy ++
+        gbc.gridy++
         wrapperPanel.add(showcasePanel, gbc)
 
-        gbc.gridy ++
+        gbc.gridy++
         wrapperPanel.add(dailyPanel, gbc)
 
-        gbc.gridy ++
+        gbc.gridy++
         gbc.weighty = 1.0
         wrapperPanel.add(JLabel(), gbc)
 
@@ -269,17 +277,9 @@ class UserInterface(private val project: Project) {
         return toolWindowPanel
     }
 
-    init {
-        //mainUI.addTab("Achievements", createAchievementsTab())
-
-        mainUI.addTab("Profile", createProfileTab())
-        mainUI.addTab("Achievements", createAllAchievementsTab())
-        //mainUI.addTab("Dev Tools", createDevTab())
-    }
-
-    private fun orderByDefault(){
-        projectAchievementCards.sortBy{ it.id }
-        globalAchievementCards.sortBy{ it.id }
+    private fun orderByDefault() {
+        projectAchievementCards.sortBy { it.id }
+        globalAchievementCards.sortBy { it.id }
 
         val projectPane = createAchievementsTab(projectAchievementCards, 0)
         val applicationPane = createAchievementsTab(globalAchievementCards, 0)
@@ -288,15 +288,16 @@ class UserInterface(private val project: Project) {
         achievementPane.setComponentAt(1, projectPane)
     }
 
-    private fun orderByAlphabet(asc: Boolean){
-        when(asc){
+    private fun orderByAlphabet(asc: Boolean) {
+        when (asc) {
             true -> {
-                projectAchievementCards.sortBy{ it.titleLabel.text }
-                globalAchievementCards.sortBy{ it.titleLabel.text }
+                projectAchievementCards.sortBy { it.titleLabel.text }
+                globalAchievementCards.sortBy { it.titleLabel.text }
             }
+
             false -> {
-                projectAchievementCards.sortByDescending{ it.titleLabel.text }
-                globalAchievementCards.sortByDescending{ it.titleLabel.text }
+                projectAchievementCards.sortByDescending { it.titleLabel.text }
+                globalAchievementCards.sortByDescending { it.titleLabel.text }
             }
         }
 
@@ -309,15 +310,16 @@ class UserInterface(private val project: Project) {
         achievementPane.setComponentAt(1, projectPane)
     }
 
-    private fun orderByCompletionRate(asc: Boolean){
-        when(asc){
+    private fun orderByCompletionRate(asc: Boolean) {
+        when (asc) {
             true -> {
-                projectAchievementCards.sortBy{ it.progressBar.value.toFloat() / it.progressBar.maximum }
-                globalAchievementCards.sortBy{ it.progressBar.value.toFloat() / it.progressBar.maximum }
+                projectAchievementCards.sortBy { it.progressBar.value.toFloat() / it.progressBar.maximum }
+                globalAchievementCards.sortBy { it.progressBar.value.toFloat() / it.progressBar.maximum }
             }
+
             false -> {
-                projectAchievementCards.sortByDescending{ it.progressBar.value.toFloat() / it.progressBar.maximum }
-                globalAchievementCards.sortByDescending{ it.progressBar.value.toFloat() / it.progressBar.maximum }
+                projectAchievementCards.sortByDescending { it.progressBar.value.toFloat() / it.progressBar.maximum }
+                globalAchievementCards.sortByDescending { it.progressBar.value.toFloat() / it.progressBar.maximum }
             }
         }
 
@@ -333,5 +335,6 @@ class UserInterface(private val project: Project) {
     companion object {
         var projectAchievementCards = mutableListOf<AchievementCard>()
         var globalAchievementCards = mutableListOf<AchievementCard>()
+        var userTab = UserTab()
     }
 }
