@@ -31,7 +31,7 @@ val ktorVersion: String by project
 
 dependencies {
     implementation("org.seleniumhq.selenium:selenium-java:4.12.0")
-    implementation("com.codeborne:selenide:6.17.2")
+    implementation("com.codeborne:selenide:6.18.0")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
