@@ -7,5 +7,5 @@ data class UserState (
     var titleId: Int = 0,
     var level: Int = 1,
     var experience: Int = 0,
-    var showcase: List<Int> = listOf(0, 0, 0, 0, 0)
+    var showcase: List<Int> = listOf(-1, -1, -1, -1, -1)
 )

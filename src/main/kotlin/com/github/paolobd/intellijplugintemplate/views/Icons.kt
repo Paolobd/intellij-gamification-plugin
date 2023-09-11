@@ -25,6 +25,10 @@ class Icons {
         return loadIcon("/userInterface/edit.svg")
     }
 
+    fun loadEmptyIcon(): Icon {
+        return loadIcon("/userInterface/empty.svg")
+    }
+
     private fun loadIcon(path: String): Icon {
         return IconLoader.getIcon(path, javaClass)
     }

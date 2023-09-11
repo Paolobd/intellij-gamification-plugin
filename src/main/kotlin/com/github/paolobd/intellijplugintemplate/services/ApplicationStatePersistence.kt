@@ -31,6 +31,15 @@ class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
         UserInterface.userTab.updateUserInfo()
     }
 
+    fun changeShowcase(showcase: List<Int>){
+        myApplicationState.userState.showcase = showcase
+        UserInterface.userTab.updateUserShowcase()
+    }
+
+    fun resetState(){
+        myApplicationState = ApplicationState()
+    }
+
     companion object {
         @JvmStatic
         fun getInstance(): ApplicationStatePersistence =

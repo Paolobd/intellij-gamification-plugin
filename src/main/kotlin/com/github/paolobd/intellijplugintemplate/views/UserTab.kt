@@ -92,13 +92,20 @@ class UserTab {
             val achievement = JPanel()
             achievement.border = BorderFactory.createEtchedBorder()
             val iconId = userState.showcase[i]
-            val achEnum = GlobalAchievement.values()[iconId]
-            val icon = JLabel(Icons().loadGlobalAchIcon(achEnum.achievement.iconPath))
-            achievement.add(icon)
+
+            val icon = if (iconId >= 0) {
+                val achEnum = GlobalAchievement.values()[iconId]
+                Icons().loadGlobalAchIcon(achEnum.achievement.iconPath)
+            } else {
+                Icons().loadEmptyIcon()
+            }
+
+            val iconLabel = JLabel(icon)
+            achievement.add(iconLabel)
             achievementPanel.add(achievement)
             achievementPanel.add(Box.createHorizontalGlue())
 
-            showcaseIcons.add(icon)
+            showcaseIcons.add(iconLabel)
         }
 
         showcasePanel.add(showcaseLabel)
@@ -114,7 +121,13 @@ class UserTab {
         val achEnum = GlobalAchievement.NUM_CLICKS
         val ach = achEnum.achievement
         val dailyAchievement = AchievementCard(
-            achEnum.ordinal, Icons().loadGlobalAchIcon(ach.iconPath), ach.name, ach.description, ach.milestone, ach.userExperience, 0
+            achEnum.ordinal,
+            Icons().loadGlobalAchIcon(ach.iconPath),
+            ach.name,
+            ach.description,
+            ach.milestone,
+            ach.userExperience,
+            0
         )
 
         dailyPanel.add(dailyLabel)
@@ -193,9 +206,14 @@ class UserTab {
 
         for (i in 0..4) {
             val iconId = showcase[i]
-            val iconEnum = GlobalAchievement.values()[iconId]
 
-            showcaseIcons[i].icon = Icons().loadGlobalAchIcon(iconEnum.achievement.iconPath)
+            if (iconId >= 0) {
+                val iconEnum = GlobalAchievement.values()[iconId]
+
+                showcaseIcons[i].icon = Icons().loadGlobalAchIcon(iconEnum.achievement.iconPath)
+            } else {
+                showcaseIcons[i].icon = Icons().loadEmptyIcon()
+            }
         }
     }
 }

@@ -26,8 +26,7 @@ class EditUserDialog : DialogWrapper(true) {
     override fun createCenterPanel(): JComponent {
         val userState = ApplicationStatePersistence.getInstance().state.userState
 
-        val panel = JPanel()
-        panel.layout = GridBagLayout()
+        val panel = JPanel(GridBagLayout())
         val gbc = GridBagConstraints()
         gbc.gridy = 0
 
