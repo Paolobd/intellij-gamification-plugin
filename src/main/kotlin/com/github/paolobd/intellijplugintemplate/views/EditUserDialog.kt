@@ -15,6 +15,7 @@ class EditUserDialog : DialogWrapper(true) {
     private var titleId = 0
     private var selectedUserIcon = JButton()
     private var iconId = 0
+    private var errorCaption = JLabel()
 
     init {
         title = "Edit User"
@@ -30,11 +31,26 @@ class EditUserDialog : DialogWrapper(true) {
         val gbc = GridBagConstraints()
         gbc.gridy = 0
 
+        //Insert name row
         val nameTitlePanel = JPanel(GridLayout(2, 2))
+        val insertNameLabel = JLabel("Name:")
+        insertNameLabel.font = Font(insertNameLabel.font.name, Font.PLAIN, 16)
         nameLabel = JTextField(20)
         nameLabel.text = userState.name
-        nameTitlePanel.add(JLabel("Insert name"))
-        nameTitlePanel.add(nameLabel)
+        errorCaption = JLabel("Max 20 char")
+        errorCaption.font = Font(errorCaption.font.name, Font.PLAIN, 10)
+        errorCaption.border = BorderFactory.createEmptyBorder(0,5,0,0)
+
+        val fieldPanel = JPanel(BorderLayout())
+        fieldPanel.add(nameLabel, BorderLayout.NORTH)
+        fieldPanel.add(errorCaption, BorderLayout.SOUTH)
+
+        nameTitlePanel.add(insertNameLabel)
+        nameTitlePanel.add(fieldPanel)
+
+        //Select title row
+        val selectTileLabel = JLabel("Title:")
+        selectTileLabel.font = Font(selectTileLabel.font.name, Font.PLAIN, 16)
 
         val titles = TitleDataProvider().titles.map {
             if (it.level > userState.level)
@@ -57,54 +73,67 @@ class EditUserDialog : DialogWrapper(true) {
             }
         }
 
-        nameTitlePanel.add(JLabel("Select tile"))
+        nameTitlePanel.add(selectTileLabel)
         nameTitlePanel.add(dropdown)
 
         panel.add(nameTitlePanel, gbc)
 
+        //User Icon label
+        val allIconsLabel = JLabel("Choose icon")
+        allIconsLabel.font = Font(allIconsLabel.font.name, Font.PLAIN, 16)
+        allIconsLabel.border = BorderFactory.createEmptyBorder(10, 0, 10, 0)
         gbc.gridy++
+        panel.add(allIconsLabel, gbc)
 
-        val iconLabel = JLabel("Choose icon")
-        iconLabel.font = Font(iconLabel.font.name, Font.PLAIN, 16)
-        iconLabel.border = BorderFactory.createEmptyBorder(10, 0, 10, 0)
-        panel.add(iconLabel, gbc)
-
-        val iconPanel = JPanel(GridLayout(0, 5))
+        //User Icon grid
+        val allIconsPanel = JPanel(GridLayout(0, 5))
         iconId = userState.iconId
 
         for ((index, userIcon) in UserIconDataProvider().icons.withIndex()) {
+            val iconPanel = JPanel()
+            iconPanel.layout = BorderLayout()
+
             val icon = Icons().loadUserMiniatureIcon(userIcon.fileName)
-            val button = JButton(icon)
+            val iconButton = JButton(icon)
+            val iconLabel = JLabel()
+            iconLabel.font = Font(iconLabel.font.name, Font.PLAIN, 10)
+            iconLabel.horizontalAlignment = SwingConstants.CENTER
+
             val emptyBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5)
             val lineBorder = BorderFactory.createLineBorder(JBColor.BLACK, 2)
-            val compoundBorder = BorderFactory.createCompoundBorder(emptyBorder, lineBorder)
+            val bevelBorder = BorderFactory.createRaisedBevelBorder()
+            val selectedBorder = BorderFactory.createCompoundBorder(emptyBorder, lineBorder)
+            val unavailableBorder = BorderFactory.createCompoundBorder(emptyBorder, bevelBorder)
 
             if (userIcon.level > userState.level) {
-                button.toolTipText = "Unlocked at level ${userIcon.level}"
-            }
-
-            if (index == iconId) {
-                button.border = compoundBorder
-                selectedUserIcon = button
+                iconButton.border = unavailableBorder
+                iconLabel.text = "Level ${userIcon.level}"
             } else {
-                button.border = emptyBorder
-            }
-
-            button.addActionListener {
-                if (userIcon.level <= userState.level && iconId != index) {
-                    selectedUserIcon.border = emptyBorder
-
-                    button.border = compoundBorder
-                    iconId = index
-                    selectedUserIcon = button
+                iconButton.border = emptyBorder
+                iconLabel.text = "Unlocked"
+                if (index == iconId) {
+                    iconButton.border = selectedBorder
+                    selectedUserIcon = iconButton
                 }
             }
 
-            iconPanel.add(button)
+            iconPanel.add(iconButton, BorderLayout.NORTH)
+            iconPanel.add(iconLabel, BorderLayout.SOUTH)
+            allIconsPanel.add(iconPanel)
+
+            iconButton.addActionListener {
+                if (userIcon.level <= userState.level && iconId != index) {
+                    selectedUserIcon.border = emptyBorder
+
+                    iconButton.border = selectedBorder
+                    iconId = index
+                    selectedUserIcon = iconButton
+                }
+            }
         }
 
         gbc.gridy++
-        panel.add(JBScrollPane(iconPanel), gbc)
+        panel.add(JBScrollPane(allIconsPanel), gbc)
 
         gbc.gridy++
         gbc.weighty = 1.0
@@ -114,6 +143,12 @@ class EditUserDialog : DialogWrapper(true) {
     }
 
     override fun doOKAction() {
+        if(nameLabel.text.trim().length > 20) {
+            errorCaption.foreground = JBColor.RED
+            errorCaption.font = Font(errorCaption.font.name, Font.BOLD, 10)
+            return
+        }
+
         ApplicationStatePersistence.getInstance().changeUserInfo(nameLabel.text.trim(), titleId, iconId)
         super.doOKAction()
     }
@@ -131,6 +166,13 @@ class CustomComboBoxRenderer : ListCellRenderer<Any> {
     ): Component {
         val renderer =
             defaultRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus) as JLabel
+
+        val userLevel = ApplicationStatePersistence.getInstance().state.userState.level
+        val titleLevel = TitleDataProvider().getTitleById(index).level
+
+        if (titleLevel > userLevel) {
+            renderer.foreground = JBColor.GRAY
+        }
 
         renderer.toolTipText = renderer.text
 
