@@ -1,0 +1,32 @@
+package com.github.paolobd.intellijplugintemplate.views
+
+import com.intellij.openapi.util.IconLoader
+import javax.swing.Icon
+
+class Icons {
+
+    fun loadUserIcon(name: String): Icon {
+        return loadIcon("/userInterface/user/${name}")
+    }
+
+    fun loadUserMiniatureIcon(name: String): Icon {
+        return loadIcon("/userInterface/user/miniature/${name}")
+    }
+
+    fun loadGlobalAchIcon(name: String): Icon {
+        return loadIcon("/userInterface/global/${name}")
+    }
+
+    fun loadProjectAchIcon(name: String): Icon {
+        return loadIcon("/userInterface/project/${name}")
+    }
+
+    fun loadEditIcon(): Icon {
+        return loadIcon("/userInterface/edit.svg")
+    }
+
+    private fun loadIcon(path: String): Icon {
+        return IconLoader.getIcon(path, javaClass)
+    }
+
+}

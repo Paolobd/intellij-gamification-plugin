@@ -34,9 +34,5 @@
     <projectListeners>
         <listener class="com.github.paolobd.intellijplugintemplate.listeners.MyTestListener"
                   topic="com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener"/>
-        <listener class="com.github.paolobd.intellijplugintemplate.listeners.MyBuildManagerListener"
-                  topic="com.intellij.compiler.server.BuildManagerListener"/>
-        <listener class="com.github.paolobd.intellijplugintemplate.listeners.MyProva"
-                  topic="com.intellij.execution.ExecutionListener"/>
     </projectListeners>
 </idea-plugin>

@@ -1,4 +1,4 @@
-package com.github.paolobd.intellijplugintemplate.objects
+package com.github.paolobd.intellijplugintemplate.dataProviders
 
 class LevelDataProvider {
     val levels = listOf(

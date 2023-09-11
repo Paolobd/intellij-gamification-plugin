@@ -7,7 +7,7 @@ import java.awt.Font
 import javax.swing.*
 
 class AchievementCard(
-    val id: Int, iconUrl: String, title: String, description: String, total: Int, userExp: Int, current: Int
+    val id: Int, iconSvg: Icon, title: String, description: String, total: Int, userExp: Int, current: Int
 ) {
     val card = JPanel()
     private var icon = JLabel()
@@ -26,7 +26,7 @@ class AchievementCard(
 
         // Left panel for the achievement icon (square)
         val iconPanel = JPanel()
-        icon = JLabel(IconLoader.getIcon(iconUrl, AchievementCard::class.java))
+        icon = JLabel(iconSvg)
 
         iconPanel.add(icon)
 

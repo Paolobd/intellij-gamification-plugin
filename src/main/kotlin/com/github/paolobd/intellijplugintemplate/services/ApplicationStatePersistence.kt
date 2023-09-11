@@ -1,6 +1,7 @@
 package com.github.paolobd.intellijplugintemplate.services
 
-import com.github.paolobd.intellijplugintemplate.objects.ApplicationState
+import com.github.paolobd.intellijplugintemplate.dataClasses.ApplicationState
+import com.github.paolobd.intellijplugintemplate.views.UserInterface
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.State
@@ -21,6 +22,13 @@ class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
 
     override fun loadState(@NotNull state: ApplicationState) {
         XmlSerializerUtil.copyBean(state, myApplicationState)
+    }
+
+    fun changeUserInfo(name: String, titleId: Int, iconId: Int){
+        myApplicationState.userState.name = name
+        myApplicationState.userState.titleId = titleId
+        myApplicationState.userState.iconId = iconId
+        UserInterface.userTab.updateUserInfo()
     }
 
     companion object {

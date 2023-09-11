@@ -1,6 +1,7 @@
-package com.github.paolobd.intellijplugintemplate.objects
+package com.github.paolobd.intellijplugintemplate.dataClasses
 
 import com.github.paolobd.intellijplugintemplate.library.Event
+import com.github.paolobd.intellijplugintemplate.enums.ProjectAchievement
 
 // Var variables or cannot be serialized
 data class ProjectState(
@@ -13,19 +14,4 @@ data class ProjectState(
         AchievementState(it.ordinal, 0, false)
     },
     var eventList: MutableList<Event> = mutableListOf()
-)
-
-// Leave default values or can't be serialized
-//Not used anymore because we save just the achievement id and current exp. Maybe used in the future to have a
-//more complex value (e.g. currentexp, unlocked true false)
-data class AchievementState(
-    /*var achievementName: String = "",
-    var achievementDescription: String = "",
-    var iconName: String = "",
-    var maxExp: Int = 0,
-    var minExp: Int = 0,
-    var currentExp: Int = 0*/
-    var id: Int = 0,
-    var currentExp: Int = 0,
-    var unlocked: Boolean = false
 )

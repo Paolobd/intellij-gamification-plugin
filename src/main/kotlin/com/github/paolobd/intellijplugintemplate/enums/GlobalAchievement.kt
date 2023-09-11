@@ -1,4 +1,6 @@
-package com.github.paolobd.intellijplugintemplate.objects
+package com.github.paolobd.intellijplugintemplate.enums
+
+import com.github.paolobd.intellijplugintemplate.dataClasses.Achievement
 
 enum class GlobalAchievement(
     val achievement: Achievement
@@ -7,7 +9,7 @@ enum class GlobalAchievement(
         Achievement(
             "Night Owl",
             "Execute a test between 11 p.m and 3 a.m",
-            "/userInterface/global/owl.svg",
+            "owl.svg",
             1,
             100
         )
@@ -16,7 +18,7 @@ enum class GlobalAchievement(
         Achievement(
             "Slow Testing",
             "A test took more than 1 minute",
-            "/userInterface/global/slow.svg",
+            "slow.svg",
             5,
             20
         )
@@ -25,7 +27,7 @@ enum class GlobalAchievement(
         Achievement(
             "Fast Testing",
             "A test took more than 1 second",
-            "/userInterface/global/fast.svg",
+            "fast.svg",
             200,
             30
         )
@@ -34,7 +36,7 @@ enum class GlobalAchievement(
         Achievement(
             "High Success!",
             "Number of tests passed",
-            "/userInterface/global/success.svg",
+            "success.svg",
             100,
             30
         )
@@ -43,7 +45,7 @@ enum class GlobalAchievement(
         Achievement(
             "Failure",
             "Number of tests failed",
-            "/userInterface/global/failed.svg",
+            "failed.svg",
             100,
             30
         )
@@ -52,7 +54,7 @@ enum class GlobalAchievement(
         Achievement(
             "More Testing!",
             "Executed a suite with more than 10 test",
-            "/userInterface/global/test.svg",
+            "test.svg",
             100,
             30
         )

@@ -1,8 +1,8 @@
 package com.github.paolobd.intellijplugintemplate.services
 
 import com.github.paolobd.intellijplugintemplate.objects.AchievementCard
-import com.github.paolobd.intellijplugintemplate.objects.ProjectAchievement
-import com.github.paolobd.intellijplugintemplate.objects.ProjectState
+import com.github.paolobd.intellijplugintemplate.enums.ProjectAchievement
+import com.github.paolobd.intellijplugintemplate.dataClasses.ProjectState
 import com.github.paolobd.intellijplugintemplate.views.MyNotifier
 import com.github.paolobd.intellijplugintemplate.views.UserInterface
 import com.intellij.openapi.components.PersistentStateComponent

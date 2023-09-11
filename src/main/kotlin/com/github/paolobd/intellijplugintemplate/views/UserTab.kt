@@ -1,16 +1,19 @@
 package com.github.paolobd.intellijplugintemplate.views
 
+import com.github.paolobd.intellijplugintemplate.dataProviders.LevelDataProvider
+import com.github.paolobd.intellijplugintemplate.dataProviders.TitleDataProvider
+import com.github.paolobd.intellijplugintemplate.dataProviders.UserIconDataProvider
+import com.github.paolobd.intellijplugintemplate.enums.GlobalAchievement
 import com.github.paolobd.intellijplugintemplate.objects.*
 import com.github.paolobd.intellijplugintemplate.services.ApplicationStatePersistence
 import com.intellij.openapi.ui.SimpleToolWindowPanel
-import com.intellij.openapi.util.IconLoader
 import com.intellij.util.ui.JBUI
 import java.awt.*
 import javax.swing.*
 
 class UserTab {
     var toolWindow = JPanel()
-    private var userIcon = JLabel()
+    private var userIconLabel = JLabel()
     private var nameLabel = JLabel()
     private var titleLabel = JLabel()
     private var experienceBar = JProgressBar()
@@ -27,12 +30,12 @@ class UserTab {
 
         //Left panel to show user profile picture
         val iconPanel = JPanel(BorderLayout())
-        val userIconEnum = UserIcon.values().getOrElse(userState.iconId) { UserIcon.USER }
+        val userIcon = UserIconDataProvider().getUserIconById(userState.iconId)
 
-        userIcon = JLabel(IconLoader.getIcon(userIconEnum.path, javaClass))
-        userIcon.alignmentX = Component.CENTER_ALIGNMENT
-        userIcon.alignmentY = Component.CENTER_ALIGNMENT
-        iconPanel.add(userIcon)
+        userIconLabel = JLabel(Icons().loadUserIcon(userIcon.fileName))
+        userIconLabel.alignmentX = Component.CENTER_ALIGNMENT
+        userIconLabel.alignmentY = Component.CENTER_ALIGNMENT
+        iconPanel.add(userIconLabel)
 
         //Right panel to show username and title
         val infoPanel = JPanel(GridBagLayout())
@@ -90,7 +93,7 @@ class UserTab {
             achievement.border = BorderFactory.createEtchedBorder()
             val iconId = userState.showcase[i]
             val achEnum = GlobalAchievement.values()[iconId]
-            val icon = JLabel(IconLoader.getIcon(achEnum.achievement.iconPath, javaClass))
+            val icon = JLabel(Icons().loadGlobalAchIcon(achEnum.achievement.iconPath))
             achievement.add(icon)
             achievementPanel.add(achievement)
             achievementPanel.add(Box.createHorizontalGlue())
@@ -111,7 +114,7 @@ class UserTab {
         val achEnum = GlobalAchievement.NUM_CLICKS
         val ach = achEnum.achievement
         val dailyAchievement = AchievementCard(
-            achEnum.ordinal, ach.iconPath, ach.name, ach.description, ach.milestone, ach.userExperience, 0
+            achEnum.ordinal, Icons().loadGlobalAchIcon(ach.iconPath), ach.name, ach.description, ach.milestone, ach.userExperience, 0
         )
 
         dailyPanel.add(dailyLabel)
@@ -126,7 +129,7 @@ class UserTab {
         gbc.anchor = GridBagConstraints.EAST
         gbc.gridy = 0
 
-        val editIcon = JButton(IconLoader.getIcon("/userInterface/edit.svg", javaClass))
+        val editIcon = JButton(Icons().loadEditIcon())
 
         editIcon.addActionListener {
             EditUserDialog().show()
@@ -162,8 +165,8 @@ class UserTab {
     fun updateUserInfo() {
         val userState = ApplicationStatePersistence.getInstance().state.userState
 
-        val iconEnum = UserIcon.values()[userState.iconId]
-        userIcon.icon = IconLoader.getIcon(iconEnum.path, javaClass)
+        val userIcon = UserIconDataProvider().getUserIconById(userState.iconId)
+        userIconLabel.icon = Icons().loadUserIcon(userIcon.fileName)
 
         nameLabel.text = userState.name
 
@@ -192,7 +195,7 @@ class UserTab {
             val iconId = showcase[i]
             val iconEnum = GlobalAchievement.values()[iconId]
 
-            showcaseIcons[i].icon = IconLoader.getIcon(iconEnum.achievement.iconPath, javaClass)
+            showcaseIcons[i].icon = Icons().loadGlobalAchIcon(iconEnum.achievement.iconPath)
         }
     }
 }

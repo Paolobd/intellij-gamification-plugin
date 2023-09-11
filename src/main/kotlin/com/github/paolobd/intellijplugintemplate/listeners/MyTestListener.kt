@@ -3,7 +3,7 @@ package com.github.paolobd.intellijplugintemplate.listeners
 import com.github.paolobd.intellijplugintemplate.library.Event
 import com.github.paolobd.intellijplugintemplate.library.EventType
 import com.github.paolobd.intellijplugintemplate.library.Server
-import com.github.paolobd.intellijplugintemplate.objects.ProjectAchievement
+import com.github.paolobd.intellijplugintemplate.enums.ProjectAchievement
 import com.github.paolobd.intellijplugintemplate.services.ProjectStatePersistence
 import com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener
 import com.intellij.execution.testframework.sm.runner.SMTestProxy

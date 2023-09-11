@@ -1,4 +1,6 @@
-package com.github.paolobd.intellijplugintemplate.objects
+package com.github.paolobd.intellijplugintemplate.enums
+
+import com.github.paolobd.intellijplugintemplate.dataClasses.Achievement
 
 enum class ProjectAchievement(
     val achievement: Achievement
@@ -7,7 +9,7 @@ enum class ProjectAchievement(
         Achievement(
             "Button Masher",
             "Number of clicks made in this project",
-            "/userInterface/project/click.svg",
+            "click.svg",
             10,
             20
         )
@@ -16,7 +18,7 @@ enum class ProjectAchievement(
         Achievement(
             "Web Surfer",
             "Number of sites visited in this project",
-            "/userInterface/project/site.svg",
+            "site.svg",
             5,
             20
         )
@@ -25,7 +27,7 @@ enum class ProjectAchievement(
         Achievement(
             "Gotta find 'em all!",
             "Total of WebElements found",
-            "/userInterface/project/locator.svg",
+            "locator.svg",
             200,
             30
         )
@@ -34,7 +36,7 @@ enum class ProjectAchievement(
         Achievement(
             "ID Expert",
             "Different WebElements found using id",
-            "/userInterface/project/id.svg",
+            "id.svg",
             100,
             30
         )
@@ -43,7 +45,7 @@ enum class ProjectAchievement(
         Achievement(
             "XPATH Expert",
             "Different WebElements found using xpath",
-            "/userInterface/project/xpath.svg",
+            "xpath.svg",
             100,
             30
         )
@@ -52,7 +54,7 @@ enum class ProjectAchievement(
         Achievement(
             "CSS Expert",
             "Different WebElements found using css",
-            "/userInterface/project/css.svg",
+            "css.svg",
             100,
             30
         )
