@@ -6,7 +6,7 @@ import javax.swing.Icon
 class Icons {
 
     fun loadUserIcon(name: String): Icon {
-        return loadIcon("/userInterface/user/${name}")
+        return loadIcon("/userInterface/user/full/${name}")
     }
 
     fun loadUserMiniatureIcon(name: String): Icon {

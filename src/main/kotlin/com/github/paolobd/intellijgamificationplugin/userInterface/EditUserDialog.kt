@@ -38,7 +38,7 @@ class EditUserDialog : DialogWrapper(true) {
         nameLabel.text = userState.name
         errorCaption = JLabel("Max 20 char")
         errorCaption.font = Font(errorCaption.font.name, Font.PLAIN, 10)
-        errorCaption.border = BorderFactory.createEmptyBorder(0,5,0,0)
+        errorCaption.border = BorderFactory.createEmptyBorder(0, 5, 0, 0)
 
         val fieldPanel = JPanel(BorderLayout())
         fieldPanel.add(nameLabel, BorderLayout.NORTH)
@@ -53,7 +53,7 @@ class EditUserDialog : DialogWrapper(true) {
 
         val titles = TitleDataProvider().titles.map {
             if (it.level > userState.level)
-                "${it.text} [Locked]"
+                "${it.text} [Level ${it.level}]"
             else
                 it.text
         }.toTypedArray()
@@ -100,7 +100,7 @@ class EditUserDialog : DialogWrapper(true) {
 
             val emptyBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5)
             val lineBorder = BorderFactory.createLineBorder(JBColor.BLACK, 2)
-            val bevelBorder = BorderFactory.createRaisedBevelBorder()
+            val bevelBorder = BorderFactory.createRaisedSoftBevelBorder()
             val selectedBorder = BorderFactory.createCompoundBorder(emptyBorder, lineBorder)
             val unavailableBorder = BorderFactory.createCompoundBorder(emptyBorder, bevelBorder)
             val unselectedBorder = BorderFactory.createEmptyBorder(7, 7, 7, 7)
@@ -143,7 +143,7 @@ class EditUserDialog : DialogWrapper(true) {
     }
 
     override fun doOKAction() {
-        if(nameLabel.text.trim().length > 20) {
+        if (nameLabel.text.trim().length > 20) {
             errorCaption.foreground = JBColor.RED
             errorCaption.font = Font(errorCaption.font.name, Font.BOLD, 10)
             return
