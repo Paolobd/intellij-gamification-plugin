@@ -2,8 +2,8 @@ package com.github.paolobd.intellijplugintemplate.services
 
 import com.github.paolobd.intellijplugintemplate.enums.ProjectAchievement
 import com.github.paolobd.intellijplugintemplate.dataClasses.ProjectState
-import com.github.paolobd.intellijplugintemplate.views.MyNotifier
-import com.github.paolobd.intellijplugintemplate.views.UserInterface
+import com.github.paolobd.intellijplugintemplate.userInterface.MyNotifier
+import com.github.paolobd.intellijplugintemplate.userInterface.UserInterface
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage

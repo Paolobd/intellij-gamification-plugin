@@ -1,4 +1,4 @@
-package com.github.paolobd.intellijplugintemplate.views
+package com.github.paolobd.intellijplugintemplate.userInterface
 
 import com.intellij.openapi.util.IconLoader
 import javax.swing.Icon

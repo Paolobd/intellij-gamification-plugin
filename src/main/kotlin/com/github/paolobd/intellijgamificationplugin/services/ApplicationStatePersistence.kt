@@ -1,7 +1,7 @@
 package com.github.paolobd.intellijplugintemplate.services
 
 import com.github.paolobd.intellijplugintemplate.dataClasses.ApplicationState
-import com.github.paolobd.intellijplugintemplate.views.UserInterface
+import com.github.paolobd.intellijplugintemplate.userInterface.UserInterface
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.State

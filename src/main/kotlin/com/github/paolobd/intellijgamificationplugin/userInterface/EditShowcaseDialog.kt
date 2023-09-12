@@ -1,4 +1,4 @@
-package com.github.paolobd.intellijplugintemplate.views
+package com.github.paolobd.intellijplugintemplate.userInterface
 
 import com.github.paolobd.intellijplugintemplate.enums.GlobalAchievement
 import com.github.paolobd.intellijplugintemplate.services.ApplicationStatePersistence

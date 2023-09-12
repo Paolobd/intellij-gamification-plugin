@@ -1,9 +1,8 @@
-package com.github.paolobd.intellijplugintemplate.views
+package com.github.paolobd.intellijplugintemplate.userInterface
 
 import com.github.paolobd.intellijplugintemplate.enums.GlobalAchievement
 import com.github.paolobd.intellijplugintemplate.enums.ProjectAchievement
 import com.github.paolobd.intellijplugintemplate.enums.SortDropdown
-import com.github.paolobd.intellijplugintemplate.objects.AchievementCard
 import com.github.paolobd.intellijplugintemplate.services.ApplicationStatePersistence
 import com.github.paolobd.intellijplugintemplate.services.ProjectStatePersistence
 import com.intellij.openapi.project.Project

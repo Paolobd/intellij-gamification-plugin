@@ -1,4 +1,4 @@
-package com.github.paolobd.intellijplugintemplate.objects
+package com.github.paolobd.intellijplugintemplate.userInterface
 
 import com.github.paolobd.intellijplugintemplate.dataClasses.Achievement
 import com.intellij.openapi.util.IconLoader

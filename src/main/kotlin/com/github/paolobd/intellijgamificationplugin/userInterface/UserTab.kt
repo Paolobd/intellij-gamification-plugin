@@ -1,10 +1,9 @@
-package com.github.paolobd.intellijplugintemplate.views
+package com.github.paolobd.intellijplugintemplate.userInterface
 
 import com.github.paolobd.intellijplugintemplate.dataProviders.LevelDataProvider
 import com.github.paolobd.intellijplugintemplate.dataProviders.TitleDataProvider
 import com.github.paolobd.intellijplugintemplate.dataProviders.UserIconDataProvider
 import com.github.paolobd.intellijplugintemplate.enums.GlobalAchievement
-import com.github.paolobd.intellijplugintemplate.objects.*
 import com.github.paolobd.intellijplugintemplate.services.ApplicationStatePersistence
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.util.ui.JBUI

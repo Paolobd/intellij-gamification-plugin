@@ -1,4 +1,4 @@
-package com.github.paolobd.intellijplugintemplate.views
+package com.github.paolobd.intellijplugintemplate.userInterface
 
 import com.github.paolobd.intellijplugintemplate.dataProviders.TitleDataProvider
 import com.github.paolobd.intellijplugintemplate.dataProviders.UserIconDataProvider
@@ -61,7 +61,7 @@ class EditUserDialog : DialogWrapper(true) {
         val dropdown = ComboBox(titles)
         titleId = userState.titleId
         dropdown.selectedIndex = titleId
-        dropdown.renderer = CustomComboBoxRenderer()
+        dropdown.renderer = CustomTitleComboBoxRenderer()
 
         dropdown.addActionListener {
             val titleLevel = TitleDataProvider().getTitleById(dropdown.selectedIndex).level
@@ -151,31 +151,5 @@ class EditUserDialog : DialogWrapper(true) {
 
         ApplicationStatePersistence.getInstance().changeUserInfo(nameLabel.text.trim(), titleId, iconId)
         super.doOKAction()
-    }
-}
-
-class CustomComboBoxRenderer : ListCellRenderer<Any> {
-    private val defaultRenderer: ListCellRenderer<in Any> = DefaultListCellRenderer()
-
-    override fun getListCellRendererComponent(
-        list: JList<out Any>?,
-        value: Any?,
-        index: Int,
-        isSelected: Boolean,
-        cellHasFocus: Boolean
-    ): Component {
-        val renderer =
-            defaultRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus) as JLabel
-
-        val userLevel = ApplicationStatePersistence.getInstance().state.userState.level
-        val titleLevel = TitleDataProvider().getTitleById(index).level
-
-        if (titleLevel > userLevel) {
-            renderer.foreground = JBColor.GRAY
-        }
-
-        renderer.toolTipText = renderer.text
-
-        return renderer
     }
 }

@@ -9,7 +9,7 @@ import com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener
 import com.intellij.execution.testframework.sm.runner.SMTestProxy
 import com.intellij.openapi.project.Project
 
-internal class MyTestListener(private val project: Project) : SMTRunnerEventsListener {
+internal class TestListener(private val project: Project) : SMTRunnerEventsListener {
     private lateinit var server: Server
     override fun onTestingStarted(testsRoot: SMTestProxy.SMRootTestProxy) {
         server = Server()
