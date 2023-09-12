@@ -1,5 +1,6 @@
 package com.github.paolobd.intellijplugintemplate.objects
 
+import com.github.paolobd.intellijplugintemplate.dataClasses.Achievement
 import com.intellij.openapi.util.IconLoader
 import java.awt.BorderLayout
 import java.awt.Component
@@ -7,15 +8,15 @@ import java.awt.Font
 import javax.swing.*
 
 class AchievementCard(
-    val id: Int, iconSvg: Icon, title: String, description: String, total: Int, userExp: Int, current: Int
+    val id: Int, iconSvg: Icon, achievement: Achievement, current: Int
 ) {
-    val card = JPanel()
-    private var icon = JLabel()
-    var titleLabel = JLabel()
-    private var descriptionLabel = JLabel()
-    var progressBar = JProgressBar()
-    private var progressLabel = JLabel()
-    private var xpLabel = JLabel()
+    val card: JPanel = JPanel()
+    private var icon: JLabel
+    var titleLabel: JLabel
+    private var descriptionLabel: JLabel
+    var progressBar: JProgressBar
+    private var progressLabel: JLabel
+    private var xpLabel: JLabel
 
     init{
         card.border = BorderFactory.createCompoundBorder(
@@ -34,9 +35,9 @@ class AchievementCard(
         val centerPanel = JPanel()
         centerPanel.layout = BoxLayout(centerPanel, BoxLayout.Y_AXIS)
 
-        titleLabel = JLabel(title)
+        titleLabel = JLabel(achievement.name)
         titleLabel.font = Font(titleLabel.font.name, Font.BOLD, 14)
-        descriptionLabel = JLabel("<html>$description</html>")
+        descriptionLabel = JLabel("<html>${achievement.description}</html>")
         descriptionLabel.font = Font(descriptionLabel.font.name, Font.PLAIN, 12)
 
         centerPanel.add(Box.createVerticalGlue())
@@ -48,15 +49,15 @@ class AchievementCard(
         val rightPanel = JPanel()
         rightPanel.layout = BoxLayout(rightPanel, BoxLayout.Y_AXIS)
 
-        progressBar = JProgressBar(0, total)
+        progressBar = JProgressBar(0, achievement.milestone)
         progressBar.value = current
 
-        progressLabel = JLabel("$current / $total") // Placeholder for progress label
+        progressLabel = JLabel("$current / ${achievement.milestone}") // Placeholder for progress label
         progressLabel.font = Font(progressLabel.font.name, Font.PLAIN, 12)
         progressLabel.alignmentX = JLabel.CENTER_ALIGNMENT
 
         // Bottom right panel for XP value
-        xpLabel = JLabel("Gives $userExp xp")
+        xpLabel = JLabel("Gives ${achievement.userExperience} xp")
         xpLabel.font = Font(xpLabel.font.name, Font.ITALIC, 10)
         xpLabel.alignmentX = Component.CENTER_ALIGNMENT
 
@@ -71,15 +72,8 @@ class AchievementCard(
         card.add(rightPanel, BorderLayout.EAST)
     }
 
-    fun updateProgress(currentExp: Int) {
-        progressBar.value = currentExp
-        progressLabel.text = "$currentExp / ${progressBar.maximum}"
-    }
-
-    companion object {
-        private var list: MutableList<AchievementCard> = mutableListOf()
-
-        @JvmStatic
-        fun getList(): MutableList<AchievementCard> = list
+    fun updateProgress(newExp: Int) {
+        progressBar.value = newExp
+        progressLabel.text = "$newExp / ${progressBar.maximum}"
     }
 }

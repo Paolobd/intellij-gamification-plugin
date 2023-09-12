@@ -126,10 +126,7 @@ class UserTab {
         val dailyAchievement = AchievementCard(
             achEnum.ordinal,
             Icons().loadGlobalAchIcon(ach.iconPath),
-            ach.name,
-            ach.description,
-            ach.milestone,
-            ach.userExperience,
+            ach,
             0
         )
 

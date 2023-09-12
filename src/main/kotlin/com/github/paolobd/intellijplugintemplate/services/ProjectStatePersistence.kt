@@ -1,6 +1,5 @@
 package com.github.paolobd.intellijplugintemplate.services
 
-import com.github.paolobd.intellijplugintemplate.objects.AchievementCard
 import com.github.paolobd.intellijplugintemplate.enums.ProjectAchievement
 import com.github.paolobd.intellijplugintemplate.dataClasses.ProjectState
 import com.github.paolobd.intellijplugintemplate.views.MyNotifier
@@ -20,7 +19,6 @@ class ProjectStatePersistence : PersistentStateComponent<ProjectState> {
 
     @Nullable
     override fun getState(): ProjectState {
-        //println("Project State: $myProjectState")
         return myProjectState
     }
 
@@ -30,7 +28,9 @@ class ProjectStatePersistence : PersistentStateComponent<ProjectState> {
 
     fun resetState() {
         myProjectState = ProjectState()
-        AchievementCard.getList().forEach{ it.updateProgress(0) }
+        for (projectAchievementCard in UserInterface.achievementTab.projectAchievementCards) {
+            projectAchievementCard.updateProgress(0)
+        }
     }
 
     fun addExp(achEnum: ProjectAchievement, exp: Int) {
@@ -56,7 +56,7 @@ class ProjectStatePersistence : PersistentStateComponent<ProjectState> {
         //update the value in the UI
         //AchievementCard.getList().first { achEnum.ordinal == it.id }.updateProgress(achievement.value)
         //AchievementCard.getList().first { achEnum.ordinal == it.id }.updateProgress(achievement.currentExp)
-        UserInterface.projectAchievementCards.first { achEnum.ordinal == it.id }.updateProgress(achievement.currentExp)
+        UserInterface.achievementTab.updateProjectAchievement(achEnum.ordinal, achievement.currentExp)
 
         //prepare to send the notification
         var notificationText: String? = null
