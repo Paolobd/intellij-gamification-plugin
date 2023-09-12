@@ -103,12 +103,13 @@ class EditUserDialog : DialogWrapper(true) {
             val bevelBorder = BorderFactory.createRaisedBevelBorder()
             val selectedBorder = BorderFactory.createCompoundBorder(emptyBorder, lineBorder)
             val unavailableBorder = BorderFactory.createCompoundBorder(emptyBorder, bevelBorder)
+            val unselectedBorder = BorderFactory.createEmptyBorder(7, 7, 7, 7)
 
             if (userIcon.level > userState.level) {
                 iconButton.border = unavailableBorder
                 iconLabel.text = "Level ${userIcon.level}"
             } else {
-                iconButton.border = emptyBorder
+                iconButton.border = unselectedBorder
                 iconLabel.text = "Unlocked"
                 if (index == iconId) {
                     iconButton.border = selectedBorder
@@ -122,7 +123,7 @@ class EditUserDialog : DialogWrapper(true) {
 
             iconButton.addActionListener {
                 if (userIcon.level <= userState.level && iconId != index) {
-                    selectedUserIcon.border = emptyBorder
+                    selectedUserIcon.border = unselectedBorder
 
                     iconButton.border = selectedBorder
                     iconId = index

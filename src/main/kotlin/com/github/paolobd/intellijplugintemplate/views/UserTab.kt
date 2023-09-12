@@ -92,15 +92,18 @@ class UserTab {
             val achievement = JPanel()
             achievement.border = BorderFactory.createEtchedBorder()
             val iconId = userState.showcase[i]
+            val iconLabel = JLabel()
 
             val icon = if (iconId >= 0) {
                 val achEnum = GlobalAchievement.values()[iconId]
+                iconLabel.toolTipText = achEnum.achievement.name
                 Icons().loadGlobalAchIcon(achEnum.achievement.iconPath)
             } else {
+                iconLabel.toolTipText = null
                 Icons().loadEmptyIcon()
             }
 
-            val iconLabel = JLabel(icon)
+            iconLabel.icon = icon
             achievement.add(iconLabel)
             achievementPanel.add(achievement)
             achievementPanel.add(Box.createHorizontalGlue())
@@ -138,31 +141,45 @@ class UserTab {
         mainPanel.add(iconPanel)
         mainPanel.add(infoPanel)
 
-        gbc = GridBagConstraints()
-        gbc.anchor = GridBagConstraints.EAST
-        gbc.gridy = 0
+        val editUserButton = JButton(Icons().loadEditIcon())
+        editUserButton.toolTipText = "Edit user information"
 
-        val editIcon = JButton(Icons().loadEditIcon())
-
-        editIcon.addActionListener {
+        editUserButton.addActionListener {
             EditUserDialog().show()
+        }
+
+        val editShowcaseButton = JButton(Icons().loadEditIcon())
+        editShowcaseButton.toolTipText = "Edit achievement showcase"
+
+        editShowcaseButton.addActionListener{
+            EditShowcaseDialog().show()
         }
 
         toolWindow = SimpleToolWindowPanel(true, true)
         val wrapperPanel = JPanel(GridBagLayout())
 
-        wrapperPanel.add(editIcon, gbc)
-
-        gbc.anchor = GridBagConstraints.CENTER
-        gbc.fill = GridBagConstraints.HORIZONTAL
-        gbc.gridy++
+        gbc = GridBagConstraints()
+        gbc.gridy = 0
         gbc.weightx = 1.0
+        gbc.anchor = GridBagConstraints.EAST
+        wrapperPanel.add(editUserButton, gbc)
+
+        gbc.gridy++
+        gbc.anchor = GridBagConstraints.CENTER
+        gbc.fill = GridBagConstraints.BOTH
         wrapperPanel.add(mainPanel, gbc)
 
         gbc.gridy++
         wrapperPanel.add(Box.createVerticalStrut(20), gbc)
 
         gbc.gridy++
+        gbc.anchor = GridBagConstraints.EAST
+        gbc.fill = GridBagConstraints.NONE
+        wrapperPanel.add(editShowcaseButton, gbc)
+
+        gbc.gridy++
+        gbc.anchor = GridBagConstraints.CENTER
+        gbc.fill = GridBagConstraints.BOTH
         wrapperPanel.add(showcasePanel, gbc)
 
         gbc.gridy++
@@ -209,9 +226,10 @@ class UserTab {
 
             if (iconId >= 0) {
                 val iconEnum = GlobalAchievement.values()[iconId]
-
+                showcaseIcons[i].toolTipText = iconEnum.achievement.name
                 showcaseIcons[i].icon = Icons().loadGlobalAchIcon(iconEnum.achievement.iconPath)
             } else {
+                showcaseIcons[i].toolTipText = null
                 showcaseIcons[i].icon = Icons().loadEmptyIcon()
             }
         }
