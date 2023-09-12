@@ -1,4 +1,4 @@
-package com.github.paolobd.intellijplugintemplate.dataClasses
+package com.github.paolobd.intellijgamificationplugin.dataClasses
 
 //UserState is used in ApplicationState, hence each parameter must have a default value
 data class UserState (

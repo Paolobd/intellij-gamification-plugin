@@ -1,6 +1,6 @@
-package com.github.paolobd.intellijplugintemplate.dataClasses
+package com.github.paolobd.intellijgamificationplugin.dataClasses
 
-import com.github.paolobd.intellijplugintemplate.enums.GlobalAchievement
+import com.github.paolobd.intellijgamificationplugin.enums.GlobalAchievement
 
 data class ApplicationState (
     var userState: UserState = UserState(),

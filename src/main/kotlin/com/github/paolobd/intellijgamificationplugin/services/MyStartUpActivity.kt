@@ -1,4 +1,4 @@
-package com.github.paolobd.intellijplugintemplate.services
+package com.github.paolobd.intellijgamificationplugin.services
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity

@@ -1,9 +1,9 @@
-package com.github.paolobd.intellijplugintemplate.services
+package com.github.paolobd.intellijgamificationplugin.services
 
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
-import com.github.paolobd.intellijplugintemplate.MyBundle
+import com.github.paolobd.intellijgamificationplugin.MyBundle
 
 @Service(Service.Level.PROJECT)
 class MyProjectService(project: Project) {

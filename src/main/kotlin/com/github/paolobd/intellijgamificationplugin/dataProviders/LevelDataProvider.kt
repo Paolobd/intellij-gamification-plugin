@@ -1,4 +1,4 @@
-package com.github.paolobd.intellijplugintemplate.dataProviders
+package com.github.paolobd.intellijgamificationplugin.dataProviders
 
 class LevelDataProvider {
     val levels = listOf(

@@ -1,7 +1,7 @@
-package com.github.paolobd.intellijplugintemplate.userInterface
+package com.github.paolobd.intellijgamificationplugin.userInterface
 
-import com.github.paolobd.intellijplugintemplate.enums.GlobalAchievement
-import com.github.paolobd.intellijplugintemplate.services.ApplicationStatePersistence
+import com.github.paolobd.intellijgamificationplugin.enums.GlobalAchievement
+import com.github.paolobd.intellijgamificationplugin.services.ApplicationStatePersistence
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.ui.JBColor
 import com.intellij.ui.components.JBScrollPane

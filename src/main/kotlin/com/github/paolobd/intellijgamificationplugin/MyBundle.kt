@@ -1,4 +1,4 @@
-package com.github.paolobd.intellijplugintemplate
+package com.github.paolobd.intellijgamificationplugin
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls

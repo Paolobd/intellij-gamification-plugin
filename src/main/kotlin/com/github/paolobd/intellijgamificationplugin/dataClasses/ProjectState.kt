@@ -1,7 +1,7 @@
-package com.github.paolobd.intellijplugintemplate.dataClasses
+package com.github.paolobd.intellijgamificationplugin.dataClasses
 
-import com.github.paolobd.intellijplugintemplate.library.Event
-import com.github.paolobd.intellijplugintemplate.enums.ProjectAchievement
+import com.github.paolobd.intellijgamificationplugin.library.Event
+import com.github.paolobd.intellijgamificationplugin.enums.ProjectAchievement
 
 // Var variables or cannot be serialized
 data class ProjectState(

@@ -1,4 +1,4 @@
-package com.github.paolobd.intellijplugintemplate.library
+package com.github.paolobd.intellijgamificationplugin.library
 
 enum class EventType {
     CLICK,

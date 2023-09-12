@@ -18,21 +18,21 @@
                     secondary="true"
                     icon="AllIcons.Toolwindows.ToolWindowFavorites"
                     anchor="right"
-                    factoryClass="com.github.paolobd.intellijplugintemplate.userInterface.UserInterfaceFactory"/>
+                    factoryClass="com.github.paolobd.intellijgamificationplugin.userInterface.UserInterfaceFactory"/>
         
         <notificationGroup id="Achievement Notification Group"
                            displayType="BALLOON"/>
 
-        <postStartupActivity implementation="com.github.paolobd.intellijplugintemplate.services.MyStartUpActivity" />
+        <postStartupActivity implementation="com.github.paolobd.intellijgamificationplugin.services.MyStartUpActivity" />
 
-        <projectService serviceImplementation="com.github.paolobd.intellijplugintemplate.services.ProjectStatePersistence"/>
+        <projectService serviceImplementation="com.github.paolobd.intellijgamificationplugin.services.ProjectStatePersistence"/>
 
-        <applicationService serviceImplementation="com.github.paolobd.intellijplugintemplate.services.ApplicationStatePersistence"/>
+        <applicationService serviceImplementation="com.github.paolobd.intellijgamificationplugin.services.ApplicationStatePersistence"/>
 
     </extensions>
 
     <projectListeners>
-        <listener class="com.github.paolobd.intellijplugintemplate.listeners.TestListener"
+        <listener class="com.github.paolobd.intellijgamificationplugin.listeners.TestListener"
                   topic="com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener"/>
     </projectListeners>
 </idea-plugin>

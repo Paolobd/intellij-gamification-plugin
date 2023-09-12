@@ -1,7 +1,6 @@
-package com.github.paolobd.intellijplugintemplate.userInterface
+package com.github.paolobd.intellijgamificationplugin.userInterface
 
-import com.github.paolobd.intellijplugintemplate.dataClasses.Achievement
-import com.intellij.openapi.util.IconLoader
+import com.github.paolobd.intellijgamificationplugin.dataClasses.Achievement
 import java.awt.BorderLayout
 import java.awt.Component
 import java.awt.Font

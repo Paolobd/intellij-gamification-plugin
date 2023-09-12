@@ -1,10 +1,10 @@
-package com.github.paolobd.intellijplugintemplate.listeners
+package com.github.paolobd.intellijgamificationplugin.listeners
 
-import com.github.paolobd.intellijplugintemplate.library.Event
-import com.github.paolobd.intellijplugintemplate.library.EventType
-import com.github.paolobd.intellijplugintemplate.library.Server
-import com.github.paolobd.intellijplugintemplate.enums.ProjectAchievement
-import com.github.paolobd.intellijplugintemplate.services.ProjectStatePersistence
+import com.github.paolobd.intellijgamificationplugin.library.Event
+import com.github.paolobd.intellijgamificationplugin.library.EventType
+import com.github.paolobd.intellijgamificationplugin.library.Server
+import com.github.paolobd.intellijgamificationplugin.enums.ProjectAchievement
+import com.github.paolobd.intellijgamificationplugin.services.ProjectStatePersistence
 import com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener
 import com.intellij.execution.testframework.sm.runner.SMTestProxy
 import com.intellij.openapi.project.Project

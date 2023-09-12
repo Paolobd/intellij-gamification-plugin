@@ -1,4 +1,4 @@
-package com.github.paolobd.intellijplugintemplate.enums
+package com.github.paolobd.intellijgamificationplugin.enums
 
 enum class SortDropdown(
     val text: String

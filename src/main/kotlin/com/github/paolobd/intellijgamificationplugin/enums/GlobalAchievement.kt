@@ -1,6 +1,6 @@
-package com.github.paolobd.intellijplugintemplate.enums
+package com.github.paolobd.intellijgamificationplugin.enums
 
-import com.github.paolobd.intellijplugintemplate.dataClasses.Achievement
+import com.github.paolobd.intellijgamificationplugin.dataClasses.Achievement
 
 enum class GlobalAchievement(
     val achievement: Achievement

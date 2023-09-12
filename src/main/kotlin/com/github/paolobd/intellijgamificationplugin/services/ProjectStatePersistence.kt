@@ -1,9 +1,9 @@
-package com.github.paolobd.intellijplugintemplate.services
+package com.github.paolobd.intellijgamificationplugin.services
 
-import com.github.paolobd.intellijplugintemplate.enums.ProjectAchievement
-import com.github.paolobd.intellijplugintemplate.dataClasses.ProjectState
-import com.github.paolobd.intellijplugintemplate.userInterface.MyNotifier
-import com.github.paolobd.intellijplugintemplate.userInterface.UserInterface
+import com.github.paolobd.intellijgamificationplugin.enums.ProjectAchievement
+import com.github.paolobd.intellijgamificationplugin.dataClasses.ProjectState
+import com.github.paolobd.intellijgamificationplugin.userInterface.MyNotifier
+import com.github.paolobd.intellijgamificationplugin.userInterface.UserInterface
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage

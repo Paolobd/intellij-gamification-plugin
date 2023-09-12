@@ -1,6 +1,6 @@
-package com.github.paolobd.intellijplugintemplate.dataProviders
+package com.github.paolobd.intellijgamificationplugin.dataProviders
 
-import com.github.paolobd.intellijplugintemplate.dataClasses.Title
+import com.github.paolobd.intellijgamificationplugin.dataClasses.Title
 
 class TitleDataProvider {
     val titles = listOf(

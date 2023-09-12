@@ -1,6 +1,6 @@
-package com.github.paolobd.intellijplugintemplate.dataProviders
+package com.github.paolobd.intellijgamificationplugin.dataProviders
 
-import com.github.paolobd.intellijplugintemplate.dataClasses.UserIcon
+import com.github.paolobd.intellijgamificationplugin.dataClasses.UserIcon
 
 class UserIconDataProvider {
     val icons = listOf(

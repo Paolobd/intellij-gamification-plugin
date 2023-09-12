@@ -1,8 +1,8 @@
-package com.github.paolobd.intellijplugintemplate.userInterface
+package com.github.paolobd.intellijgamificationplugin.userInterface
 
-import com.github.paolobd.intellijplugintemplate.dataProviders.TitleDataProvider
-import com.github.paolobd.intellijplugintemplate.dataProviders.UserIconDataProvider
-import com.github.paolobd.intellijplugintemplate.services.ApplicationStatePersistence
+import com.github.paolobd.intellijgamificationplugin.dataProviders.TitleDataProvider
+import com.github.paolobd.intellijgamificationplugin.dataProviders.UserIconDataProvider
+import com.github.paolobd.intellijgamificationplugin.services.ApplicationStatePersistence
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.ui.JBColor

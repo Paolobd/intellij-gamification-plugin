@@ -1,4 +1,4 @@
-package com.github.paolobd.intellijplugintemplate.userInterface
+package com.github.paolobd.intellijgamificationplugin.userInterface
 
 import com.intellij.openapi.project.Project
 import com.intellij.ui.components.JBTabbedPane

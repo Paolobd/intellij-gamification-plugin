@@ -1,4 +1,4 @@
-package com.github.paolobd.intellijplugintemplate.dataClasses
+package com.github.paolobd.intellijgamificationplugin.dataClasses
 
 //AchievementState is used in ProjectState and ApplicationState, hence each parameter must have a default value
 data class AchievementState(
