@@ -1,6 +1,6 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.paolobd.intellijplugintemplate</id>
+    <id>com.github.paolobd.intellijgamificationplugin</id>
     <name>Testing GUI Gamification</name>
     <vendor>Paolo Stefanut Bodnarescul</vendor>
 
@@ -18,25 +18,21 @@
                     secondary="true"
                     icon="AllIcons.Toolwindows.ToolWindowFavorites"
                     anchor="right"
-                    factoryClass="com.github.paolobd.intellijplugintemplate.views.UserInterfaceFactory"/>
+                    factoryClass="com.github.paolobd.intellijgamificationplugin.userInterface.UserInterfaceFactory"/>
         
         <notificationGroup id="Achievement Notification Group"
                            displayType="BALLOON"/>
 
-        <postStartupActivity implementation="com.github.paolobd.intellijplugintemplate.services.MyStartUpActivity" />
+        <postStartupActivity implementation="com.github.paolobd.intellijgamificationplugin.services.MyStartUpActivity" />
 
-        <projectService serviceImplementation="com.github.paolobd.intellijplugintemplate.services.ProjectStatePersistence"/>
+        <projectService serviceImplementation="com.github.paolobd.intellijgamificationplugin.services.ProjectStatePersistence"/>
 
-        <applicationService serviceImplementation="com.github.paolobd.intellijplugintemplate.services.ApplicationStatePersistence"/>
+        <applicationService serviceImplementation="com.github.paolobd.intellijgamificationplugin.services.ApplicationStatePersistence"/>
 
     </extensions>
 
     <projectListeners>
-        <listener class="com.github.paolobd.intellijplugintemplate.listeners.MyTestListener"
+        <listener class="com.github.paolobd.intellijgamificationplugin.listeners.TestListener"
                   topic="com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener"/>
-        <listener class="com.github.paolobd.intellijplugintemplate.listeners.MyBuildManagerListener"
-                  topic="com.intellij.compiler.server.BuildManagerListener"/>
-        <listener class="com.github.paolobd.intellijplugintemplate.listeners.MyProva"
-                  topic="com.intellij.execution.ExecutionListener"/>
     </projectListeners>
 </idea-plugin>
