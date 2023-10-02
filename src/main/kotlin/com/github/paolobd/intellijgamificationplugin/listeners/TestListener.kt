@@ -35,7 +35,7 @@ internal class TestListener(private val project: Project) : SMTRunnerEventsListe
 
         val newEvents = mutableListOf<Event>()
 
-        //println("EventList: $eventList")
+        println("EventList: $eventList")
 
 
         for (event in eventList) {
