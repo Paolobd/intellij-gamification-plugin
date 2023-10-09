@@ -33,6 +33,7 @@ class AchievementCard(
         // Center panel for title and description
         val centerPanel = JPanel()
         centerPanel.layout = BoxLayout(centerPanel, BoxLayout.Y_AXIS)
+        //centerPanel.layout = FlowLayout()
 
         titleLabel = JLabel(achievement.name)
         titleLabel.font = Font(titleLabel.font.name, Font.BOLD, 14)

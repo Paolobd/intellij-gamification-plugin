@@ -47,7 +47,7 @@ class AchievementsTab(val project: Project) {
                     achievementEnum.ordinal,
                     Icons().loadGlobalAchIcon(achievement.iconPath),
                     achievement,
-                    projectStateAchievements.first { achievementEnum.ordinal == it.id }.currentExp
+                    applicationStateAchievements.first { achievementEnum.ordinal == it.id }.currentExp
                 )
             )
         }
@@ -59,7 +59,7 @@ class AchievementsTab(val project: Project) {
                     achievementEnum.ordinal,
                     Icons().loadProjectAchIcon(achievement.iconPath),
                     achievement,
-                    applicationStateAchievements.first { achievementEnum.ordinal == it.id }.currentExp
+                    projectStateAchievements.first { achievementEnum.ordinal == it.id }.currentExp
                 )
             )
         }

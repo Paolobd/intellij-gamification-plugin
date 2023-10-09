@@ -59,4 +59,22 @@ enum class ProjectAchievement(
             30
         )
     ),
+    NUM_NAVIGATION(
+        Achievement(
+            "Navigation Wizard",
+            "Number of navigation commands used:<br/> Refresh/Back/Forward",
+            "navigation.svg",
+            10,
+            50
+        )
+    ),
+    NUM_LOGIN(
+        Achievement(
+            "Login",
+            "Login once",
+            "login.svg",
+            1,
+            100
+        )
+    )
 }

@@ -4,7 +4,14 @@ class LevelDataProvider {
     val levels = listOf(
         50,
         100,
-        150
+        150,
+        200,
+        250,
+        300,
+        350,
+        400,
+        450,
+        500
     )
 
     fun getLevelExperienceById(id: Int): Int {
