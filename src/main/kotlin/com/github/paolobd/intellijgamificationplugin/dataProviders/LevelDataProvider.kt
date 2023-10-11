@@ -11,12 +11,13 @@ class LevelDataProvider {
         350,
         400,
         450,
-        500
+        9999
     )
 
-    fun getLevelExperienceById(id: Int): Int {
-        if (id >= 0 && id < levels.size) {
-            return levels[id]
+    fun getLevelExperienceById(level: Int): Int {
+        val newLevel = level - 1
+        if (newLevel >= 0 && newLevel < levels.size) {
+            return levels[newLevel]
         }
         return levels[0]
     }
