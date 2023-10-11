@@ -29,7 +29,7 @@ class UserTab {
 
         //Left panel to show user profile picture
         val iconPanel = JPanel(BorderLayout())
-        val userIcon = UserIconDataProvider().getUserIconById(userState.iconId)
+        val userIcon = UserIconDataProvider.getUserIconById(userState.iconId)
 
         userIconLabel = JLabel(Icons().loadUserIcon(userIcon.fileName))
         userIconLabel.alignmentX = Component.CENTER_ALIGNMENT
@@ -49,7 +49,7 @@ class UserTab {
         infoPanel.add(nameLabel, gbc)
 
         gbc.gridy++
-        val title = TitleDataProvider().getTitleById(userState.titleId).text
+        val title = TitleDataProvider.getTitleById(userState.titleId).text
         titleLabel = JLabel(title)
         titleLabel.font = Font(titleLabel.font.name, Font.PLAIN, 14)
         infoPanel.add(titleLabel, gbc)
@@ -58,7 +58,7 @@ class UserTab {
         val levelPanel = JPanel(BorderLayout())
         val level = userState.level
         val experience = userState.experience
-        val maxLevelExperience = LevelDataProvider().getLevelExperienceById(level)
+        val maxLevelExperience = LevelDataProvider.getLevelExperienceById(level)
 
         experienceBar = JProgressBar(0, maxLevelExperience)
         experienceBar.value = experience
@@ -191,12 +191,12 @@ class UserTab {
     fun updateUserInfo() {
         val userState = ApplicationStatePersistence.getInstance().state.userState
 
-        val userIcon = UserIconDataProvider().getUserIconById(userState.iconId)
+        val userIcon = UserIconDataProvider.getUserIconById(userState.iconId)
         userIconLabel.icon = Icons().loadUserIcon(userIcon.fileName)
 
         nameLabel.text = userState.name
 
-        val title = TitleDataProvider().getTitleById(userState.titleId)
+        val title = TitleDataProvider.getTitleById(userState.titleId)
         titleLabel.text = title.text
     }
 
@@ -204,7 +204,7 @@ class UserTab {
         val userState = ApplicationStatePersistence.getInstance().state.userState
 
         val level = userState.level
-        val maximum = LevelDataProvider().getLevelExperienceById(level)
+        val maximum = LevelDataProvider.getLevelExperienceById(level)
 
         levelLabel.text = level.toString()
 

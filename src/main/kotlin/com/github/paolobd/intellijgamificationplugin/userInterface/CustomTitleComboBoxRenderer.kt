@@ -23,7 +23,7 @@ class CustomTitleComboBoxRenderer : ListCellRenderer<Any> {
             defaultRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus) as JLabel
 
         val userLevel = ApplicationStatePersistence.getInstance().state.userState.level
-        val titleLevel = TitleDataProvider().getTitleById(index).level
+        val titleLevel = TitleDataProvider.getTitleById(index).level
 
         if (titleLevel > userLevel) {
             renderer.foreground = JBColor.GRAY

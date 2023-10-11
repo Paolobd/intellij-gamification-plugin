@@ -40,7 +40,7 @@ class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
     fun addUserExp(experience: Int) {
         var experienceToAdd = myApplicationState.userState.experience + experience
         var userLevel = myApplicationState.userState.level
-        val levels = LevelDataProvider().levels
+        val levels = LevelDataProvider.levels
 
         var i = userLevel - 1
         while (i < levels.size && experienceToAdd >= levels[i]) {

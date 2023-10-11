@@ -1,6 +1,6 @@
 package com.github.paolobd.intellijgamificationplugin.dataProviders
 
-class LevelDataProvider {
+object LevelDataProvider {
     val levels = listOf(
         50,
         100,

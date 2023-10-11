@@ -2,7 +2,7 @@ package com.github.paolobd.intellijgamificationplugin.dataProviders
 
 import com.github.paolobd.intellijgamificationplugin.dataClasses.Title
 
-class TitleDataProvider {
+object TitleDataProvider {
     val titles = listOf(
         Title("Novice", 1),
         Title("Always asleep", 1),

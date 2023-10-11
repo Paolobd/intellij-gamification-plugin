@@ -51,7 +51,7 @@ class EditUserDialog : DialogWrapper(true) {
         val selectTileLabel = JLabel("Title:")
         selectTileLabel.font = Font(selectTileLabel.font.name, Font.PLAIN, 16)
 
-        val titles = TitleDataProvider().titles.map {
+        val titles = TitleDataProvider.titles.map {
             if (it.level > userState.level)
                 "${it.text} [Level ${it.level}]"
             else
@@ -64,7 +64,7 @@ class EditUserDialog : DialogWrapper(true) {
         dropdown.renderer = CustomTitleComboBoxRenderer()
 
         dropdown.addActionListener {
-            val titleLevel = TitleDataProvider().getTitleById(dropdown.selectedIndex).level
+            val titleLevel = TitleDataProvider.getTitleById(dropdown.selectedIndex).level
             if (titleLevel > userState.level) {
                 dropdown.selectedIndex = titleId
             } else {
@@ -88,7 +88,7 @@ class EditUserDialog : DialogWrapper(true) {
         val allIconsPanel = JPanel(GridLayout(0, 5))
         iconId = userState.iconId
 
-        for ((index, userIcon) in UserIconDataProvider().icons.withIndex()) {
+        for ((index, userIcon) in UserIconDataProvider.icons.withIndex()) {
             val iconPanel = JPanel()
             iconPanel.layout = BorderLayout()
 
