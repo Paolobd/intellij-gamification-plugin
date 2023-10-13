@@ -1,7 +1,11 @@
 package com.github.paolobd.intellijgamificationplugin.userInterface
 
+import com.github.paolobd.intellijgamificationplugin.enums.ProjectAchievement
+import com.github.paolobd.intellijgamificationplugin.services.ProjectStatePersistence
 import com.intellij.openapi.project.Project
 import com.intellij.ui.components.JBTabbedPane
+import javax.swing.JButton
+import javax.swing.JPanel
 
 
 class UserInterface(private val project: Project) {
@@ -13,10 +17,22 @@ class UserInterface(private val project: Project) {
 
         mainUI.addTab("Profile", userTab.toolWindow)
         mainUI.addTab("Achievements", achievementTab.toolWindow)
+        mainUI.addTab("Debug", debugButton())
     }
 
     fun getContent(): JBTabbedPane {
         return mainUI
+    }
+
+    fun debugButton(): JPanel {
+        val panel = JPanel()
+        val button = JButton("Click me!")
+
+        button.addActionListener{
+            ProjectStatePersistence.getInstance(project).addExp(ProjectAchievement.values()[0].achievement, 4)
+        }
+        panel.add(button)
+        return panel
     }
 
     companion object {

@@ -40,9 +40,9 @@ class EditShowcaseDialog : DialogWrapper(true) {
         var elements = 0
         val achievementStats = ApplicationStatePersistence.getInstance().state.globalAchievements
         for (achEnum in GlobalAchievement.values()) {
-            val currentExp = achievementStats.find { it.id == achEnum.ordinal }!!.currentExp
+            val currentExp = achievementStats.find { it.id == achEnum.achievement.id }!!.currentExp
 
-            if (currentExp >= achEnum.achievement.milestone) {
+            if (currentExp >= achEnum.achievement.milestone[0]) {
                 elements++
                 val icon = Icons().loadGlobalAchIcon(achEnum.achievement.iconPath)
                 val iconButton = JButton(icon)
@@ -57,24 +57,24 @@ class EditShowcaseDialog : DialogWrapper(true) {
 
                 iconButton.border = notSelectedBorder
 
-                if (showcase.contains(achEnum.ordinal)) {
+                if (showcase.contains(achEnum.achievement.id)) {
                     iconButton.border = selectedBorder
 
-                    selectedAchievements[achEnum.ordinal] = iconButton
+                    selectedAchievements[achEnum.achievement.id] = iconButton
                 }
 
                 showcasePanel.add(iconButton)
 
                 iconButton.addActionListener {
-                    val ach = selectedAchievements[achEnum.ordinal]
+                    val ach = selectedAchievements[achEnum.achievement.id]
 
                     if (ach != null) {
                         ach.border = notSelectedBorder
-                        selectedAchievements.remove(achEnum.ordinal)
+                        selectedAchievements.remove(achEnum.achievement.id)
                     } else {
                         if (selectedAchievements.size < 5) {
                             iconButton.border = selectedBorder
-                            selectedAchievements[achEnum.ordinal] = iconButton
+                            selectedAchievements[achEnum.achievement.id] = iconButton
                         }
                     }
                 }

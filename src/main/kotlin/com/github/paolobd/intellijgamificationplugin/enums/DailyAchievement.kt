@@ -7,11 +7,12 @@ enum class DailyAchievement(
 ){
     DAILY_XPATH(
         Achievement(
+            1,
             "Xpath enjoyer",
             "Find different xpath elements",
             "xpath.svg",
-            5,
-            20
+            listOf(5),
+            listOf(20)
         )
     )
 }

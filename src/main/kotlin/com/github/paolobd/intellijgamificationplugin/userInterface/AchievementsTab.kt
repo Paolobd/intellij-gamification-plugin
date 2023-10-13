@@ -26,12 +26,12 @@ class AchievementsTab(val project: Project) {
         createPanel()
     }
 
-    fun updateProjectAchievement(id: Int, newExp: Int) {
-        projectAchievementCards.first { it.id == id }.updateProgress(newExp)
+    fun updateProjectAchievement(id: Int, exp: Int, milestoneIndex: Int) {
+        projectAchievementCards.first { it.achievement.id == id }.updateProgress(exp, milestoneIndex)
     }
 
-    fun updateGlobalAchievement(id: Int, newExp: Int) {
-        globalAchievementCards.first { it.id == id }.updateProgress(newExp)
+    fun updateGlobalAchievement(id: Int, exp: Int, milestoneIndex: Int) {
+        globalAchievementCards.first { it.achievement.id == id }.updateProgress(exp, milestoneIndex)
     }
 
     private fun createPanel() {
@@ -44,10 +44,9 @@ class AchievementsTab(val project: Project) {
             val achievement = achievementEnum.achievement
             globalAchievementCards.add(
                 AchievementCard(
-                    achievementEnum.ordinal,
-                    Icons().loadGlobalAchIcon(achievement.iconPath),
                     achievement,
-                    applicationStateAchievements.first { achievementEnum.ordinal == it.id }.currentExp
+                    Icons().loadGlobalAchIcon(achievement.iconPath),
+                    applicationStateAchievements.first { achievementEnum.achievement.id == it.id }.currentExp
                 )
             )
         }
@@ -56,10 +55,9 @@ class AchievementsTab(val project: Project) {
             val achievement = achievementEnum.achievement
             projectAchievementCards.add(
                 AchievementCard(
-                    achievementEnum.ordinal,
-                    Icons().loadProjectAchIcon(achievement.iconPath),
                     achievement,
-                    projectStateAchievements.first { achievementEnum.ordinal == it.id }.currentExp
+                    Icons().loadProjectAchIcon(achievement.iconPath),
+                    projectStateAchievements.first { achievementEnum.achievement.id == it.id }.currentExp
                 )
             )
         }
@@ -117,8 +115,8 @@ class AchievementsTab(val project: Project) {
     }
 
     private fun orderByDefault() {
-        projectAchievementCards.sortBy { it.id }
-        globalAchievementCards.sortBy { it.id }
+        projectAchievementCards.sortBy { it.achievement.id }
+        globalAchievementCards.sortBy { it.achievement.id }
 
         substituteAchievementPane(SortDropdown.DEFAULT)
     }
@@ -126,13 +124,13 @@ class AchievementsTab(val project: Project) {
     private fun orderByAlphabet(sortEnum: SortDropdown) {
         when (sortEnum) {
             SortDropdown.ALPHABETIC_ASC -> {
-                projectAchievementCards.sortBy { it.titleLabel.text }
-                globalAchievementCards.sortBy { it.titleLabel.text }
+                projectAchievementCards.sortBy { it.achievement.name }
+                globalAchievementCards.sortBy { it.achievement.name }
             }
 
             SortDropdown.ALPHABETIC_DSC -> {
-                projectAchievementCards.sortByDescending { it.titleLabel.text }
-                globalAchievementCards.sortByDescending { it.titleLabel.text }
+                projectAchievementCards.sortByDescending { it.achievement.name }
+                globalAchievementCards.sortByDescending { it.achievement.name }
             }
 
             else -> return

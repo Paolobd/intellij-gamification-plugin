@@ -123,9 +123,8 @@ class UserTab {
         val achEnum = GlobalAchievement.NUM_CLICKS
         val ach = achEnum.achievement
         val dailyAchievement = AchievementCard(
-            achEnum.ordinal,
-            Icons().loadGlobalAchIcon(ach.iconPath),
             ach,
+            Icons().loadGlobalAchIcon(ach.iconPath),
             0
         )
 

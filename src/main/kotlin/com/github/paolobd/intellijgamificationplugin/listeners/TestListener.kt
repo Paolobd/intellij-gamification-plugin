@@ -69,7 +69,7 @@ internal class TestListener(private val project: Project) : SMTRunnerEventsListe
         }
 
         for ((index, exp) in expUpdate.withIndex()) {
-            if (exp != 0) persistence.addExp(ProjectAchievement.values()[index], exp)
+            if (exp != 0) persistence.addExp(ProjectAchievement.values()[index].achievement, exp)
         }
     }
 

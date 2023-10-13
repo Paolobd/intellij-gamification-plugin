@@ -7,56 +7,62 @@ enum class GlobalAchievement(
 ) {
     NUM_CLICKS(
         Achievement(
+            1,
             "Night Owl",
             "Execute a test between 11 p.m and 3 a.m",
             "owl.svg",
-            1,
-            100
+            listOf(1),
+            listOf(100)
         )
     ),
     NUM_SITES(
         Achievement(
+            2,
             "Slow Testing",
             "A test took more than 1 minute",
             "slow.svg",
-            5,
-            20
+            listOf(5),
+            listOf(20)
         )
     ),
     NUM_LOCATOR_ALL(
         Achievement(
+            3,
             "Fast Testing",
             "A test took more than 1 second",
             "fast.svg",
-            200,
-            30
+            listOf(200),
+            listOf(30)
         )
     ),
     NUM_LOCATOR_ID(
         Achievement(
+            4,
             "High Success!",
             "Number of tests passed",
             "success.svg",
-            100,
-            30
+            listOf(100),
+            listOf(30)
         )
     ),
     NUM_LOCATOR_XPATH(
         Achievement(
+            5,
             "Failure",
             "Number of tests failed",
             "failed.svg",
-            100,
-            30
+            listOf(100),
+            listOf(30)
         )
     ),
     NUM_LOCATOR_CSS(
         Achievement(
+            6,
             "More Testing!",
             "Executed a suite with more than 10 test",
             "test.svg",
-            100,
-            30
+            listOf(100),
+            listOf(30)
         )
     ),
 }
