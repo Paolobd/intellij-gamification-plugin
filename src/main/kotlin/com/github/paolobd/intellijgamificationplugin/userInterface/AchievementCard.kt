@@ -36,7 +36,6 @@ class AchievementCard(
         // Center panel for title and description
         val centerPanel = JPanel()
         centerPanel.layout = BoxLayout(centerPanel, BoxLayout.Y_AXIS)
-        //centerPanel.layout = FlowLayout()
 
         titleLabel = JLabel(achievement.name)
         titleLabel.font = Font(titleLabel.font.name, Font.BOLD, 14)
@@ -52,7 +51,7 @@ class AchievementCard(
         val rightPanel = JPanel()
         rightPanel.layout = BoxLayout(rightPanel, BoxLayout.Y_AXIS)
 
-        while (currentMilestone < achievement.milestone.size-1 && currentExp >= achievement.milestone[currentMilestone]) {
+        while (currentMilestone < achievement.milestone.size - 1 && currentExp >= achievement.milestone[currentMilestone]) {
             currentMilestone++
         }
 
@@ -67,14 +66,27 @@ class AchievementCard(
         progressBar = JProgressBar(0, achievement.milestone[currentMilestone])
         progressBar.value = currentExp
 
-        progressLabel = JLabel("$currentExp / ${achievement.milestone[currentMilestone]}") // Placeholder for progress label
+        progressLabel =
+            JLabel("$currentExp / ${achievement.milestone[currentMilestone]}") // Placeholder for progress label
         progressLabel.font = Font(progressLabel.font.name, Font.PLAIN, 12)
         progressLabel.alignmentX = JLabel.CENTER_ALIGNMENT
 
         // Bottom right panel for XP value
-        xpLabel = JLabel("Gives ${achievement.userExperience[currentMilestone]} xp")
-        xpLabel.font = Font(xpLabel.font.name, Font.ITALIC, 10)
+        xpLabel = JLabel()
         xpLabel.alignmentX = JLabel.CENTER_ALIGNMENT
+
+        if (currentMilestone == achievement.milestone.size - 1 && currentExp >= achievement.milestone[currentMilestone]) {
+            xpLabel.text = "Completed"
+            xpLabel.font = Font(xpLabel.font.name, Font.BOLD, 10)
+            card.border = BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(JBColor.BLACK, 2),
+                BorderFactory.createEmptyBorder(3, 3, 3, 5)
+            )
+        }
+        else {
+            xpLabel.text = "Gives ${achievement.userExperience[currentMilestone]} xp"
+            xpLabel.font = Font(xpLabel.font.name, Font.ITALIC, 10)
+        }
 
         rightPanel.add(milestoneLabel)
         rightPanel.add(Box.createVerticalGlue())
@@ -90,11 +102,23 @@ class AchievementCard(
     }
 
     fun updateProgress(exp: Int, milestoneIndex: Int) {
-        if(milestoneIndex != currentMilestone){
+        if (milestoneIndex != currentMilestone) {
             currentMilestone = milestoneIndex
             milestoneLabel.text = "Milestone #${currentMilestone + 1}/${achievement.milestone.size}"
-            xpLabel.text = "Gives ${achievement.userExperience[currentMilestone]} xp"
-            progressBar.maximum = achievement.milestone[milestoneIndex]
+            progressBar.maximum = achievement.milestone[currentMilestone]
+
+            if (currentMilestone == achievement.milestone.size - 1 && exp >= achievement.milestone[currentMilestone]) {
+                xpLabel.text = "Completed"
+                xpLabel.font = Font(xpLabel.font.name, Font.BOLD, 10)
+                card.border = BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(JBColor.BLACK),
+                    BorderFactory.createEmptyBorder(3, 3, 3, 5)
+                )
+            }
+            else{
+                xpLabel.text = "Gives ${achievement.userExperience[currentMilestone]} xp"
+            }
+
         }
 
         progressBar.value = exp
