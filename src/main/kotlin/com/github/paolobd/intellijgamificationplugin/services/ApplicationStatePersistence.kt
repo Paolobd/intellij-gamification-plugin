@@ -2,6 +2,7 @@ package com.github.paolobd.intellijgamificationplugin.services
 
 import com.github.paolobd.intellijgamificationplugin.dataClasses.ApplicationState
 import com.github.paolobd.intellijgamificationplugin.dataProviders.LevelDataProvider
+import com.github.paolobd.intellijgamificationplugin.userInterface.MyNotifier
 import com.github.paolobd.intellijgamificationplugin.userInterface.UserInterface
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.PersistentStateComponent
@@ -38,6 +39,10 @@ class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
     }
 
     fun addUserExp(experience: Int) {
+        if(experience == 0){
+            return
+        }
+
         var experienceToAdd = myApplicationState.userState.experience + experience
         var userLevel = myApplicationState.userState.level
         val levels = LevelDataProvider.levels
@@ -47,6 +52,7 @@ class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
             experienceToAdd -= levels[i]
             userLevel++
             i++
+            MyNotifier.notifyLevelUp(null, userLevel)
         }
 
         if (i >= levels.size) {

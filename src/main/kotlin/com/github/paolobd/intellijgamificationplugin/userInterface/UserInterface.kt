@@ -29,7 +29,8 @@ class UserInterface(private val project: Project) {
         val button = JButton("Click me!")
 
         button.addActionListener{
-            ProjectStatePersistence.getInstance(project).addExp(ProjectAchievement.values()[0].achievement, 4)
+            ProjectStatePersistence.getInstance(project).addExp(project, ProjectAchievement.values()[0].achievement, 4)
+            //MyNotifier.notifyLevelUp(project, 2)
         }
         panel.add(button)
         return panel

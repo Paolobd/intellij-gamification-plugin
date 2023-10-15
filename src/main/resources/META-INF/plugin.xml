@@ -20,8 +20,10 @@
                     anchor="right"
                     factoryClass="com.github.paolobd.intellijgamificationplugin.userInterface.UserInterfaceFactory"/>
         
-        <notificationGroup id="Achievement Notification Group"
-                           displayType="BALLOON"/>
+        <notificationGroup id="GameGUI Achievement Progress" displayType="BALLOON"/>
+        <notificationGroup id="GameGUI Achievement Completed" displayType="BALLOON"/>
+        <notificationGroup id="GameGUI Level Up" displayType="BALLOON"/>
+        <notificationGroup id="GameGUI Warning" displayType="BALLOON"/>
 
         <postStartupActivity implementation="com.github.paolobd.intellijgamificationplugin.services.MyStartUpActivity" />
 

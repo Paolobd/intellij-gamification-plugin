@@ -3,7 +3,6 @@ package com.github.paolobd.intellijgamificationplugin.userInterface
 import com.github.paolobd.intellijgamificationplugin.dataClasses.Achievement
 import com.intellij.ui.JBColor
 import java.awt.BorderLayout
-import java.awt.Component
 import java.awt.Font
 import javax.swing.*
 
@@ -82,8 +81,7 @@ class AchievementCard(
                 BorderFactory.createLineBorder(JBColor.BLACK, 2),
                 BorderFactory.createEmptyBorder(3, 3, 3, 5)
             )
-        }
-        else {
+        } else {
             xpLabel.text = "Gives ${achievement.userExperience[currentMilestone]} xp"
             xpLabel.font = Font(xpLabel.font.name, Font.ITALIC, 10)
         }
@@ -114,8 +112,7 @@ class AchievementCard(
                     BorderFactory.createLineBorder(JBColor.BLACK),
                     BorderFactory.createEmptyBorder(3, 3, 3, 5)
                 )
-            }
-            else{
+            } else {
                 xpLabel.text = "Gives ${achievement.userExperience[currentMilestone]} xp"
             }
 

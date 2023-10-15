@@ -34,58 +34,56 @@ class ProjectStatePersistence : PersistentStateComponent<ProjectState> {
         }
     }
 
-    fun addExp(achievement: Achievement, exp: Int) {
-
+    fun addExp(project: Project, achievement: Achievement, exp: Int) {
         //achEnum contains achievement Name, Description, maxExp, iconName
         //achievement contains currentExp
-        val achievementState = myProjectState.achievementList.first{ it.id == achievement.id }
-
-        //val oldExp = achievement.value
-
+        val achievementState = myProjectState.achievementList.first { it.id == achievement.id }
         val oldExp = achievementState.currentExp
+
+        //Achievement already completed
+        if (oldExp >= achievement.milestone.last() || exp == 0) {
+            return
+        }
 
         //update the value in the state
         var index = 0
         var newExp = oldExp + exp
 
-        while(index < achievement.milestone.size-1 && newExp >= achievement.milestone[index]){
+        while (index < achievement.milestone.size - 1 && oldExp >= achievement.milestone[index]) {
+            index++
+        }
+
+        while (index < achievement.milestone.size - 1 && newExp >= achievement.milestone[index]) {
+            MyNotifier.notifyAchievementMilestone(project, achievement, index)
+            ApplicationStatePersistence.getInstance().addUserExp(achievement.userExperience[index])
             index++
         }
 
         //only reached if we have more exp than required for the final milestone
-        if(newExp > achievement.milestone[index]){
+        if (newExp >= achievement.milestone[index] && oldExp != achievement.milestone[index]) {
             newExp = achievement.milestone[index]
+            MyNotifier.notifyAchievementMilestone(project, achievement, index)
+            ApplicationStatePersistence.getInstance().addUserExp(achievement.userExperience[index - 1])
+        } else {
+            val oldPer = oldExp.toFloat() / achievement.milestone[index] * 100
+            val newPer = newExp.toFloat() / achievement.milestone[index] * 100
+            val oldRounded = (oldPer / 25).toInt() * 25
+            val newRounded = (newPer / 25).toInt() * 25
+
+            if (newRounded > 0 && newRounded > oldRounded) {
+                MyNotifier.notifyAchievementProgress(project, achievement, index, newRounded)
+            }
         }
 
         achievementState.currentExp = newExp
 
         //update the value in the UI
         UserInterface.achievementTab.updateProjectAchievement(achievement.id, achievementState.currentExp, index)
-
-        //prepare to send the notification
-        //var notificationText: String? = null
-        //val oldPercentage = oldExp.toFloat() / achievement.milestone * 100
-        //val currPercentage = achievement.value.toFloat() / achEnum.maxExp * 100
-        //val currPercentage = achievementState.currentExp.toFloat() / achievement.milestone * 100
-
-        /*intArrayOf(25, 50, 75, 100).forEach {
-            if (oldPercentage < it && currPercentage >= it) {
-                notificationText =
-                    if (it == 100) "Congratulations! You've completed '${achievement.name}'"
-                    else "You've reached $it% of '${achievement.name}'"
-            }
-        }*/
-
-        //Passing null instead of project makes it appear in any case, if I manage to pass the project it will show only
-        //in the project windows
-       /* if (notificationText != null) {
-            MyNotifier.notifyAchievement(null, notificationText!!)
-        }*/
     }
 
     companion object {
         @JvmStatic
-        fun getInstance(project: Project): ProjectStatePersistence = project.getService(ProjectStatePersistence::class.java)
-
+        fun getInstance(project: Project): ProjectStatePersistence =
+            project.getService(ProjectStatePersistence::class.java)
     }
 }
