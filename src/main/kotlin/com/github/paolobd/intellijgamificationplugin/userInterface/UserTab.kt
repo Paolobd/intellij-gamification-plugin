@@ -3,6 +3,7 @@ package com.github.paolobd.intellijgamificationplugin.userInterface
 import com.github.paolobd.intellijgamificationplugin.dataProviders.LevelDataProvider
 import com.github.paolobd.intellijgamificationplugin.dataProviders.TitleDataProvider
 import com.github.paolobd.intellijgamificationplugin.dataProviders.UserIconDataProvider
+import com.github.paolobd.intellijgamificationplugin.enums.DailyAchievement
 import com.github.paolobd.intellijgamificationplugin.enums.GlobalAchievement
 import com.github.paolobd.intellijgamificationplugin.services.ApplicationStatePersistence
 import com.intellij.openapi.ui.SimpleToolWindowPanel
@@ -19,6 +20,7 @@ class UserTab {
     private var experienceLabel = JLabel()
     private var levelLabel = JLabel()
     private var showcaseIcons = mutableListOf<JLabel>()
+    lateinit var dailyCard: AchievementCard
 
     init {
         createPanel()
@@ -120,16 +122,11 @@ class UserTab {
         dailyLabel.font = Font(dailyLabel.font.name, Font.PLAIN, 14)
         dailyLabel.alignmentX = Component.CENTER_ALIGNMENT
         dailyLabel.border = BorderFactory.createEmptyBorder(20, 0, 10, 0)
-        val achEnum = GlobalAchievement.NUM_CLICKS
-        val ach = achEnum.achievement
-        val dailyAchievement = AchievementCard(
-            ach,
-            Icons().loadGlobalAchIcon(ach.iconPath),
-            0
-        )
+
+        createDailyCard()
 
         dailyPanel.add(dailyLabel)
-        dailyPanel.add(dailyAchievement.card)
+        dailyPanel.add(dailyCard.card)
 
         val mainPanel = JPanel()
         mainPanel.layout = BoxLayout(mainPanel, BoxLayout.X_AXIS)
@@ -146,7 +143,7 @@ class UserTab {
         val editShowcaseButton = JButton(Icons().loadEditIcon())
         editShowcaseButton.toolTipText = "Edit achievement showcase"
 
-        editShowcaseButton.addActionListener{
+        editShowcaseButton.addActionListener {
             EditShowcaseDialog().show()
         }
 
@@ -228,5 +225,18 @@ class UserTab {
                 showcaseIcons[i].icon = Icons().loadEmptyIcon()
             }
         }
+    }
+
+    fun updateDailyAchievement() {
+        createDailyCard()
+    }
+    private fun createDailyCard(){
+        val dailyState = ApplicationStatePersistence.getInstance().state.dailyAchievement
+        val dailyAchievement = DailyAchievement.values().map { it.achievement }.first { it.id == dailyState.state.id }
+        dailyCard = AchievementCard(
+            dailyAchievement,
+            Icons().loadGlobalAchIcon(dailyAchievement.iconPath),
+            dailyState.state.currentExp
+        )
     }
 }

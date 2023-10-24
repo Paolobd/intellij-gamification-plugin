@@ -38,7 +38,7 @@ class AchievementsTab(val project: Project) {
         toolWindow = SimpleToolWindowPanel(true, true)
 
         val projectStateAchievements = ProjectStatePersistence.getInstance(project).state.achievementList
-        val applicationStateAchievements = ApplicationStatePersistence.getInstance().state.globalAchievements
+        val applicationStateAchievements = ApplicationStatePersistence.getInstance().state.achievementList
 
         for (achievementEnum in GlobalAchievement.values()) {
             val achievement = achievementEnum.achievement

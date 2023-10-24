@@ -8,7 +8,7 @@ import javax.swing.JButton
 import javax.swing.JPanel
 
 
-class UserInterface(private val project: Project) {
+class UserInterface(project: Project) {
     private var mainUI: JBTabbedPane = JBTabbedPane()
 
     init {
@@ -24,13 +24,14 @@ class UserInterface(private val project: Project) {
         return mainUI
     }
 
-    fun debugButton(): JPanel {
+    private fun debugButton(): JPanel {
         val panel = JPanel()
         val button = JButton("Click me!")
 
         button.addActionListener{
-            ProjectStatePersistence.getInstance(project).addExp(project, ProjectAchievement.values()[0].achievement, 4)
+            //ProjectStatePersistence.getInstance(project).addExp(project, ProjectAchievement.values()[0].achievement, 4)
             //MyNotifier.notifyLevelUp(project, 2)
+            userTab.dailyCard.updateProgress(10, 0)
         }
         panel.add(button)
         return panel

@@ -38,7 +38,7 @@ class EditShowcaseDialog : DialogWrapper(true) {
         val showcasePanel = JPanel(GridLayout(0, 5))
 
         var elements = 0
-        val achievementStats = ApplicationStatePersistence.getInstance().state.globalAchievements
+        val achievementStats = ApplicationStatePersistence.getInstance().state.achievementList
         for (achEnum in GlobalAchievement.values()) {
             val currentExp = achievementStats.find { it.id == achEnum.achievement.id }!!.currentExp
 

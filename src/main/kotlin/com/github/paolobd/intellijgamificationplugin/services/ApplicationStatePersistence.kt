@@ -1,7 +1,11 @@
 package com.github.paolobd.intellijgamificationplugin.services
 
+import com.github.paolobd.intellijgamificationplugin.dataClasses.AchievementState
 import com.github.paolobd.intellijgamificationplugin.dataClasses.ApplicationState
+import com.github.paolobd.intellijgamificationplugin.dataClasses.DailyAchievementState
 import com.github.paolobd.intellijgamificationplugin.dataProviders.LevelDataProvider
+import com.github.paolobd.intellijgamificationplugin.enums.DailyAchievement
+import com.github.paolobd.intellijgamificationplugin.enums.GlobalAchievement
 import com.github.paolobd.intellijgamificationplugin.userInterface.MyNotifier
 import com.github.paolobd.intellijgamificationplugin.userInterface.UserInterface
 import com.intellij.openapi.application.ApplicationManager
@@ -10,7 +14,10 @@ import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.util.xmlb.XmlSerializerUtil
 import org.jetbrains.annotations.NotNull
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.annotation.Nullable
+import kotlin.random.Random
 
 @State(name = "ApplicationState", storages = [Storage("GamificationGUIApplicationState.xml")])
 class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
@@ -26,6 +33,40 @@ class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
         XmlSerializerUtil.copyBean(state, myApplicationState)
     }
 
+    fun addMissingAndCheckDaily() {
+        for (achievement in GlobalAchievement.values().map { it.achievement }) {
+            val found = myApplicationState.achievementList.find { it.id == achievement.id }
+
+            if (found == null) {
+                myApplicationState.achievementList.add(AchievementState(achievement.id, 0))
+            }
+        }
+        dailyUpdated()
+    }
+
+    fun checkAndUpdateDailyGUI() {
+        if (dailyUpdated()) {
+            UserInterface.userTab.updateDailyAchievement()
+        }
+    }
+
+    private fun dailyUpdated(): Boolean {
+        val timestampDailyAch = myApplicationState.dailyAchievement.timestamp
+        val dateNow = formatTimestamp(System.currentTimeMillis())
+        val dateDaily = formatTimestamp(timestampDailyAch)
+        println("Date now: $dateNow, date daily: $dateDaily")
+
+        if (dateNow > dateDaily) {
+            val dailyId = Random.nextInt(1, DailyAchievement.values().size + 1)
+            println("Chose $dailyId from ${DailyAchievement.values().size}")
+            myApplicationState.dailyAchievement = DailyAchievementState(
+                AchievementState(dailyId, 0), System.currentTimeMillis()
+            )
+            return true
+        }
+        return false
+    }
+
     fun changeUserInfo(name: String, titleId: Int, iconId: Int) {
         myApplicationState.userState.name = name
         myApplicationState.userState.titleId = titleId
@@ -39,7 +80,7 @@ class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
     }
 
     fun addUserExp(experience: Int) {
-        if(experience == 0){
+        if (experience == 0) {
             return
         }
 
@@ -67,6 +108,12 @@ class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
 
     fun resetState() {
         myApplicationState = ApplicationState()
+    }
+
+    private fun formatTimestamp(timestamp: Long): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val date = Date(timestamp)
+        return dateFormat.format(date)
     }
 
     companion object {

@@ -104,18 +104,17 @@ class AchievementCard(
             currentMilestone = milestoneIndex
             milestoneLabel.text = "Milestone #${currentMilestone + 1}/${achievement.milestone.size}"
             progressBar.maximum = achievement.milestone[currentMilestone]
+        }
 
-            if (currentMilestone == achievement.milestone.size - 1 && exp >= achievement.milestone[currentMilestone]) {
-                xpLabel.text = "Completed"
-                xpLabel.font = Font(xpLabel.font.name, Font.BOLD, 10)
-                card.border = BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(JBColor.BLACK),
-                    BorderFactory.createEmptyBorder(3, 3, 3, 5)
-                )
-            } else {
-                xpLabel.text = "Gives ${achievement.userExperience[currentMilestone]} xp"
-            }
-
+        if (currentMilestone == achievement.milestone.size - 1 && exp >= achievement.milestone[currentMilestone]) {
+            xpLabel.text = "Completed"
+            xpLabel.font = Font(xpLabel.font.name, Font.BOLD, 10)
+            card.border = BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(JBColor.BLACK),
+                BorderFactory.createEmptyBorder(3, 3, 3, 5)
+            )
+        } else {
+            xpLabel.text = "Gives ${achievement.userExperience[currentMilestone]} xp"
         }
 
         progressBar.value = exp

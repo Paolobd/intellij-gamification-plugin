@@ -10,7 +10,7 @@ enum class DailyAchievement(
             1,
             "Xpath enjoyer",
             "Find different xpath elements",
-            "xpath.svg",
+            "owl.svg",
             listOf(5),
             listOf(20)
         )

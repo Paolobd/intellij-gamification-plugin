@@ -4,9 +4,12 @@ import com.github.paolobd.intellijgamificationplugin.library.Event
 import com.github.paolobd.intellijgamificationplugin.library.EventType
 import com.github.paolobd.intellijgamificationplugin.library.Server
 import com.github.paolobd.intellijgamificationplugin.enums.ProjectAchievement
+import com.github.paolobd.intellijgamificationplugin.services.AchievementService
+import com.github.paolobd.intellijgamificationplugin.services.ApplicationStatePersistence
 import com.github.paolobd.intellijgamificationplugin.services.ProjectStatePersistence
 import com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener
 import com.intellij.execution.testframework.sm.runner.SMTestProxy
+import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.project.Project
 
 internal class TestListener(private val project: Project) : SMTRunnerEventsListener {
@@ -18,6 +21,7 @@ internal class TestListener(private val project: Project) : SMTRunnerEventsListe
 
     override fun onTestingFinished(testsRoot: SMTestProxy.SMRootTestProxy) {
         server.stop()
+        ApplicationStatePersistence.getInstance().checkAndUpdateDailyGUI()
     }
 
     override fun onTestsCountInSuite(count: Int) {
@@ -27,50 +31,10 @@ internal class TestListener(private val project: Project) : SMTRunnerEventsListe
     }
 
     override fun onTestFinished(test: SMTestProxy) {
-        val persistence = ProjectStatePersistence.getInstance(project)
-
-        val expUpdate = MutableList(ProjectAchievement.values().size) { 0 }
-
         val eventList = Server.events
+        val service = project.getService(AchievementService::class.java)
 
-        val newEvents = mutableListOf<Event>()
-
-        println("EventList: $eventList")
-
-
-        for (event in eventList) {
-            val found = persistence.state.eventList.contains(event)
-
-            if (!found) {
-                newEvents.add(event)
-                persistence.state.eventList.add(event)
-
-                when (event.eventType) {
-                    EventType.CLICK -> expUpdate[ProjectAchievement.NUM_CLICKS.ordinal]++
-                    EventType.LOCATOR -> expUpdate[ProjectAchievement.NUM_LOCATOR_ALL.ordinal]++
-                    EventType.NAVIGATION -> expUpdate[ProjectAchievement.NUM_SITES.ordinal]++
-                    EventType.LOCATOR_ID -> {
-                        expUpdate[ProjectAchievement.NUM_LOCATOR_ID.ordinal]++
-                        expUpdate[ProjectAchievement.NUM_LOCATOR_ALL.ordinal]++
-                    }
-
-                    EventType.LOCATOR_CSS -> {
-                        expUpdate[ProjectAchievement.NUM_LOCATOR_CSS.ordinal]++
-                        expUpdate[ProjectAchievement.NUM_LOCATOR_ALL.ordinal]++
-                    }
-
-                    EventType.LOCATOR_XPATH -> {
-                        expUpdate[ProjectAchievement.NUM_LOCATOR_XPATH.ordinal]++
-                        expUpdate[ProjectAchievement.NUM_LOCATOR_ALL.ordinal]++
-                    }
-                }
-
-            }
-        }
-
-        for ((index, exp) in expUpdate.withIndex()) {
-            if (exp != 0) persistence.addExp(project, ProjectAchievement.values()[index].achievement, exp)
-        }
+        service.analyzeEvents(eventList)
     }
 
     override fun onTestFailed(test: SMTestProxy) {

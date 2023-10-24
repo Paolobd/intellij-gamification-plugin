@@ -1,8 +1,10 @@
 package com.github.paolobd.intellijgamificationplugin.services
 
 import com.github.paolobd.intellijgamificationplugin.dataClasses.Achievement
+import com.github.paolobd.intellijgamificationplugin.dataClasses.AchievementState
 import com.github.paolobd.intellijgamificationplugin.enums.ProjectAchievement
 import com.github.paolobd.intellijgamificationplugin.dataClasses.ProjectState
+import com.github.paolobd.intellijgamificationplugin.enums.GlobalAchievement
 import com.github.paolobd.intellijgamificationplugin.userInterface.MyNotifier
 import com.github.paolobd.intellijgamificationplugin.userInterface.UserInterface
 import com.intellij.openapi.components.PersistentStateComponent
@@ -27,6 +29,16 @@ class ProjectStatePersistence : PersistentStateComponent<ProjectState> {
         XmlSerializerUtil.copyBean(state, myProjectState)
     }
 
+    fun addMissing() {
+        for (achievement in ProjectAchievement.values().map { it.achievement }) {
+            val found = myProjectState.achievementList.find { it.id == achievement.id }
+
+            if (found == null) {
+                myProjectState.achievementList.add(AchievementState(achievement.id, 0))
+            }
+        }
+    }
+
     fun resetState() {
         myProjectState = ProjectState()
         for (projectAchievementCard in UserInterface.achievementTab.projectAchievementCards) {
@@ -34,7 +46,7 @@ class ProjectStatePersistence : PersistentStateComponent<ProjectState> {
         }
     }
 
-    fun addExp(project: Project, achievement: Achievement, exp: Int) {
+    /*fun addExp(project: Project, achievement: Achievement, exp: Int) {
         //achEnum contains achievement Name, Description, maxExp, iconName
         //achievement contains currentExp
         val achievementState = myProjectState.achievementList.first { it.id == achievement.id }
@@ -79,7 +91,7 @@ class ProjectStatePersistence : PersistentStateComponent<ProjectState> {
 
         //update the value in the UI
         UserInterface.achievementTab.updateProjectAchievement(achievement.id, achievementState.currentExp, index)
-    }
+    }*/
 
     companion object {
         @JvmStatic
