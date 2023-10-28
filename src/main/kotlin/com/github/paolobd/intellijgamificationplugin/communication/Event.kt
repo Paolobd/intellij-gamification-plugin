@@ -1,4 +1,4 @@
-package com.github.paolobd.intellijgamificationplugin.library
+package com.github.paolobd.intellijgamificationplugin.communication
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

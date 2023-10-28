@@ -2,7 +2,6 @@ package com.github.paolobd.intellijgamificationplugin.userInterface
 
 import com.github.paolobd.intellijgamificationplugin.services.ApplicationStatePersistence
 import com.github.paolobd.intellijgamificationplugin.services.ProjectStatePersistence
-import com.github.paolobd.intellijgamificationplugin.userInterface.UserInterface
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory

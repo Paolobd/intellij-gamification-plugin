@@ -25,8 +25,7 @@ class EditShowcaseDialog : DialogWrapper(true) {
         gbc.gridy = 0
 
         val informativeLabel = JLabel(
-            "<html>You can select up to 5 global achievements you have unlocked<br> " +
-                    "to show off in your profile</html>"
+            "<html>You can select up to 5 global achievements you have unlocked<br> " + "to show off on your profile!</html>"
         )
         informativeLabel.font = Font(informativeLabel.font.name, Font.PLAIN, 14)
         informativeLabel.alignmentX = Component.CENTER_ALIGNMENT
@@ -44,7 +43,7 @@ class EditShowcaseDialog : DialogWrapper(true) {
 
             if (currentExp >= achEnum.achievement.milestone[0]) {
                 elements++
-                val icon = Icons().loadGlobalAchIcon(achEnum.achievement.iconPath)
+                val icon = IconUtility().loadGlobalAchIcon(achEnum.achievement.iconPath)
                 val iconButton = JButton(icon)
                 iconButton.toolTipText = achEnum.achievement.name
                 iconButton.isRequestFocusEnabled = false
@@ -85,9 +84,8 @@ class EditShowcaseDialog : DialogWrapper(true) {
         gbc.gridy++
         if (elements != 0) {
             panel.add(JBScrollPane(showcasePanel), gbc)
-        }
-        else {
-            val label = JLabel("Oops! You need to unlock at least one achievement")
+        } else {
+            val label = JLabel("Oops! You need to complete at least one global achievement")
             label.font = Font(label.font.name, Font.PLAIN, 14)
             panel.add(label, gbc)
         }
@@ -102,7 +100,7 @@ class EditShowcaseDialog : DialogWrapper(true) {
     override fun doOKAction() {
         val selected = selectedAchievements.keys.toMutableList()
 
-        while(selected.size < 5){
+        while (selected.size < 5) {
             selected.add(-1)
         }
 

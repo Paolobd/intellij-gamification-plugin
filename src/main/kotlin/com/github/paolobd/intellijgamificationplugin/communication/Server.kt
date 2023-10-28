@@ -1,4 +1,4 @@
-package com.github.paolobd.intellijgamificationplugin.library
+package com.github.paolobd.intellijgamificationplugin.communication
 
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.serialization.jackson.*
@@ -32,11 +32,7 @@ fun Application.module() {
         jackson()
     }
     routing {
-        get("/") {
-            val responseData = "Hello, World!"
-            call.respond(responseData)
-        }
-        post("/receiveJson") {
+        post("/sendEvents") {
             val data = call.receive<List<Event>>()
             println(data)
             Server.events = data.toMutableList()

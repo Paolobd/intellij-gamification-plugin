@@ -1,7 +1,5 @@
 package com.github.paolobd.intellijgamificationplugin.userInterface
 
-import com.github.paolobd.intellijgamificationplugin.enums.ProjectAchievement
-import com.github.paolobd.intellijgamificationplugin.services.ProjectStatePersistence
 import com.intellij.openapi.project.Project
 import com.intellij.ui.components.JBTabbedPane
 import javax.swing.JButton
@@ -10,6 +8,7 @@ import javax.swing.JPanel
 
 class UserInterface(project: Project) {
     private var mainUI: JBTabbedPane = JBTabbedPane()
+    //private val project = project
 
     init {
         userTab = UserTab()
@@ -28,10 +27,10 @@ class UserInterface(project: Project) {
         val panel = JPanel()
         val button = JButton("Click me!")
 
-        button.addActionListener{
+        button.addActionListener {
             //ProjectStatePersistence.getInstance(project).addExp(project, ProjectAchievement.values()[0].achievement, 4)
             //MyNotifier.notifyLevelUp(project, 2)
-            userTab.dailyCard.updateProgress(10, 0)
+            //userTab.dailyCard.updateProgress(10, 0)
         }
         panel.add(button)
         return panel

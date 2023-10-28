@@ -3,7 +3,7 @@ package com.github.paolobd.intellijgamificationplugin.userInterface
 import com.intellij.openapi.util.IconLoader
 import javax.swing.Icon
 
-class Icons {
+class IconUtility {
 
     fun loadUserIcon(name: String): Icon {
         return loadIcon("/userInterface/user/full/${name}")

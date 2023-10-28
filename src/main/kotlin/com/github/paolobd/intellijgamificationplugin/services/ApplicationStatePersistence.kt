@@ -14,9 +14,9 @@ import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.util.xmlb.XmlSerializerUtil
 import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.annotation.Nullable
 import kotlin.random.Random
 
 @State(name = "ApplicationState", storages = [Storage("GamificationGUIApplicationState.xml")])
@@ -54,11 +54,9 @@ class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
         val timestampDailyAch = myApplicationState.dailyAchievement.timestamp
         val dateNow = formatTimestamp(System.currentTimeMillis())
         val dateDaily = formatTimestamp(timestampDailyAch)
-        println("Date now: $dateNow, date daily: $dateDaily")
 
         if (dateNow > dateDaily) {
             val dailyId = Random.nextInt(1, DailyAchievement.values().size + 1)
-            println("Chose $dailyId from ${DailyAchievement.values().size}")
             myApplicationState.dailyAchievement = DailyAchievementState(
                 AchievementState(dailyId, 0), System.currentTimeMillis()
             )
@@ -112,6 +110,12 @@ class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
 
     private fun formatTimestamp(timestamp: Long): String {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val date = Date(timestamp)
+        return dateFormat.format(date)
+    }
+
+    fun formatAvailableDate(timestamp: Long): String {
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy")
         val date = Date(timestamp)
         return dateFormat.format(date)
     }

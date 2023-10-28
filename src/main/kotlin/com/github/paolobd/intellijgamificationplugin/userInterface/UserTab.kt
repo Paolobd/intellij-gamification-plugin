@@ -20,6 +20,7 @@ class UserTab {
     private var experienceLabel = JLabel()
     private var levelLabel = JLabel()
     private var showcaseIcons = mutableListOf<JLabel>()
+    private var dailyTime = JLabel()
     lateinit var dailyCard: AchievementCard
 
     init {
@@ -33,7 +34,7 @@ class UserTab {
         val iconPanel = JPanel(BorderLayout())
         val userIcon = UserIconDataProvider.getUserIconById(userState.iconId)
 
-        userIconLabel = JLabel(Icons().loadUserIcon(userIcon.fileName))
+        userIconLabel = JLabel(IconUtility().loadUserIcon(userIcon.fileName))
         userIconLabel.alignmentX = Component.CENTER_ALIGNMENT
         userIconLabel.alignmentY = Component.CENTER_ALIGNMENT
         iconPanel.add(userIconLabel)
@@ -98,10 +99,10 @@ class UserTab {
             val icon = if (iconId >= 0) {
                 val achEnum = GlobalAchievement.values()[iconId]
                 iconLabel.toolTipText = achEnum.achievement.name
-                Icons().loadGlobalAchIcon(achEnum.achievement.iconPath)
+                IconUtility().loadGlobalAchIcon(achEnum.achievement.iconPath)
             } else {
                 iconLabel.toolTipText = null
-                Icons().loadEmptyIcon()
+                IconUtility().loadEmptyIcon()
             }
 
             iconLabel.icon = icon
@@ -121,11 +122,22 @@ class UserTab {
         val dailyLabel = JLabel("Daily Task")
         dailyLabel.font = Font(dailyLabel.font.name, Font.PLAIN, 14)
         dailyLabel.alignmentX = Component.CENTER_ALIGNMENT
-        dailyLabel.border = BorderFactory.createEmptyBorder(20, 0, 10, 0)
+        dailyLabel.border = BorderFactory.createEmptyBorder(20, 0, 0, 0)
 
         createDailyCard()
 
+        val timePanel = JPanel()
+        timePanel.layout = BoxLayout(timePanel, BoxLayout.X_AXIS)
+
+        dailyTime.font = Font(dailyLabel.font.name, Font.ITALIC, 12)
+        dailyTime.alignmentX = Component.RIGHT_ALIGNMENT
+        dailyTime.border = BorderFactory.createEmptyBorder(5, 0, 10, 0)
+
+        timePanel.add(Box.createHorizontalGlue())
+        timePanel.add(dailyTime)
+
         dailyPanel.add(dailyLabel)
+        dailyPanel.add(timePanel)
         dailyPanel.add(dailyCard.card)
 
         val mainPanel = JPanel()
@@ -133,14 +145,14 @@ class UserTab {
         mainPanel.add(iconPanel)
         mainPanel.add(infoPanel)
 
-        val editUserButton = JButton(Icons().loadEditIcon())
+        val editUserButton = JButton(IconUtility().loadEditIcon())
         editUserButton.toolTipText = "Edit user information"
 
         editUserButton.addActionListener {
             EditUserDialog().show()
         }
 
-        val editShowcaseButton = JButton(Icons().loadEditIcon())
+        val editShowcaseButton = JButton(IconUtility().loadEditIcon())
         editShowcaseButton.toolTipText = "Edit achievement showcase"
 
         editShowcaseButton.addActionListener {
@@ -188,7 +200,7 @@ class UserTab {
         val userState = ApplicationStatePersistence.getInstance().state.userState
 
         val userIcon = UserIconDataProvider.getUserIconById(userState.iconId)
-        userIconLabel.icon = Icons().loadUserIcon(userIcon.fileName)
+        userIconLabel.icon = IconUtility().loadUserIcon(userIcon.fileName)
 
         nameLabel.text = userState.name
 
@@ -219,10 +231,10 @@ class UserTab {
             if (iconId >= 0) {
                 val iconEnum = GlobalAchievement.values()[iconId]
                 showcaseIcons[i].toolTipText = iconEnum.achievement.name
-                showcaseIcons[i].icon = Icons().loadGlobalAchIcon(iconEnum.achievement.iconPath)
+                showcaseIcons[i].icon = IconUtility().loadGlobalAchIcon(iconEnum.achievement.iconPath)
             } else {
                 showcaseIcons[i].toolTipText = null
-                showcaseIcons[i].icon = Icons().loadEmptyIcon()
+                showcaseIcons[i].icon = IconUtility().loadEmptyIcon()
             }
         }
     }
@@ -230,12 +242,16 @@ class UserTab {
     fun updateDailyAchievement() {
         createDailyCard()
     }
-    private fun createDailyCard(){
+
+    private fun createDailyCard() {
         val dailyState = ApplicationStatePersistence.getInstance().state.dailyAchievement
+        val dailyTimeout = dailyState.timestamp
+        val dateAvailable = ApplicationStatePersistence.getInstance().formatAvailableDate(dailyTimeout)
+        dailyTime.text = "Available until $dateAvailable"
         val dailyAchievement = DailyAchievement.values().map { it.achievement }.first { it.id == dailyState.state.id }
         dailyCard = AchievementCard(
             dailyAchievement,
-            Icons().loadGlobalAchIcon(dailyAchievement.iconPath),
+            IconUtility().loadGlobalAchIcon(dailyAchievement.iconPath),
             dailyState.state.currentExp
         )
     }

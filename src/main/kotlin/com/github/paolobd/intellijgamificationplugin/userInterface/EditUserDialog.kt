@@ -92,7 +92,7 @@ class EditUserDialog : DialogWrapper(true) {
             val iconPanel = JPanel()
             iconPanel.layout = BorderLayout()
 
-            val icon = Icons().loadUserMiniatureIcon(userIcon.fileName)
+            val icon = IconUtility().loadUserMiniatureIcon(userIcon.fileName)
             val iconButton = JButton(icon)
             val iconLabel = JLabel()
             iconLabel.font = Font(iconLabel.font.name, Font.PLAIN, 10)

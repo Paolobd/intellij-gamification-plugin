@@ -21,6 +21,7 @@ class AchievementsTab(val project: Project) {
     var globalAchievementCards = mutableListOf<AchievementCard>()
     var projectAchievementCards = mutableListOf<AchievementCard>()
     private lateinit var achievementPane: JBTabbedPane
+    private var actualOrder = SortDropdown.DEFAULT
 
     init {
         createPanel()
@@ -45,7 +46,7 @@ class AchievementsTab(val project: Project) {
             globalAchievementCards.add(
                 AchievementCard(
                     achievement,
-                    Icons().loadGlobalAchIcon(achievement.iconPath),
+                    IconUtility().loadGlobalAchIcon(achievement.iconPath),
                     applicationStateAchievements.first { achievementEnum.achievement.id == it.id }.currentExp
                 )
             )
@@ -56,7 +57,7 @@ class AchievementsTab(val project: Project) {
             projectAchievementCards.add(
                 AchievementCard(
                     achievement,
-                    Icons().loadProjectAchIcon(achievement.iconPath),
+                    IconUtility().loadProjectAchIcon(achievement.iconPath),
                     projectStateAchievements.first { achievementEnum.achievement.id == it.id }.currentExp
                 )
             )
@@ -102,7 +103,8 @@ class AchievementsTab(val project: Project) {
         dropdown.selectedIndex = sortEnum.ordinal
 
         dropdown.addActionListener {
-            when (SortDropdown.values()[dropdown.selectedIndex]) {
+            actualOrder = SortDropdown.values()[dropdown.selectedIndex]
+            when (actualOrder) {
                 SortDropdown.DEFAULT -> orderByDefault()
                 SortDropdown.ALPHABETIC_ASC -> orderByAlphabet(SortDropdown.ALPHABETIC_ASC)
                 SortDropdown.ALPHABETIC_DSC -> orderByAlphabet(SortDropdown.ALPHABETIC_DSC)
@@ -157,9 +159,9 @@ class AchievementsTab(val project: Project) {
         substituteAchievementPane(sortEnum)
     }
 
-    private fun substituteAchievementPane(sortEnum: SortDropdown) {
-        val projectPane = createTab(projectAchievementCards, sortEnum)
-        val applicationPane = createTab(globalAchievementCards, sortEnum)
+    fun substituteAchievementPane(sortEnum: SortDropdown?) {
+        val projectPane = createTab(projectAchievementCards, sortEnum ?: actualOrder)
+        val applicationPane = createTab(globalAchievementCards, sortEnum ?: actualOrder)
 
         achievementPane.setComponentAt(0, applicationPane)
         achievementPane.setComponentAt(1, projectPane)

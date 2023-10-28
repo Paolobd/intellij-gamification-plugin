@@ -1,12 +1,11 @@
 package com.github.paolobd.intellijgamificationplugin.services
 
 import com.github.paolobd.intellijgamificationplugin.dataClasses.Achievement
-import com.github.paolobd.intellijgamificationplugin.dataClasses.AchievementState
 import com.github.paolobd.intellijgamificationplugin.enums.DailyAchievement
 import com.github.paolobd.intellijgamificationplugin.enums.GlobalAchievement
 import com.github.paolobd.intellijgamificationplugin.enums.ProjectAchievement
-import com.github.paolobd.intellijgamificationplugin.library.Event
-import com.github.paolobd.intellijgamificationplugin.library.EventType
+import com.github.paolobd.intellijgamificationplugin.communication.Event
+import com.github.paolobd.intellijgamificationplugin.communication.EventType
 import com.github.paolobd.intellijgamificationplugin.userInterface.MyNotifier
 import com.github.paolobd.intellijgamificationplugin.userInterface.UserInterface
 import com.intellij.openapi.components.Service
@@ -79,6 +78,8 @@ class AchievementService(val project: Project) {
                 addExp(null, true, getDailyAchievement(it.key), it.value)
             }
         }
+
+        UserInterface.achievementTab.substituteAchievementPane(null)
     }
 
     private fun insertOrUpdateExp(map: MutableMap<Int, Int>, key: Int) {
@@ -128,7 +129,7 @@ class AchievementService(val project: Project) {
         }
 
         while (index < achievement.milestone.size - 1 && newExp >= achievement.milestone[index]) {
-            MyNotifier.notifyAchievementMilestone(project, achievement, index)
+            MyNotifier.notifyAchievementMilestone(project, daily, achievement, index)
             ApplicationStatePersistence.getInstance().addUserExp(achievement.userExperience[index])
             index++
         }
@@ -136,7 +137,7 @@ class AchievementService(val project: Project) {
         //only reached if we have more exp than required for the final milestone
         if (newExp >= achievement.milestone[index] && oldExp != achievement.milestone[index]) {
             newExp = achievement.milestone[index]
-            MyNotifier.notifyAchievementMilestone(project, achievement, index)
+            MyNotifier.notifyAchievementMilestone(project, daily, achievement, index)
             ApplicationStatePersistence.getInstance().addUserExp(achievement.userExperience[index - 1])
         } else {
             val oldPer = oldExp.toFloat() / achievement.milestone[index] * 100
@@ -145,7 +146,7 @@ class AchievementService(val project: Project) {
             val newRounded = (newPer / 25).toInt() * 25
 
             if (newRounded > 0 && newRounded > oldRounded) {
-                MyNotifier.notifyAchievementProgress(project, achievement, index, newRounded)
+                MyNotifier.notifyAchievementProgress(project, daily, achievement, index, newRounded)
             }
         }
 

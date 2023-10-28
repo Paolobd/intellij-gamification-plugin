@@ -1,27 +1,22 @@
 package com.github.paolobd.intellijgamificationplugin.listeners
 
-import com.github.paolobd.intellijgamificationplugin.library.Event
-import com.github.paolobd.intellijgamificationplugin.library.EventType
-import com.github.paolobd.intellijgamificationplugin.library.Server
-import com.github.paolobd.intellijgamificationplugin.enums.ProjectAchievement
+import com.github.paolobd.intellijgamificationplugin.communication.Server
 import com.github.paolobd.intellijgamificationplugin.services.AchievementService
 import com.github.paolobd.intellijgamificationplugin.services.ApplicationStatePersistence
-import com.github.paolobd.intellijgamificationplugin.services.ProjectStatePersistence
 import com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener
 import com.intellij.execution.testframework.sm.runner.SMTestProxy
-import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.project.Project
 
-internal class TestListener(private val project: Project) : SMTRunnerEventsListener {
+class TestListener(private val project: Project) : SMTRunnerEventsListener {
     private lateinit var server: Server
     override fun onTestingStarted(testsRoot: SMTestProxy.SMRootTestProxy) {
         server = Server()
         server.start()
+        ApplicationStatePersistence.getInstance().checkAndUpdateDailyGUI()
     }
 
     override fun onTestingFinished(testsRoot: SMTestProxy.SMRootTestProxy) {
         server.stop()
-        ApplicationStatePersistence.getInstance().checkAndUpdateDailyGUI()
     }
 
     override fun onTestsCountInSuite(count: Int) {

@@ -1,7 +1,7 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.paolobd.intellijgamificationplugin</id>
-    <name>Testing GUI Gamification</name>
+    <name>GameGUI</name>
     <vendor>Paolo Stefanut Bodnarescul</vendor>
 
     <depends>com.intellij.modules.platform</depends>
@@ -14,18 +14,17 @@
 
     <extensions defaultExtensionNs="com.intellij">
         
-        <toolWindow id="Gamification"
-                    secondary="true"
+        <toolWindow id="Game GUI"
                     icon="AllIcons.Toolwindows.ToolWindowFavorites"
                     anchor="right"
+                    doNotActivateOnStart="true"
+                    canCloseContents="true"
                     factoryClass="com.github.paolobd.intellijgamificationplugin.userInterface.UserInterfaceFactory"/>
         
-        <notificationGroup id="GameGUI Achievement Progress" displayType="BALLOON"/>
-        <notificationGroup id="GameGUI Achievement Completed" displayType="BALLOON"/>
-        <notificationGroup id="GameGUI Level Up" displayType="BALLOON"/>
-        <notificationGroup id="GameGUI Warning" displayType="BALLOON"/>
-
-        <postStartupActivity implementation="com.github.paolobd.intellijgamificationplugin.services.MyStartUpActivity" />
+        <notificationGroup id="Game GUI Achievement Progress" displayType="BALLOON"/>
+        <notificationGroup id="Game GUI Achievement Completed" displayType="BALLOON"/>
+        <notificationGroup id="Game GUI Level Up" displayType="BALLOON"/>
+        <notificationGroup id="Game GUI Warning" displayType="BALLOON"/>
 
         <projectService serviceImplementation="com.github.paolobd.intellijgamificationplugin.services.ProjectStatePersistence"/>
 
