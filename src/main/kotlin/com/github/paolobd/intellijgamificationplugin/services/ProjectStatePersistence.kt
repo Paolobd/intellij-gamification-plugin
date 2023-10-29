@@ -12,7 +12,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 
-@State(name = "ProjectState", storages = [Storage("GamificationGUIProjectState.xml")])
+@State(name = "ProjectState", storages = [Storage("gamegui.xml")])
 class ProjectStatePersistence : PersistentStateComponent<ProjectState> {
 
     private var myProjectState: ProjectState = ProjectState()
@@ -26,7 +26,13 @@ class ProjectStatePersistence : PersistentStateComponent<ProjectState> {
         XmlSerializerUtil.copyBean(state, myProjectState)
     }
 
-    fun addMissing() {
+    fun addMissing(appTime: Long) {
+
+        if (myProjectState.timestamp < appTime) {
+            resetState()
+            myProjectState.timestamp = System.currentTimeMillis()
+        }
+
         for (achievement in ProjectAchievement.values().map { it.achievement }) {
             val found = myProjectState.achievementList.find { it.id == achievement.id }
 
@@ -36,11 +42,8 @@ class ProjectStatePersistence : PersistentStateComponent<ProjectState> {
         }
     }
 
-    fun resetState() {
+    private fun resetState() {
         myProjectState = ProjectState()
-        for (projectAchievementCard in UserInterface.achievementTab.projectAchievementCards) {
-            projectAchievementCard.updateProgress(0, 0)
-        }
     }
 
     companion object {

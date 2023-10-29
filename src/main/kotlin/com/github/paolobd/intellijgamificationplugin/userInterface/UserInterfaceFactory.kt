@@ -14,7 +14,7 @@ class UserInterfaceFactory : ToolWindowFactory {
         val projectState = ProjectStatePersistence.getInstance(project)
 
         applicationState.addMissingAndCheckDaily()
-        projectState.addMissing()
+        projectState.addMissing(applicationState.state.timestamp)
 
         val userInterface = UserInterface(project)
         val contentManager = toolWindow.contentManager

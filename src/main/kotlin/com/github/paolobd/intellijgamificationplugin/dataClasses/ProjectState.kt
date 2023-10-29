@@ -8,5 +8,6 @@ data class ProjectState(
     var achievementList: MutableList<AchievementState> = ProjectAchievement.values().map {
         AchievementState(it.achievement.id, 0)
     }.toMutableList(),
-    var eventList: MutableList<Event> = mutableListOf()
+    var eventList: MutableList<Event> = mutableListOf(),
+    var timestamp: Long = 0
 )

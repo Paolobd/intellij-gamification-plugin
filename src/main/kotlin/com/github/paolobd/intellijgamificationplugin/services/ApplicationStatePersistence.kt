@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.random.Random
 
-@State(name = "ApplicationState", storages = [Storage("GamificationGUIApplicationState.xml")])
+@State(name = "ApplicationState", storages = [Storage("gamegui.xml")])
 class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
 
     private var myApplicationState = ApplicationState()
@@ -34,6 +34,11 @@ class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
     }
 
     fun addMissingAndCheckDaily() {
+
+        if(myApplicationState.timestamp.toInt() == 0){
+            myApplicationState.timestamp = System.currentTimeMillis()
+        }
+
         for (achievement in GlobalAchievement.values().map { it.achievement }) {
             val found = myApplicationState.achievementList.find { it.id == achievement.id }
 
@@ -106,6 +111,7 @@ class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
 
     fun resetState() {
         myApplicationState = ApplicationState()
+        UserInterface.resetWindow()
     }
 
     private fun formatTimestamp(timestamp: Long): String {

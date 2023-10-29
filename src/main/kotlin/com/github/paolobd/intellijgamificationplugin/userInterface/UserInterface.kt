@@ -1,5 +1,7 @@
 package com.github.paolobd.intellijgamificationplugin.userInterface
 
+import com.github.paolobd.intellijgamificationplugin.services.ApplicationStatePersistence
+import com.github.paolobd.intellijgamificationplugin.services.ProjectStatePersistence
 import com.intellij.openapi.project.Project
 import com.intellij.ui.components.JBTabbedPane
 import javax.swing.JButton
@@ -7,10 +9,10 @@ import javax.swing.JPanel
 
 
 class UserInterface(project: Project) {
-    private var mainUI: JBTabbedPane = JBTabbedPane()
-    //private val project = project
 
     init {
+        mainUI = JBTabbedPane()
+        UserInterface.project = project
         userTab = UserTab()
         achievementTab = AchievementsTab(project)
 
@@ -28,16 +30,30 @@ class UserInterface(project: Project) {
         val button = JButton("Click me!")
 
         button.addActionListener {
-            //ProjectStatePersistence.getInstance(project).addExp(project, ProjectAchievement.values()[0].achievement, 4)
-            //MyNotifier.notifyLevelUp(project, 2)
-            //userTab.dailyCard.updateProgress(10, 0)
+            ApplicationStatePersistence.getInstance().resetState()
         }
         panel.add(button)
         return panel
     }
 
     companion object {
+        private lateinit var project: Project
+        private lateinit var mainUI: JBTabbedPane
         lateinit var userTab: UserTab
         lateinit var achievementTab: AchievementsTab
+
+        fun resetWindow() {
+            val applicationState = ApplicationStatePersistence.getInstance()
+            val projectState = ProjectStatePersistence.getInstance(project)
+
+            applicationState.addMissingAndCheckDaily()
+            projectState.addMissing(applicationState.state.timestamp)
+
+            userTab = UserTab()
+            achievementTab = AchievementsTab(project)
+
+            mainUI.setComponentAt(0, userTab.toolWindow)
+            mainUI.setComponentAt(1, achievementTab.toolWindow)
+        }
     }
 }

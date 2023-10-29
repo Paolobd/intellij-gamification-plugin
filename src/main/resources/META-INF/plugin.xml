@@ -1,34 +1,44 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.paolobd.intellijgamificationplugin</id>
-    <name>GameGUI</name>
+    <name>Game GUI</name>
     <vendor>Paolo Stefanut Bodnarescul</vendor>
+    <description><![CDATA[
+        <p>Game GUI creates a gamified environment to support developers in scripted web application GUI testing.</br>
+        It must be used with the Game GUI library and a Selenium project to take full advantage of its characteristics.</br>
+        The plugin features:</p>
+        <ul>
+            <li>An user profile page that can be edited at will</li>
+            <li>Tracking of various achievements regarding the use of Selenium WebDriver and the web application testing
+            of the GUIs</li>
+        </ul>
+        <p>Plugin developed by Paolo Stefanut Bodnarescul as Master Thesis project at Politecnico di Torino
+        with the aid of the <a href="https://softeng.polito.it/">Software Engineering Group</a>.</p>
+    ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
-    <!--
-    <depends>com.intellij.modules.java-capable</depends>
-    -->
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        
+
         <toolWindow id="Game GUI"
-                    icon="AllIcons.Toolwindows.ToolWindowFavorites"
+                    icon="/icons/toolWindow.svg"
                     anchor="right"
                     doNotActivateOnStart="true"
-                    canCloseContents="true"
                     factoryClass="com.github.paolobd.intellijgamificationplugin.userInterface.UserInterfaceFactory"/>
-        
+
         <notificationGroup id="Game GUI Achievement Progress" displayType="BALLOON"/>
         <notificationGroup id="Game GUI Achievement Completed" displayType="BALLOON"/>
         <notificationGroup id="Game GUI Level Up" displayType="BALLOON"/>
         <notificationGroup id="Game GUI Warning" displayType="BALLOON"/>
 
-        <projectService serviceImplementation="com.github.paolobd.intellijgamificationplugin.services.ProjectStatePersistence"/>
+        <projectService
+                serviceImplementation="com.github.paolobd.intellijgamificationplugin.services.ProjectStatePersistence"/>
 
-        <applicationService serviceImplementation="com.github.paolobd.intellijgamificationplugin.services.ApplicationStatePersistence"/>
+        <applicationService
+                serviceImplementation="com.github.paolobd.intellijgamificationplugin.services.ApplicationStatePersistence"/>
 
     </extensions>
 

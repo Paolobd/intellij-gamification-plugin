@@ -18,8 +18,8 @@ import javax.swing.JPanel
 
 class AchievementsTab(val project: Project) {
     var toolWindow = JPanel()
-    var globalAchievementCards = mutableListOf<AchievementCard>()
-    var projectAchievementCards = mutableListOf<AchievementCard>()
+    private var globalAchievementCards = mutableListOf<AchievementCard>()
+    private var projectAchievementCards = mutableListOf<AchievementCard>()
     private lateinit var achievementPane: JBTabbedPane
     private var actualOrder = SortDropdown.DEFAULT
 
