@@ -12,9 +12,9 @@ import javax.swing.*
 
 class EditUserDialog : DialogWrapper(true) {
     private var nameLabel = JTextField()
-    private var titleId = 0
+    private var titleId = 1
     private var selectedUserIcon = JButton()
-    private var iconId = 0
+    private var iconId = 1
     private var errorCaption = JLabel()
 
     init {
@@ -60,15 +60,15 @@ class EditUserDialog : DialogWrapper(true) {
 
         val dropdown = ComboBox(titles)
         titleId = userState.titleId
-        dropdown.selectedIndex = titleId
+        dropdown.selectedIndex = TitleDataProvider.getIndexById(titleId)
         dropdown.renderer = CustomTitleComboBoxRenderer()
 
         dropdown.addActionListener {
-            val titleLevel = TitleDataProvider.getTitleById(dropdown.selectedIndex).level
+            val titleLevel = TitleDataProvider.titles[dropdown.selectedIndex].level
             if (titleLevel > userState.level) {
-                dropdown.selectedIndex = titleId
+                dropdown.selectedIndex = TitleDataProvider.getIndexById(titleId)
             } else {
-                titleId = dropdown.selectedIndex
+                titleId = TitleDataProvider.titles[dropdown.selectedIndex].id
             }
         }
 
@@ -88,7 +88,7 @@ class EditUserDialog : DialogWrapper(true) {
         val allIconsPanel = JPanel(GridLayout(0, 5))
         iconId = userState.iconId
 
-        for ((index, userIcon) in UserIconDataProvider.icons.withIndex()) {
+        for (userIcon in UserIconDataProvider.icons) {
             val iconPanel = JPanel()
             iconPanel.layout = BorderLayout()
 
@@ -111,7 +111,7 @@ class EditUserDialog : DialogWrapper(true) {
             } else {
                 iconButton.border = unselectedBorder
                 iconLabel.text = "Unlocked"
-                if (index == iconId) {
+                if (userIcon.id == iconId) {
                     iconButton.border = selectedBorder
                     selectedUserIcon = iconButton
                 }
@@ -122,11 +122,11 @@ class EditUserDialog : DialogWrapper(true) {
             allIconsPanel.add(iconPanel)
 
             iconButton.addActionListener {
-                if (userIcon.level <= userState.level && iconId != index) {
+                if (userIcon.level <= userState.level && iconId != userIcon.id) {
                     selectedUserIcon.border = unselectedBorder
 
                     iconButton.border = selectedBorder
-                    iconId = index
+                    iconId = userIcon.id
                     selectedUserIcon = iconButton
                 }
             }
