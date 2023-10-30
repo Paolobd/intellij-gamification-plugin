@@ -79,6 +79,7 @@ class AchievementService(val project: Project) {
             }
         }
 
+        UserInterface.userTab.updateShowcaseProgress()
         UserInterface.achievementTab.substituteAchievementPane(null)
     }
 

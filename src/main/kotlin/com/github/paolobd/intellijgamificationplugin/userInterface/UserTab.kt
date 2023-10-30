@@ -4,7 +4,6 @@ import com.github.paolobd.intellijgamificationplugin.dataProviders.LevelDataProv
 import com.github.paolobd.intellijgamificationplugin.dataProviders.TitleDataProvider
 import com.github.paolobd.intellijgamificationplugin.dataProviders.UserIconDataProvider
 import com.github.paolobd.intellijgamificationplugin.enums.DailyAchievement
-import com.github.paolobd.intellijgamificationplugin.enums.GlobalAchievement
 import com.github.paolobd.intellijgamificationplugin.services.ApplicationStatePersistence
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.util.ui.JBUI
@@ -19,7 +18,7 @@ class UserTab {
     private var experienceBar = JProgressBar()
     private var experienceLabel = JLabel()
     private var levelLabel = JLabel()
-    private var showcaseIcons = mutableListOf<JLabel>()
+    private var showcaseCards = mutableListOf<ShowcaseCard>()
     private var dailyTime = JLabel()
     lateinit var dailyCard: AchievementCard
 
@@ -89,28 +88,14 @@ class UserTab {
         achievementPanel.layout = BoxLayout(achievementPanel, BoxLayout.X_AXIS)
         achievementPanel.add(Box.createHorizontalGlue())
 
-        // Create achievement squares (placeholders)
+        // Create achievement squares
         for (i in 0..4) {
-            val achievement = JPanel()
-            achievement.border = BorderFactory.createEtchedBorder()
-            val iconId = userState.showcase[i]
-            val iconLabel = JLabel()
+            val achievement = ShowcaseCard(userState.showcase[i])
 
-            val icon = if (iconId >= 0) {
-                val achEnum = GlobalAchievement.values()[iconId]
-                iconLabel.toolTipText = achEnum.achievement.name
-                IconUtility().loadGlobalAchIcon(achEnum.achievement.iconPath)
-            } else {
-                iconLabel.toolTipText = null
-                IconUtility().loadEmptyIcon()
-            }
-
-            iconLabel.icon = icon
-            achievement.add(iconLabel)
-            achievementPanel.add(achievement)
+            achievementPanel.add(achievement.card)
             achievementPanel.add(Box.createHorizontalGlue())
 
-            showcaseIcons.add(iconLabel)
+            showcaseCards.add(achievement)
         }
 
         showcasePanel.add(showcaseLabel)
@@ -223,24 +208,20 @@ class UserTab {
     }
 
     fun updateUserShowcase() {
-        val showcase = ApplicationStatePersistence.getInstance().state.userState.showcase
+        val appShowcase = ApplicationStatePersistence.getInstance().state.userState.showcase
 
         for (i in 0..4) {
-            val iconId = showcase[i]
-
-            if (iconId >= 0) {
-                val iconEnum = GlobalAchievement.values()[iconId]
-                showcaseIcons[i].toolTipText = iconEnum.achievement.name
-                showcaseIcons[i].icon = IconUtility().loadGlobalAchIcon(iconEnum.achievement.iconPath)
-            } else {
-                showcaseIcons[i].toolTipText = null
-                showcaseIcons[i].icon = IconUtility().loadEmptyIcon()
-            }
+            val iconId = appShowcase[i]
+            showcaseCards[i].updateShowcaseCard(iconId)
         }
     }
 
     fun updateDailyAchievement() {
         createDailyCard()
+    }
+
+    fun updateShowcaseProgress() {
+        showcaseCards.forEach { it.updateProgressShowcaseCard() }
     }
 
     private fun createDailyCard() {
