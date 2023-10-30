@@ -35,7 +35,7 @@ class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
 
     fun addMissingAndCheckDaily() {
 
-        if(myApplicationState.timestamp.toInt() == 0){
+        if (myApplicationState.timestamp.toInt() == 0) {
             myApplicationState.timestamp = System.currentTimeMillis()
         }
 
@@ -109,9 +109,13 @@ class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
         UserInterface.userTab.updateUserExperience()
     }
 
-    fun resetState() {
+    fun resetStateAndRefresh() {
         myApplicationState = ApplicationState()
         UserInterface.resetWindow()
+    }
+
+    fun resetState() {
+        myApplicationState = ApplicationState()
     }
 
     private fun formatTimestamp(timestamp: Long): String {
