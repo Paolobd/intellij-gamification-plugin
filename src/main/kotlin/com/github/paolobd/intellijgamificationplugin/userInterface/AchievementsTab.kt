@@ -159,7 +159,7 @@ class AchievementsTab(val project: Project) {
         substituteAchievementPane(sortEnum)
     }
 
-    fun substituteAchievementPane(sortEnum: SortDropdown?) {
+    private fun substituteAchievementPane(sortEnum: SortDropdown?) {
         val projectPane = createTab(projectAchievementCards, sortEnum ?: actualOrder)
         val applicationPane = createTab(globalAchievementCards, sortEnum ?: actualOrder)
 

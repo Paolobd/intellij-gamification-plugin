@@ -71,6 +71,13 @@ class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
     }
 
     fun changeUserInfo(name: String, titleId: Int, iconId: Int) {
+        if (name != myApplicationState.userState.name ||
+            titleId != myApplicationState.userState.titleId ||
+            iconId != myApplicationState.userState.iconId
+        ) {
+            AchievementService().addExp(null, false, GlobalAchievement.FIRST_EDIT_PROFILE.achievement, 1)
+        }
+
         myApplicationState.userState.name = name
         myApplicationState.userState.titleId = titleId
         myApplicationState.userState.iconId = iconId
@@ -78,6 +85,10 @@ class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
     }
 
     fun changeShowcase(showcase: List<Int>) {
+        if (showcase != myApplicationState.userState.showcase){
+            AchievementService().addExp(null, false, GlobalAchievement.FIRST_EDIT_SHOWCASE.achievement, 1)
+        }
+
         myApplicationState.userState.showcase = showcase
         UserInterface.userTab.updateUserShowcase()
     }

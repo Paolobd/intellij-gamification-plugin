@@ -10,6 +10,8 @@ import com.intellij.openapi.wm.ToolWindowFactory
 class UserInterfaceFactory : ToolWindowFactory {
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
 
+        ApplicationStatePersistence.getInstance().resetState()
+
         val applicationState = ApplicationStatePersistence.getInstance()
         val projectState = ProjectStatePersistence.getInstance(project)
 

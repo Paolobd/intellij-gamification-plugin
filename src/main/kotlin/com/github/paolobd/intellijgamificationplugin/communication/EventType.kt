@@ -1,10 +1,27 @@
 package com.github.paolobd.intellijgamificationplugin.communication
-
 enum class EventType {
-    CLICK,
     NAVIGATION,
+    NAVIGATION_BACK,
+    NAVIGATION_FORWARD,
+    NAVIGATION_REFRESH,
     LOCATOR,
     LOCATOR_ID,
+    LOCATOR_NAME,
     LOCATOR_CSS,
-    LOCATOR_XPATH
+    LOCATOR_XPATH,
+    ELEMENT_CLICK,
+    ELEMENT_SEND_KEYS,
+    ELEMENT_DISPLAYED,
+    ELEMENT_SELECTED,
+    ELEMENT_ENABLED,
+    ELEMENT_TEXT,
+    ELEMENT_ATTRIBUTE,
+    ELEMENT_TAG,
+    ELEMENT_CSS,
+    LOGIN,
+    SUBMIT,
+    TITLE,
+    ALERT,
+    ALERT_TEXT,
+    ALERT_SEND_KEYS
 }

@@ -34,7 +34,6 @@ fun Application.module() {
     routing {
         post("/sendEvents") {
             val data = call.receive<List<Event>>()
-            println(data)
             Server.events = data.toMutableList()
             call.respond(HttpStatusCode.OK)
         }

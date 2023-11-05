@@ -5,84 +5,234 @@ import com.github.paolobd.intellijgamificationplugin.dataClasses.Achievement
 enum class ProjectAchievement(
     val achievement: Achievement
 ) {
-    NUM_CLICKS(
+    NUM_TEST_PASSED(
         Achievement(
             1,
-            "Button Masher",
-            "Number of clicks made in this project",
-            "click.svg",
+            "Can't believe it worked!",
+            "Different Selenium tests passed",
+            "test_passed.svg",
             listOf(5, 10, 50),
             listOf(10, 20, 30)
         )
     ),
-    NUM_SITES(
+    NUM_TEST_FIXED(
         Achievement(
             2,
-            "Web Surfer",
-            "Number of sites visited in this project",
-            "site.svg",
+            "Bug Finder",
+            "Different Selenium tests fixed<br/>after not passing",
+            "test_fixed.svg",
             listOf(5, 10, 50),
             listOf(10, 20, 30)
         )
     ),
-    NUM_LOCATOR_ALL(
+    NUM_LOCATOR(
         Achievement(
             3,
-            "Gotta find 'em all!",
-            "Total of WebElements found",
+            "Inspector Gadget",
+            "Different WebElements found using<br/>any locator strategy",
             "locator.svg",
-            listOf(20, 50, 100),
-            listOf(30, 50, 70)
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
         )
     ),
     NUM_LOCATOR_ID(
         Achievement(
             4,
-            "ID Expert",
-            "Different WebElements found using id",
-            "id.svg",
-            listOf(100),
-            listOf(30)
+            "Inspector Gadget: ID Expert",
+            "Different WebElements found using<br/>the 'ID' locator strategy",
+            "locator_id.svg",
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
         )
     ),
-    NUM_LOCATOR_XPATH(
+    NUM_LOCATOR_NAME(
         Achievement(
             5,
-            "XPATH Expert",
-            "Different WebElements found using xpath",
-            "xpath.svg",
-            listOf(100),
-            listOf(30)
+            "Inspector Gadget: Name Expert",
+            "Different WebElements found using<br/>the 'Name' locator strategy",
+            "locator_name.svg",
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
         )
     ),
     NUM_LOCATOR_CSS(
         Achievement(
             6,
-            "CSS Expert",
-            "Different WebElements found using css",
-            "css.svg",
-            listOf(100),
-            listOf(30)
+            "Inspector Gadget: CSS Expert",
+            "Different WebElements found using<br/>the 'CSS Selector' locator strategy",
+            "locator_css.svg",
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
+        )
+    ),
+    NUM_LOCATOR_XPATH(
+        Achievement(
+            7,
+            "Inspector Gadget: XPath Expert",
+            "Different WebElements found using<br/>the 'XPath' locator strategy",
+            "locator_xpath.svg",
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
         )
     ),
     NUM_NAVIGATION(
         Achievement(
-            7,
-            "Navigation Wizard",
-            "Number of navigation commands used:<br/> Refresh/Back/Forward",
+            8,
+            "The Web Surfer",
+            "Different websites visited",
             "navigation.svg",
-            listOf(10),
-            listOf(50)
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
+        )
+    ),
+    NUM_NAVIGATION_BACK(
+        Achievement(
+            9,
+            "Back to...",
+            "Times the WebDriver's 'back()'<br/>method was executed",
+            "navigation_back.svg",
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
+        )
+    ),
+    NUM_NAVIGATION_FORWARD(
+        Achievement(
+            10,
+            "...the Future",
+            "Times the WebDriver's 'forward()'<br/>method was executed",
+            "navigation_forward.svg",
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
+        )
+    ),
+    NUM_NAVIGATION_REFRESH(
+        Achievement(
+            11,
+            "F5 master",
+            "Times the WebDriver's 'refresh()'<br/>method was executed",
+            "navigation_refresh.svg",
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
+        )
+    ),
+    NUM_ELEMENT_CLICK(
+        Achievement(
+            12,
+            "Click Addicted",
+            "Times the 'click()' method was called<br/>on different WebElements",
+            "element_click.svg",
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
+        )
+    ),
+    NUM_ELEMENT_SEND_KEYS(
+        Achievement(
+            13,
+            "Keyboard Master",
+            "Times the 'send_keys(...)' method<br/>was called on different WebElements",
+            "element_send_keys.svg",
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
+        )
+    ),
+    NUM_ELEMENT_DISPLAYED(
+        Achievement(
+            14,
+            "Display Detective",
+            "Times the 'isDisplayed()' method<br/>was called on different WebElements",
+            "element_displayed.svg",
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
+        )
+    ),
+    NUM_ELEMENT_SELECTED(
+        Achievement(
+            15,
+            "Checkmark Champion",
+            "Times the 'isSelected()' method<br/>was called on different WebElements",
+            "element_selected.svg",
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
+        )
+    ),
+    NUM_ELEMENT_ENABLED(
+        Achievement(
+            16,
+            "The Validator",
+            "Times the 'isEnabled()' method<br/>was called on different WebElements",
+            "element_enabled.svg",
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
+        )
+    ),
+    NUM_ELEMENT_TEXT(
+        Achievement(
+            17,
+            "Textual Treasure Hunter",
+            "Times the 'getText()' method<br/>was called on different WebElements",
+            "element_text.svg",
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
+        )
+    ),
+    NUM_ELEMENT_ATTRIBUTE(
+        Achievement(
+            18,
+            "Attribute Archaeologist",
+            "Times the 'getAttribute(...)' method<br/>was called on different WebElements",
+            "element_attribute.svg",
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
+        )
+    ),
+    NUM_ELEMENT_CSS(
+        Achievement(
+            19,
+            "Styling Virtuoso",
+            "Times the 'getCssValue(...)' method<br/>was called on different WebElements",
+            "element_css.svg",
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
         )
     ),
     NUM_LOGIN(
         Achievement(
-            8,
-            "Login",
-            "Login once",
+            20,
+            "Keyblade Wielder",
+            "Times of attempted logins",
             "login.svg",
-            listOf(1),
-            listOf(100)
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
+        )
+    ),
+    NUM_SUBMIT(
+        Achievement(
+            21,
+            "Form Filler",
+            "Times the 'submit()' method<br/>was called on different WebElements",
+            "submit.svg",
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
+        )
+    ),
+    NUM_TITLE(
+        Achievement(
+            22,
+            "Title Tracker",
+            "Times the WebDriver's 'getTitle()' method<br/>was executed",
+            "title.svg",
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
+        )
+    ),
+    NUM_ALERT(
+        Achievement(
+            23,
+            "Click-and-Dismiss",
+            "Times interacted with an alert",
+            "alert.svg",
+            listOf(5, 10, 50),
+            listOf(10, 20, 30)
         )
     )
 }

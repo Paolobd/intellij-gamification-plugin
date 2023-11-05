@@ -30,6 +30,9 @@ repositories {
 val ktorVersion: String by project
 
 dependencies {
+    //implementation("org.seleniumhq.selenium:selenium-java:4.13.0")
+    //implementation("com.codeborne:selenide:6.19.0")
+    implementation("org.slf4j:slf4j-api:2.0.9")
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")

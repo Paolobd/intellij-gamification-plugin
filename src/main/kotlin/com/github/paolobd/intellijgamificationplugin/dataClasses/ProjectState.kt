@@ -9,5 +9,6 @@ data class ProjectState(
         AchievementState(it.achievement.id, 0)
     }.toMutableList(),
     var eventList: MutableList<Event> = mutableListOf(),
+    var testState: MutableMap<String, Boolean> = mutableMapOf(),
     var timestamp: Long = 0
 )

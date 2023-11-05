@@ -11,10 +11,10 @@ import com.github.paolobd.intellijgamificationplugin.userInterface.UserInterface
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 
-@Service(Service.Level.PROJECT)
-class AchievementService(val project: Project) {
+@Service
+class AchievementService {
 
-    fun analyzeEvents(events: List<Event>) {
+    fun analyzeEvents(project: Project, events: List<Event>) {
         val globalAchExp = mutableMapOf<Int, Int>()
         val projectAchExp = mutableMapOf<Int, Int>()
         val dailyAchExp = mutableMapOf<Int, Int>()
@@ -28,37 +28,181 @@ class AchievementService(val project: Project) {
             if (!found) {
                 var projectAchId: Int
                 var globalAchId: Int
+                var dailyAchId: Int
                 when (event.eventType) {
-                    EventType.CLICK -> {
-                        projectAchId = ProjectAchievement.NUM_CLICKS.achievement.id
-                        globalAchId = GlobalAchievement.NUM_CLICKS.achievement.id
-
-                        insertOrUpdateExp(projectAchExp, projectAchId)
-                        insertOrUpdateExp(globalAchExp, globalAchId)
-                    }
-
                     EventType.NAVIGATION -> {
-                        projectAchId = ProjectAchievement.NUM_SITES.achievement.id
-                        globalAchId = GlobalAchievement.NUM_SITES.achievement.id
+                        projectAchId = ProjectAchievement.NUM_NAVIGATION.achievement.id
+                        globalAchId = GlobalAchievement.NUM_NAVIGATION.achievement.id
+                        dailyAchId = DailyAchievement.DAILY_NAVIGATION.achievement.id
+
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                        insertOrUpdateExp(globalAchExp, globalAchId)
+                        insertOrUpdateExp(dailyAchExp, dailyAchId)
+                    }
+                    EventType.NAVIGATION_BACK -> {
+                        projectAchId = ProjectAchievement.NUM_NAVIGATION_BACK.achievement.id
+
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                    }
+                    EventType.NAVIGATION_FORWARD -> {
+                        projectAchId = ProjectAchievement.NUM_NAVIGATION_FORWARD.achievement.id
+
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                    }
+                    EventType.NAVIGATION_REFRESH -> {
+                        projectAchId = ProjectAchievement.NUM_NAVIGATION_REFRESH.achievement.id
+
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                    }
+                    EventType.LOCATOR -> {
+                        projectAchId = ProjectAchievement.NUM_LOCATOR.achievement.id
+                        globalAchId = GlobalAchievement.NUM_LOCATOR.achievement.id
+                        dailyAchId = DailyAchievement.DAILY_LOCATOR.achievement.id
+
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                        insertOrUpdateExp(globalAchExp, globalAchId)
+                        insertOrUpdateExp(dailyAchExp, dailyAchId)
+                    }
+                    EventType.LOCATOR_ID -> {
+                        projectAchId = ProjectAchievement.NUM_LOCATOR.achievement.id
+                        globalAchId = GlobalAchievement.NUM_LOCATOR.achievement.id
+                        dailyAchId = DailyAchievement.DAILY_LOCATOR.achievement.id
+
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                        insertOrUpdateExp(globalAchExp, globalAchId)
+                        insertOrUpdateExp(dailyAchExp, dailyAchId)
+
+                        projectAchId = ProjectAchievement.NUM_LOCATOR_ID.achievement.id
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                    }
+                    EventType.LOCATOR_NAME -> {
+                        projectAchId = ProjectAchievement.NUM_LOCATOR.achievement.id
+                        globalAchId = GlobalAchievement.NUM_LOCATOR.achievement.id
+                        dailyAchId = DailyAchievement.DAILY_LOCATOR.achievement.id
+
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                        insertOrUpdateExp(globalAchExp, globalAchId)
+                        insertOrUpdateExp(dailyAchExp, dailyAchId)
+
+                        projectAchId = ProjectAchievement.NUM_LOCATOR_NAME.achievement.id
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                    }
+                    EventType.LOCATOR_CSS -> {
+                        projectAchId = ProjectAchievement.NUM_LOCATOR.achievement.id
+                        globalAchId = GlobalAchievement.NUM_LOCATOR.achievement.id
+                        dailyAchId = DailyAchievement.DAILY_LOCATOR.achievement.id
+
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                        insertOrUpdateExp(globalAchExp, globalAchId)
+                        insertOrUpdateExp(dailyAchExp, dailyAchId)
+
+                        projectAchId = ProjectAchievement.NUM_LOCATOR_CSS.achievement.id
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                    }
+                    EventType.LOCATOR_XPATH -> {
+                        projectAchId = ProjectAchievement.NUM_LOCATOR.achievement.id
+                        globalAchId = GlobalAchievement.NUM_LOCATOR.achievement.id
+                        dailyAchId = DailyAchievement.DAILY_LOCATOR.achievement.id
+
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                        insertOrUpdateExp(globalAchExp, globalAchId)
+                        insertOrUpdateExp(dailyAchExp, dailyAchId)
+
+                        projectAchId = ProjectAchievement.NUM_LOCATOR_XPATH.achievement.id
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                    }
+                    EventType.ELEMENT_CLICK -> {
+                        projectAchId = ProjectAchievement.NUM_ELEMENT_CLICK.achievement.id
+                        globalAchId = GlobalAchievement.NUM_ELEMENT_CLICK.achievement.id
+                        dailyAchId = DailyAchievement.DAILY_CLICK.achievement.id
+
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                        insertOrUpdateExp(globalAchExp, globalAchId)
+                        insertOrUpdateExp(dailyAchExp, dailyAchId)
+                    }
+                    EventType.ELEMENT_SEND_KEYS -> {
+                        projectAchId = ProjectAchievement.NUM_ELEMENT_SEND_KEYS.achievement.id
+                        globalAchId = GlobalAchievement.NUM_ELEMENT_SEND_KEYS.achievement.id
+                        dailyAchId = DailyAchievement.DAILY_SEND_KEYS.achievement.id
+
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                        insertOrUpdateExp(globalAchExp, globalAchId)
+                        insertOrUpdateExp(dailyAchExp, dailyAchId)
+                    }
+                    EventType.ELEMENT_DISPLAYED -> {
+                        projectAchId = ProjectAchievement.NUM_ELEMENT_DISPLAYED.achievement.id
+
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                    }
+                    EventType.ELEMENT_SELECTED -> {
+                        projectAchId = ProjectAchievement.NUM_ELEMENT_SELECTED.achievement.id
+
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                    }
+                    EventType.ELEMENT_ENABLED -> {
+                        projectAchId = ProjectAchievement.NUM_ELEMENT_ENABLED.achievement.id
+
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                    }
+                    EventType.ELEMENT_TEXT -> {
+                        projectAchId = ProjectAchievement.NUM_ELEMENT_TEXT.achievement.id
+                        globalAchId = GlobalAchievement.NUM_ELEMENT_TEXT.achievement.id
 
                         insertOrUpdateExp(projectAchExp, projectAchId)
                         insertOrUpdateExp(globalAchExp, globalAchId)
                     }
+                    EventType.ELEMENT_ATTRIBUTE -> {
+                        projectAchId = ProjectAchievement.NUM_ELEMENT_ATTRIBUTE.achievement.id
 
-                    EventType.LOCATOR -> {
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                    }
+                    EventType.ELEMENT_TAG -> {
 
                     }
+                    EventType.ELEMENT_CSS -> {
+                        projectAchId = ProjectAchievement.NUM_ELEMENT_CSS.achievement.id
 
-                    EventType.LOCATOR_ID -> {
-
+                        insertOrUpdateExp(projectAchExp, projectAchId)
                     }
+                    EventType.LOGIN -> {
+                        projectAchId = ProjectAchievement.NUM_LOGIN.achievement.id
+                        globalAchId = GlobalAchievement.NUM_LOGIN.achievement.id
 
-                    EventType.LOCATOR_CSS -> {
-
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                        insertOrUpdateExp(globalAchExp, globalAchId)
                     }
+                    EventType.SUBMIT -> {
+                        projectAchId = ProjectAchievement.NUM_SUBMIT.achievement.id
 
-                    EventType.LOCATOR_XPATH -> {
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                    }
+                    EventType.TITLE -> {
+                        projectAchId = ProjectAchievement.NUM_TITLE.achievement.id
 
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                    }
+                    EventType.ALERT -> {
+                        projectAchId = ProjectAchievement.NUM_ALERT.achievement.id
+                        globalAchId = GlobalAchievement.NUM_ALERT.achievement.id
+
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                        insertOrUpdateExp(globalAchExp, globalAchId)
+                    }
+                    EventType.ALERT_TEXT -> {
+                        projectAchId = ProjectAchievement.NUM_ELEMENT_TEXT.achievement.id
+                        globalAchId = GlobalAchievement.NUM_ELEMENT_TEXT.achievement.id
+
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                        insertOrUpdateExp(globalAchExp, globalAchId)
+                    }
+                    EventType.ALERT_SEND_KEYS -> {
+                        projectAchId = ProjectAchievement.NUM_ELEMENT_SEND_KEYS.achievement.id
+                        globalAchId = GlobalAchievement.NUM_ELEMENT_SEND_KEYS.achievement.id
+                        dailyAchId = DailyAchievement.DAILY_SEND_KEYS.achievement.id
+
+                        insertOrUpdateExp(projectAchExp, projectAchId)
+                        insertOrUpdateExp(globalAchExp, globalAchId)
+                        insertOrUpdateExp(dailyAchExp, dailyAchId)
                     }
                 }
             }
@@ -80,7 +224,7 @@ class AchievementService(val project: Project) {
         }
 
         UserInterface.userTab.updateShowcaseProgress()
-        UserInterface.achievementTab.substituteAchievementPane(null)
+        //UserInterface.achievementTab.substituteAchievementPane(null)
     }
 
     private fun insertOrUpdateExp(map: MutableMap<Int, Int>, key: Int) {
@@ -99,7 +243,7 @@ class AchievementService(val project: Project) {
         return DailyAchievement.values().map { it.achievement }.first { it.id == id }
     }
 
-    private fun addExp(project: Project?, daily: Boolean, achievement: Achievement, exp: Int) {
+    fun addExp(project: Project?, daily: Boolean, achievement: Achievement, exp: Int) {
         val achievementState = if (daily) {
             ApplicationStatePersistence.getInstance().state.dailyAchievement.state
         } else {
@@ -139,8 +283,10 @@ class AchievementService(val project: Project) {
         if (newExp >= achievement.milestone[index] && oldExp != achievement.milestone[index]) {
             newExp = achievement.milestone[index]
             MyNotifier.notifyAchievementMilestone(project, daily, achievement, index)
-            ApplicationStatePersistence.getInstance().addUserExp(achievement.userExperience[index - 1])
-        } else {
+
+            val userIndex = if(index == 0){ 0 } else { index-1 }
+            ApplicationStatePersistence.getInstance().addUserExp(achievement.userExperience[userIndex])
+        } /*else {
             val oldPer = oldExp.toFloat() / achievement.milestone[index] * 100
             val newPer = newExp.toFloat() / achievement.milestone[index] * 100
             val oldRounded = (oldPer / 25).toInt() * 25
@@ -149,7 +295,7 @@ class AchievementService(val project: Project) {
             if (newRounded > 0 && newRounded > oldRounded) {
                 MyNotifier.notifyAchievementProgress(project, daily, achievement, index, newRounded)
             }
-        }
+        }*/
 
         achievementState.currentExp = newExp
 

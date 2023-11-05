@@ -26,7 +26,6 @@
         <toolWindow id="Game GUI"
                     icon="/icons/toolWindow.svg"
                     anchor="right"
-                    doNotActivateOnStart="true"
                     factoryClass="com.github.paolobd.intellijgamificationplugin.userInterface.UserInterfaceFactory"/>
 
         <notificationGroup id="Game GUI Achievement Progress" displayType="BALLOON"/>
