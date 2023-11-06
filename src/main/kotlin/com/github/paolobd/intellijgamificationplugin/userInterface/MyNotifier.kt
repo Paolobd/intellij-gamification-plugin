@@ -10,6 +10,7 @@ class MyNotifier {
     companion object {
         fun notifyAchievementProgress(
             project: Project?,
+            global: Boolean,
             daily: Boolean,
             achievement: Achievement,
             milestoneIndex: Int,
@@ -19,7 +20,7 @@ class MyNotifier {
             var content = if (daily) {
                 "Daily achievement"
             } else {
-                if (project != null) {
+                if (!global) {
                     "Project achievement"
                 } else {
                     "Global achievement"
@@ -39,6 +40,7 @@ class MyNotifier {
 
         fun notifyAchievementMilestone(
             project: Project?,
+            global: Boolean,
             daily: Boolean,
             achievement: Achievement,
             milestoneIndex: Int
@@ -52,7 +54,7 @@ class MyNotifier {
             var content = if (daily) {
                 "Daily achievement"
             } else {
-                if (project != null) {
+                if (!global) {
                     "Project achievement"
                 } else {
                     "Global achievement"

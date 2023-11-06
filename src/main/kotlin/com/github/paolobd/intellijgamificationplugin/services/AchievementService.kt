@@ -8,13 +8,14 @@ import com.github.paolobd.intellijgamificationplugin.communication.Event
 import com.github.paolobd.intellijgamificationplugin.communication.EventType
 import com.github.paolobd.intellijgamificationplugin.userInterface.MyNotifier
 import com.github.paolobd.intellijgamificationplugin.userInterface.UserInterface
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 
 @Service
 class AchievementService {
 
-    fun analyzeEvents(project: Project, events: List<Event>) {
+    fun analyzeEvents(events: List<Event>) {
         val globalAchExp = mutableMapOf<Int, Int>()
         val projectAchExp = mutableMapOf<Int, Int>()
         val dailyAchExp = mutableMapOf<Int, Int>()
@@ -39,21 +40,25 @@ class AchievementService {
                         insertOrUpdateExp(globalAchExp, globalAchId)
                         insertOrUpdateExp(dailyAchExp, dailyAchId)
                     }
+
                     EventType.NAVIGATION_BACK -> {
                         projectAchId = ProjectAchievement.NUM_NAVIGATION_BACK.achievement.id
 
                         insertOrUpdateExp(projectAchExp, projectAchId)
                     }
+
                     EventType.NAVIGATION_FORWARD -> {
                         projectAchId = ProjectAchievement.NUM_NAVIGATION_FORWARD.achievement.id
 
                         insertOrUpdateExp(projectAchExp, projectAchId)
                     }
+
                     EventType.NAVIGATION_REFRESH -> {
                         projectAchId = ProjectAchievement.NUM_NAVIGATION_REFRESH.achievement.id
 
                         insertOrUpdateExp(projectAchExp, projectAchId)
                     }
+
                     EventType.LOCATOR -> {
                         projectAchId = ProjectAchievement.NUM_LOCATOR.achievement.id
                         globalAchId = GlobalAchievement.NUM_LOCATOR.achievement.id
@@ -63,6 +68,7 @@ class AchievementService {
                         insertOrUpdateExp(globalAchExp, globalAchId)
                         insertOrUpdateExp(dailyAchExp, dailyAchId)
                     }
+
                     EventType.LOCATOR_ID -> {
                         projectAchId = ProjectAchievement.NUM_LOCATOR.achievement.id
                         globalAchId = GlobalAchievement.NUM_LOCATOR.achievement.id
@@ -75,6 +81,7 @@ class AchievementService {
                         projectAchId = ProjectAchievement.NUM_LOCATOR_ID.achievement.id
                         insertOrUpdateExp(projectAchExp, projectAchId)
                     }
+
                     EventType.LOCATOR_NAME -> {
                         projectAchId = ProjectAchievement.NUM_LOCATOR.achievement.id
                         globalAchId = GlobalAchievement.NUM_LOCATOR.achievement.id
@@ -87,6 +94,7 @@ class AchievementService {
                         projectAchId = ProjectAchievement.NUM_LOCATOR_NAME.achievement.id
                         insertOrUpdateExp(projectAchExp, projectAchId)
                     }
+
                     EventType.LOCATOR_CSS -> {
                         projectAchId = ProjectAchievement.NUM_LOCATOR.achievement.id
                         globalAchId = GlobalAchievement.NUM_LOCATOR.achievement.id
@@ -99,6 +107,7 @@ class AchievementService {
                         projectAchId = ProjectAchievement.NUM_LOCATOR_CSS.achievement.id
                         insertOrUpdateExp(projectAchExp, projectAchId)
                     }
+
                     EventType.LOCATOR_XPATH -> {
                         projectAchId = ProjectAchievement.NUM_LOCATOR.achievement.id
                         globalAchId = GlobalAchievement.NUM_LOCATOR.achievement.id
@@ -111,6 +120,7 @@ class AchievementService {
                         projectAchId = ProjectAchievement.NUM_LOCATOR_XPATH.achievement.id
                         insertOrUpdateExp(projectAchExp, projectAchId)
                     }
+
                     EventType.ELEMENT_CLICK -> {
                         projectAchId = ProjectAchievement.NUM_ELEMENT_CLICK.achievement.id
                         globalAchId = GlobalAchievement.NUM_ELEMENT_CLICK.achievement.id
@@ -120,6 +130,7 @@ class AchievementService {
                         insertOrUpdateExp(globalAchExp, globalAchId)
                         insertOrUpdateExp(dailyAchExp, dailyAchId)
                     }
+
                     EventType.ELEMENT_SEND_KEYS -> {
                         projectAchId = ProjectAchievement.NUM_ELEMENT_SEND_KEYS.achievement.id
                         globalAchId = GlobalAchievement.NUM_ELEMENT_SEND_KEYS.achievement.id
@@ -129,21 +140,25 @@ class AchievementService {
                         insertOrUpdateExp(globalAchExp, globalAchId)
                         insertOrUpdateExp(dailyAchExp, dailyAchId)
                     }
+
                     EventType.ELEMENT_DISPLAYED -> {
                         projectAchId = ProjectAchievement.NUM_ELEMENT_DISPLAYED.achievement.id
 
                         insertOrUpdateExp(projectAchExp, projectAchId)
                     }
+
                     EventType.ELEMENT_SELECTED -> {
                         projectAchId = ProjectAchievement.NUM_ELEMENT_SELECTED.achievement.id
 
                         insertOrUpdateExp(projectAchExp, projectAchId)
                     }
+
                     EventType.ELEMENT_ENABLED -> {
                         projectAchId = ProjectAchievement.NUM_ELEMENT_ENABLED.achievement.id
 
                         insertOrUpdateExp(projectAchExp, projectAchId)
                     }
+
                     EventType.ELEMENT_TEXT -> {
                         projectAchId = ProjectAchievement.NUM_ELEMENT_TEXT.achievement.id
                         globalAchId = GlobalAchievement.NUM_ELEMENT_TEXT.achievement.id
@@ -151,19 +166,23 @@ class AchievementService {
                         insertOrUpdateExp(projectAchExp, projectAchId)
                         insertOrUpdateExp(globalAchExp, globalAchId)
                     }
+
                     EventType.ELEMENT_ATTRIBUTE -> {
                         projectAchId = ProjectAchievement.NUM_ELEMENT_ATTRIBUTE.achievement.id
 
                         insertOrUpdateExp(projectAchExp, projectAchId)
                     }
+
                     EventType.ELEMENT_TAG -> {
 
                     }
+
                     EventType.ELEMENT_CSS -> {
                         projectAchId = ProjectAchievement.NUM_ELEMENT_CSS.achievement.id
 
                         insertOrUpdateExp(projectAchExp, projectAchId)
                     }
+
                     EventType.LOGIN -> {
                         projectAchId = ProjectAchievement.NUM_LOGIN.achievement.id
                         globalAchId = GlobalAchievement.NUM_LOGIN.achievement.id
@@ -171,16 +190,19 @@ class AchievementService {
                         insertOrUpdateExp(projectAchExp, projectAchId)
                         insertOrUpdateExp(globalAchExp, globalAchId)
                     }
+
                     EventType.SUBMIT -> {
                         projectAchId = ProjectAchievement.NUM_SUBMIT.achievement.id
 
                         insertOrUpdateExp(projectAchExp, projectAchId)
                     }
+
                     EventType.TITLE -> {
                         projectAchId = ProjectAchievement.NUM_TITLE.achievement.id
 
                         insertOrUpdateExp(projectAchExp, projectAchId)
                     }
+
                     EventType.ALERT -> {
                         projectAchId = ProjectAchievement.NUM_ALERT.achievement.id
                         globalAchId = GlobalAchievement.NUM_ALERT.achievement.id
@@ -188,6 +210,7 @@ class AchievementService {
                         insertOrUpdateExp(projectAchExp, projectAchId)
                         insertOrUpdateExp(globalAchExp, globalAchId)
                     }
+
                     EventType.ALERT_TEXT -> {
                         projectAchId = ProjectAchievement.NUM_ELEMENT_TEXT.achievement.id
                         globalAchId = GlobalAchievement.NUM_ELEMENT_TEXT.achievement.id
@@ -195,6 +218,7 @@ class AchievementService {
                         insertOrUpdateExp(projectAchExp, projectAchId)
                         insertOrUpdateExp(globalAchExp, globalAchId)
                     }
+
                     EventType.ALERT_SEND_KEYS -> {
                         projectAchId = ProjectAchievement.NUM_ELEMENT_SEND_KEYS.achievement.id
                         globalAchId = GlobalAchievement.NUM_ELEMENT_SEND_KEYS.achievement.id
@@ -209,17 +233,17 @@ class AchievementService {
         }
 
         projectAchExp.forEach {
-            addExp(project, false, getProjectAchievement(it.key), it.value)
+            addExp(global = false, daily = false, getProjectAchievement(it.key), it.value)
         }
 
         globalAchExp.forEach {
-            addExp(null, false, getGlobalAchievement(it.key), it.value)
+            addExp(global = true, daily = false, getGlobalAchievement(it.key), it.value)
         }
 
         val dailyState = ApplicationStatePersistence.getInstance().state.dailyAchievement
         dailyAchExp.forEach {
             if (it.key == dailyState.state.id) {
-                addExp(null, true, getDailyAchievement(it.key), it.value)
+                addExp(global = true, daily = true, getDailyAchievement(it.key), it.value)
             }
         }
 
@@ -243,11 +267,11 @@ class AchievementService {
         return DailyAchievement.values().map { it.achievement }.first { it.id == id }
     }
 
-    fun addExp(project: Project?, daily: Boolean, achievement: Achievement, exp: Int) {
+    fun addExp(global: Boolean, daily: Boolean, achievement: Achievement, exp: Int) {
         val achievementState = if (daily) {
             ApplicationStatePersistence.getInstance().state.dailyAchievement.state
         } else {
-            if (project != null) {
+            if (!global) {
                 ProjectStatePersistence.getInstance(project).state.achievementList.first {
                     it.id == achievement.id
                 }
@@ -274,7 +298,7 @@ class AchievementService {
         }
 
         while (index < achievement.milestone.size - 1 && newExp >= achievement.milestone[index]) {
-            MyNotifier.notifyAchievementMilestone(project, daily, achievement, index)
+            MyNotifier.notifyAchievementMilestone(project, global, daily, achievement, index)
             ApplicationStatePersistence.getInstance().addUserExp(achievement.userExperience[index])
             index++
         }
@@ -282,9 +306,13 @@ class AchievementService {
         //only reached if we have more exp than required for the final milestone
         if (newExp >= achievement.milestone[index] && oldExp != achievement.milestone[index]) {
             newExp = achievement.milestone[index]
-            MyNotifier.notifyAchievementMilestone(project, daily, achievement, index)
+            MyNotifier.notifyAchievementMilestone(project, global, daily, achievement, index)
 
-            val userIndex = if(index == 0){ 0 } else { index-1 }
+            val userIndex = if (index == 0) {
+                0
+            } else {
+                index - 1
+            }
             ApplicationStatePersistence.getInstance().addUserExp(achievement.userExperience[userIndex])
         } /*else {
             val oldPer = oldExp.toFloat() / achievement.milestone[index] * 100
@@ -293,7 +321,7 @@ class AchievementService {
             val newRounded = (newPer / 25).toInt() * 25
 
             if (newRounded > 0 && newRounded > oldRounded) {
-                MyNotifier.notifyAchievementProgress(project, daily, achievement, index, newRounded)
+                MyNotifier.notifyAchievementProgress(project, global, daily, achievement, index, newRounded)
             }
         }*/
 
@@ -303,7 +331,7 @@ class AchievementService {
         if (daily) {
             UserInterface.userTab.dailyCard.updateProgress(achievementState.currentExp, index)
         } else {
-            if (project != null) {
+            if (!global) {
                 UserInterface.achievementTab.updateProjectAchievement(
                     achievement.id,
                     achievementState.currentExp,
@@ -313,6 +341,18 @@ class AchievementService {
                 UserInterface.achievementTab.updateGlobalAchievement(achievement.id, achievementState.currentExp, index)
             }
         }
+    }
+
+    fun notifyLevel(userLevel: Int){
+        MyNotifier.notifyLevelUp(project, userLevel)
+    }
+
+    companion object {
+        lateinit var project: Project
+
+        @JvmStatic
+        fun getInstance(): AchievementService =
+            ApplicationManager.getApplication().getService(AchievementService::class.java)
     }
 
 }

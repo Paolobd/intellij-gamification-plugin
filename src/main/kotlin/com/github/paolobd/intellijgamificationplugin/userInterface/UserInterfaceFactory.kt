@@ -1,5 +1,6 @@
 package com.github.paolobd.intellijgamificationplugin.userInterface
 
+import com.github.paolobd.intellijgamificationplugin.services.AchievementService
 import com.github.paolobd.intellijgamificationplugin.services.ApplicationStatePersistence
 import com.github.paolobd.intellijgamificationplugin.services.ProjectStatePersistence
 import com.intellij.openapi.project.Project
@@ -17,6 +18,8 @@ class UserInterfaceFactory : ToolWindowFactory {
 
         applicationState.addMissingAndCheckDaily()
         projectState.addMissing(applicationState.state.timestamp)
+
+        AchievementService.project = project
 
         val userInterface = UserInterface(project)
         val contentManager = toolWindow.contentManager

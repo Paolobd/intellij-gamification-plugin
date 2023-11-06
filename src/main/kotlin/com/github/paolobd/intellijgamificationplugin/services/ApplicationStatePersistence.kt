@@ -6,7 +6,6 @@ import com.github.paolobd.intellijgamificationplugin.dataClasses.DailyAchievemen
 import com.github.paolobd.intellijgamificationplugin.dataProviders.LevelDataProvider
 import com.github.paolobd.intellijgamificationplugin.enums.DailyAchievement
 import com.github.paolobd.intellijgamificationplugin.enums.GlobalAchievement
-import com.github.paolobd.intellijgamificationplugin.userInterface.MyNotifier
 import com.github.paolobd.intellijgamificationplugin.userInterface.UserInterface
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.PersistentStateComponent
@@ -75,7 +74,8 @@ class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
             titleId != myApplicationState.userState.titleId ||
             iconId != myApplicationState.userState.iconId
         ) {
-            AchievementService().addExp(null, false, GlobalAchievement.FIRST_EDIT_PROFILE.achievement, 1)
+            AchievementService.getInstance()
+                .addExp(global = true, daily = false, GlobalAchievement.FIRST_EDIT_PROFILE.achievement, 1)
         }
 
         myApplicationState.userState.name = name
@@ -85,8 +85,9 @@ class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
     }
 
     fun changeShowcase(showcase: List<Int>) {
-        if (showcase != myApplicationState.userState.showcase){
-            AchievementService().addExp(null, false, GlobalAchievement.FIRST_EDIT_SHOWCASE.achievement, 1)
+        if (showcase != myApplicationState.userState.showcase) {
+            AchievementService.getInstance()
+                .addExp(global = true, daily = false, GlobalAchievement.FIRST_EDIT_SHOWCASE.achievement, 1)
         }
 
         myApplicationState.userState.showcase = showcase
@@ -107,7 +108,7 @@ class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
             experienceToAdd -= levels[i]
             userLevel++
             i++
-            MyNotifier.notifyLevelUp(null, userLevel)
+            AchievementService.getInstance().notifyLevel(userLevel)
         }
 
         if (i >= levels.size) {
