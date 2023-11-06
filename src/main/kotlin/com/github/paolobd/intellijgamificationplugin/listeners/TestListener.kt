@@ -70,7 +70,12 @@ class TestListener(private val project: Project) : SMTRunnerEventsListener {
                     projectState.testState[test.name] = true
                     AchievementService().addExp(null, false, GlobalAchievement.NUM_TEST_PASSED.achievement, 1)
                     AchievementService().addExp(project, false, ProjectAchievement.NUM_TEST_PASSED.achievement, 1)
-                    AchievementService().addExp(null, true, DailyAchievement.DAILY_TEST_PASSED.achievement, 1)
+
+                    val achTest = DailyAchievement.DAILY_TEST_PASSED.achievement
+
+                    if (daily.state.id == achTest.id) {
+                        AchievementService().addExp(null, true, DailyAchievement.DAILY_TEST_PASSED.achievement, 1)
+                    }
                 } else {
                     if (projectState.testState[test.name] == false) {
                         projectState.testState[test.name] = true
