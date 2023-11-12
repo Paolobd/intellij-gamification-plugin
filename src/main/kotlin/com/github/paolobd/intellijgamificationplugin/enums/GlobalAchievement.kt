@@ -31,8 +31,8 @@ enum class GlobalAchievement(
             "Inspector Gadget",
             "Different WebElements found using<br/>any locator strategy",
             "locator.svg",
-            listOf(10),
-            listOf(10)
+            listOf(2, 10),
+            listOf(5, 10)
         )
     ),
     NUM_NAVIGATION(

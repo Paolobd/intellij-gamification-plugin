@@ -4,8 +4,6 @@ import com.github.paolobd.intellijgamificationplugin.services.ApplicationStatePe
 import com.github.paolobd.intellijgamificationplugin.services.ProjectStatePersistence
 import com.intellij.openapi.project.Project
 import com.intellij.ui.components.JBTabbedPane
-import javax.swing.JButton
-import javax.swing.JPanel
 
 
 class UserInterface(project: Project) {
@@ -18,22 +16,10 @@ class UserInterface(project: Project) {
 
         mainUI.addTab("Profile", userTab.toolWindow)
         mainUI.addTab("Achievements", achievementTab.toolWindow)
-        mainUI.addTab("Debug", debugButton())
     }
 
     fun getContent(): JBTabbedPane {
         return mainUI
-    }
-
-    private fun debugButton(): JPanel {
-        val panel = JPanel()
-        val button = JButton("Click me!")
-
-        button.addActionListener {
-            ApplicationStatePersistence.getInstance().resetState()
-        }
-        panel.add(button)
-        return panel
     }
 
     companion object {
@@ -46,6 +32,7 @@ class UserInterface(project: Project) {
             val applicationState = ApplicationStatePersistence.getInstance()
             val projectState = ProjectStatePersistence.getInstance(project)
 
+            applicationState.resetState()
             applicationState.addMissingAndCheckDaily()
             projectState.addMissing(applicationState.state.timestamp)
 

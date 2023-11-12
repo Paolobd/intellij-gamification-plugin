@@ -7,6 +7,7 @@ import com.github.paolobd.intellijgamificationplugin.enums.ProjectAchievement
 import com.github.paolobd.intellijgamificationplugin.services.AchievementService
 import com.github.paolobd.intellijgamificationplugin.services.ApplicationStatePersistence
 import com.github.paolobd.intellijgamificationplugin.services.ProjectStatePersistence
+import com.github.paolobd.intellijgamificationplugin.userInterface.MyNotifier
 import com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener
 import com.intellij.execution.testframework.sm.runner.SMTestProxy
 import com.intellij.openapi.project.Project
@@ -15,9 +16,9 @@ import java.time.LocalTime
 class TestListener(private val project: Project) : SMTRunnerEventsListener {
     private lateinit var server: Server
     override fun onTestingStarted(testsRoot: SMTestProxy.SMRootTestProxy) {
+        ApplicationStatePersistence.getInstance().checkAndUpdateDailyGUI()
         server = Server()
         server.start()
-        ApplicationStatePersistence.getInstance().checkAndUpdateDailyGUI()
         println("Server started!")
     }
 
@@ -121,6 +122,9 @@ class TestListener(private val project: Project) : SMTRunnerEventsListener {
                 }
             }
             service.analyzeEvents(eventList)
+        }
+        else {
+            MyNotifier.notifyWarning(project)
         }
     }
 

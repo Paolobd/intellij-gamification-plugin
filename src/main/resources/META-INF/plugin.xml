@@ -28,16 +28,18 @@
                     anchor="right"
                     factoryClass="com.github.paolobd.intellijgamificationplugin.userInterface.UserInterfaceFactory"/>
 
-        <notificationGroup id="Game GUI Achievement Progress" displayType="BALLOON"/>
-        <notificationGroup id="Game GUI Achievement Completed" displayType="BALLOON"/>
-        <notificationGroup id="Game GUI Level Up" displayType="BALLOON"/>
-        <notificationGroup id="Game GUI Warning" displayType="BALLOON"/>
+        <notificationGroup id="NotificationAchievementProgressGameGui" displayType="BALLOON"/>
+        <notificationGroup id="NotificationAchievementCompletedGameGui" displayType="BALLOON"/>
+        <notificationGroup id="NotificationLevelUpGameGui" displayType="BALLOON"/>
+        <notificationGroup id="NotificationWarningGameGui" displayType="BALLOON"/>
 
         <projectService
                 serviceImplementation="com.github.paolobd.intellijgamificationplugin.services.ProjectStatePersistence"/>
 
         <applicationService
                 serviceImplementation="com.github.paolobd.intellijgamificationplugin.services.ApplicationStatePersistence"/>
+        
+        <postStartupActivity implementation="com.github.paolobd.intellijgamificationplugin.listeners.StartActivity" />
 
     </extensions>
 

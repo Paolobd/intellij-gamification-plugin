@@ -314,16 +314,20 @@ class AchievementService {
                 index - 1
             }
             ApplicationStatePersistence.getInstance().addUserExp(achievement.userExperience[userIndex])
-        } /*else {
-            val oldPer = oldExp.toFloat() / achievement.milestone[index] * 100
-            val newPer = newExp.toFloat() / achievement.milestone[index] * 100
-            val oldRounded = (oldPer / 25).toInt() * 25
-            val newRounded = (newPer / 25).toInt() * 25
+        } else {
 
-            if (newRounded > 0 && newRounded > oldRounded) {
-                MyNotifier.notifyAchievementProgress(project, global, daily, achievement, index, newRounded)
+            //Too many progress notifications pop up. Show only the notifications of the last milestones
+            if (index >= 2) {
+                val oldPer = oldExp.toFloat() / achievement.milestone[index] * 100
+                val newPer = newExp.toFloat() / achievement.milestone[index] * 100
+                val oldRounded = (oldPer / 25).toInt() * 25
+                val newRounded = (newPer / 25).toInt() * 25
+
+                if (newRounded > 0 && newRounded > oldRounded) {
+                    MyNotifier.notifyAchievementProgress(project, global, daily, achievement, index, newRounded)
+                }
             }
-        }*/
+        }
 
         achievementState.currentExp = newExp
 
@@ -343,7 +347,7 @@ class AchievementService {
         }
     }
 
-    fun notifyLevel(userLevel: Int){
+    fun notifyLevel(userLevel: Int) {
         MyNotifier.notifyLevelUp(project, userLevel)
     }
 

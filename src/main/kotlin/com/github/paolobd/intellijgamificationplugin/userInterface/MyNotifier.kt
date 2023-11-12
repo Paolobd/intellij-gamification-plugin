@@ -29,11 +29,11 @@ class MyNotifier {
 
             content += " '${achievement.name}' - Completed $percentage%"
             if (achievement.milestone.size != 1) {
-                content += " of milestone ${milestoneIndex + 1}"
+                content += " of Milestone ${milestoneIndex + 1}"
             }
 
             NotificationGroupManager.getInstance()
-                .getNotificationGroup("Game GUI Achievement Progress")
+                .getNotificationGroup("NotificationAchievementProgressGameGui")
                 .createNotification(title, content, NotificationType.INFORMATION)
                 .notify(project)
         }
@@ -48,7 +48,7 @@ class MyNotifier {
             val title = if (milestoneIndex == achievement.milestone.size - 1) {
                 "Achievement completed"
             } else {
-                "New milestone reached"
+                "New Milestone reached"
             }
 
             var content = if (daily) {
@@ -64,11 +64,11 @@ class MyNotifier {
             content += if (milestoneIndex == achievement.milestone.size - 1) {
                 " '${achievement.name}' completed! Gained ${achievement.userExperience[milestoneIndex]} xp"
             } else {
-                " '${achievement.name} milestone ${milestoneIndex + 1} completed! " +
+                " '${achievement.name} Milestone ${milestoneIndex + 1} completed! " +
                         "Gained ${achievement.userExperience[milestoneIndex]} xp"
             }
             NotificationGroupManager.getInstance()
-                .getNotificationGroup("Game GUI Achievement Completed")
+                .getNotificationGroup("NotificationAchievementCompletedGameGui")
                 .createNotification(title, content, NotificationType.INFORMATION)
                 .notify(project)
         }
@@ -77,8 +77,17 @@ class MyNotifier {
             val title = "Level $level reached!"
             val content = "New icons and titles have been unlocked in your profile"
             NotificationGroupManager.getInstance()
-                .getNotificationGroup("Game GUI Level Up")
+                .getNotificationGroup("NotificationLevelUpGameGui")
                 .createNotification(title, content, NotificationType.INFORMATION)
+                .notify(project)
+        }
+
+        fun notifyWarning(project: Project?) {
+            val title = "No events received"
+            val content = "Check that you are using the Game GUI library in your Selenium project"
+            NotificationGroupManager.getInstance()
+                .getNotificationGroup("NotificationWarningGameGui")
+                .createNotification(title, content, NotificationType.WARNING)
                 .notify(project)
         }
     }
