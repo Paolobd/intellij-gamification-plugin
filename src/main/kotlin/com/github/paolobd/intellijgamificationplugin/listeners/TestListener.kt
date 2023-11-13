@@ -50,34 +50,35 @@ class TestListener(private val project: Project) : SMTRunnerEventsListener {
 
             val daily = ApplicationStatePersistence.getInstance().state.dailyAchievement
 
-            val currentHour = LocalTime.now().hour
+            val projectState = ProjectStatePersistence.getInstance(project).state
 
-            if (currentHour in 6..8) {
-                AchievementService().addExp(
-                    global = true, daily = false,
-                    GlobalAchievement.EARLY_TEST.achievement, 1
-                )
+            if (!projectState.testState.contains(test.name)) {
+                val currentHour = LocalTime.now().hour
 
-                val achEarly = DailyAchievement.DAILY_EARLY.achievement
-                if (daily.state.id == achEarly.id) {
-                    service.addExp(global = true, daily = true, achEarly, 1)
-                }
+                if (currentHour in 6..8) {
+                    AchievementService().addExp(
+                        global = true, daily = false,
+                        GlobalAchievement.EARLY_TEST.achievement, 1
+                    )
 
-            } else if (currentHour >= 23 || currentHour <= 3) {
-                service.addExp(global = true, daily = false, GlobalAchievement.LATE_TEST.achievement, 1)
+                    val achEarly = DailyAchievement.DAILY_EARLY.achievement
+                    if (daily.state.id == achEarly.id) {
+                        service.addExp(global = true, daily = true, achEarly, 1)
+                    }
 
-                val achLate = DailyAchievement.DAILY_LATE.achievement
-                if (daily.state.id == achLate.id) {
-                    service.addExp(global = true, daily = true, achLate, 1)
+                } else if (currentHour >= 23 || currentHour <= 3) {
+                    service.addExp(global = true, daily = false, GlobalAchievement.LATE_TEST.achievement, 1)
+
+                    val achLate = DailyAchievement.DAILY_LATE.achievement
+                    if (daily.state.id == achLate.id) {
+                        service.addExp(global = true, daily = true, achLate, 1)
+                    }
                 }
             }
 
-
-            val projectState = ProjectStatePersistence.getInstance(project).state
-
             if (test.isPassed) {
+                //New test passed
                 if (!projectState.testState.contains(test.name)) {
-                    projectState.testState[test.name] = true
                     service.addExp(
                         global = true, daily = false,
                         GlobalAchievement.NUM_TEST_PASSED.achievement, 1
@@ -96,8 +97,8 @@ class TestListener(private val project: Project) : SMTRunnerEventsListener {
                         )
                     }
                 } else {
+                    //Test executed in the past but now passes
                     if (projectState.testState[test.name] == false) {
-                        projectState.testState[test.name] = true
                         service.addExp(
                             global = true, daily = false,
                             GlobalAchievement.NUM_TEST_FIXED.achievement, 1
@@ -108,22 +109,19 @@ class TestListener(private val project: Project) : SMTRunnerEventsListener {
                         )
                     }
                 }
+                projectState.testState[test.name] = true
             } else {
+                //Test not passed for the first time
                 if (!projectState.testState.contains(test.name)) {
-                    projectState.testState[test.name] = false
                     service.addExp(
                         global = true, daily = false,
                         GlobalAchievement.FIRST_FAILED.achievement, 1
                     )
-                } else {
-                    if (projectState.testState[test.name] == true) {
-                        projectState.testState[test.name] = false
-                    }
                 }
+                projectState.testState[test.name] = false
             }
             service.analyzeEvents(eventList)
-        }
-        else {
+        } else {
             MyNotifier.notifyWarning(project)
         }
     }
