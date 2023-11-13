@@ -11,7 +11,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 
-@State(name = "ProjectState", storages = [Storage("gamegui.xml")])
+@State(name = "ProjectState", storages = [Storage("gameGuiProject.xml")])
 class ProjectStatePersistence : PersistentStateComponent<ProjectState> {
 
     private var myProjectState: ProjectState = ProjectState()

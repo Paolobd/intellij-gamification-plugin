@@ -6,6 +6,6 @@ enum class SortDropdown(
     DEFAULT("Default"),
     ALPHABETIC_ASC("A-Z"),
     ALPHABETIC_DSC("Z-A"),
-    COMPLETION_ASC("Completion rate % up"),
-    COMPLETION_DSC("Completion rate % down")
+    COMPLETION_ASC("Low to High Completion"),
+    COMPLETION_DSC("High to Low Completion")
 }

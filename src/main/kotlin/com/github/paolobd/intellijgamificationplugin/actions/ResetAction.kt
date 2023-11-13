@@ -29,6 +29,7 @@ class ResetDialog : DialogWrapper(true) {
     }
 
     override fun doOKAction() {
+        dispose()
         ApplicationStatePersistence.getInstance().resetStateAndRefresh()
     }
 }

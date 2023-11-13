@@ -9,7 +9,7 @@ enum class DailyAchievement(
         Achievement(
             1,
             "Inspector Gadget",
-            "Different WebElements found<br/>using any locator strategy",
+            "WebElements found using<br/>any locator strategy",
             "locator.svg",
             listOf(5),
             listOf(20)
@@ -19,9 +19,9 @@ enum class DailyAchievement(
         Achievement(
             2,
             "The Web Surfer",
-            "Different websites visited",
+            "Websites visited",
             "navigation.svg",
-            listOf(5),
+            listOf(3),
             listOf(20)
         )
     ),
@@ -29,7 +29,7 @@ enum class DailyAchievement(
         Achievement(
             3,
             "Click Addicted",
-            "Times the 'click()' method<br/>was called on different WebElements",
+            "Click method called<br/>on WebElements",
             "element_click.svg",
             listOf(5),
             listOf(20)
@@ -39,9 +39,9 @@ enum class DailyAchievement(
         Achievement(
             4,
             "Morning Person",
-            "Execute a test between 6 a.m. and 8 a.m.",
+            "Execute a new test between<br/>6 a.m. and 8 a.m.",
             "early.svg",
-            listOf(5),
+            listOf(1),
             listOf(20)
         )
     ),
@@ -49,9 +49,9 @@ enum class DailyAchievement(
         Achievement(
             5,
             "Night Owl",
-            "Execute a test between 11 p.m. and 3 a.m.",
+            "Execute a new test between<br/>11 p.m. and 3 a.m.",
             "late.svg",
-            listOf(5),
+            listOf(1),
             listOf(20)
         )
     ),
@@ -59,9 +59,9 @@ enum class DailyAchievement(
         Achievement(
             6,
             "Can't believe it worked!",
-            "Different Selenium tests passed",
+            "Selenium tests passed",
             "test_passed.svg",
-            listOf(5),
+            listOf(3),
             listOf(20)
         )
     ),
@@ -69,9 +69,9 @@ enum class DailyAchievement(
         Achievement(
             7,
             "Keyboard Master",
-            "Times the 'send_keys(...)' method<br/>was called on different WebElements",
+            "Send_keys method<br/>called on WebElements",
             "element_send_keys.svg",
-            listOf(5),
+            listOf(3),
             listOf(20)
         )
     )

@@ -9,9 +9,9 @@ enum class ProjectAchievement(
         Achievement(
             1,
             "Can't believe it worked!",
-            "Different Selenium tests passed",
+            "Selenium tests passed",
             "test_passed.svg",
-            listOf(5, 10, 50),
+            listOf(5, 10, 20),
             listOf(10, 20, 30)
         )
     ),
@@ -19,9 +19,9 @@ enum class ProjectAchievement(
         Achievement(
             2,
             "Bug Finder",
-            "Different Selenium tests fixed<br/>after not passing",
+            "Selenium tests fixed<br/>after not passing",
             "test_fixed.svg",
-            listOf(5, 10, 50),
+            listOf(1, 5, 10),
             listOf(10, 20, 30)
         )
     ),
@@ -29,9 +29,9 @@ enum class ProjectAchievement(
         Achievement(
             3,
             "Inspector Gadget",
-            "Different WebElements found using<br/>any locator strategy",
+            "WebElements found using<br/>any locator strategy",
             "locator.svg",
-            listOf(5, 10, 50),
+            listOf(10, 25, 50),
             listOf(10, 20, 30)
         )
     ),
@@ -39,9 +39,9 @@ enum class ProjectAchievement(
         Achievement(
             4,
             "Inspector Gadget: ID Expert",
-            "Different WebElements found using<br/>the 'ID' locator strategy",
+            "WebElements found using<br/>the 'ID' locator strategy",
             "locator_id.svg",
-            listOf(5, 10, 50),
+            listOf(3, 5, 10),
             listOf(10, 20, 30)
         )
     ),
@@ -49,9 +49,9 @@ enum class ProjectAchievement(
         Achievement(
             5,
             "Inspector Gadget: Name Expert",
-            "Different WebElements found using<br/>the 'Name' locator strategy",
+            "WebElements found using<br/>the 'Name' locator strategy",
             "locator_name.svg",
-            listOf(5, 10, 50),
+            listOf(3, 5, 10),
             listOf(10, 20, 30)
         )
     ),
@@ -59,9 +59,9 @@ enum class ProjectAchievement(
         Achievement(
             6,
             "Inspector Gadget: CSS Expert",
-            "Different WebElements found using<br/>the 'CSS Selector' locator strategy",
+            "WebElements found using<br/>the 'CSS Selector' locator strategy",
             "locator_css.svg",
-            listOf(5, 10, 50),
+            listOf(3, 5, 10),
             listOf(10, 20, 30)
         )
     ),
@@ -69,9 +69,9 @@ enum class ProjectAchievement(
         Achievement(
             7,
             "Inspector Gadget: XPath Expert",
-            "Different WebElements found using<br/>the 'XPath' locator strategy",
+            "WebElements found using<br/>the 'XPath' locator strategy",
             "locator_xpath.svg",
-            listOf(5, 10, 50),
+            listOf(5, 15, 30),
             listOf(10, 20, 30)
         )
     ),
@@ -79,9 +79,9 @@ enum class ProjectAchievement(
         Achievement(
             8,
             "The Web Surfer",
-            "Different websites visited",
+            "Websites visited",
             "navigation.svg",
-            listOf(5, 10, 50),
+            listOf(5, 10, 15),
             listOf(10, 20, 30)
         )
     ),
@@ -89,39 +89,39 @@ enum class ProjectAchievement(
         Achievement(
             9,
             "Back to...",
-            "Times the WebDriver's 'back()'<br/>method was executed",
+            "WebDriver's back<br/>method executed",
             "navigation_back.svg",
-            listOf(5, 10, 50),
-            listOf(10, 20, 30)
+            listOf(5),
+            listOf(20)
         )
     ),
     NUM_NAVIGATION_FORWARD(
         Achievement(
             10,
             "...the Future",
-            "Times the WebDriver's 'forward()'<br/>method was executed",
+            "WebDriver's forward<br/>method executed",
             "navigation_forward.svg",
-            listOf(5, 10, 50),
-            listOf(10, 20, 30)
+            listOf(5),
+            listOf(20)
         )
     ),
     NUM_NAVIGATION_REFRESH(
         Achievement(
             11,
             "F5 master",
-            "Times the WebDriver's 'refresh()'<br/>method was executed",
+            "WebDriver's refresh<br/>method executed",
             "navigation_refresh.svg",
-            listOf(5, 10, 50),
-            listOf(10, 20, 30)
+            listOf(5),
+            listOf(20)
         )
     ),
     NUM_ELEMENT_CLICK(
         Achievement(
             12,
             "Click Addicted",
-            "Times the 'click()' method was called<br/>on different WebElements",
+            "Click method called<br/>on WebElements",
             "element_click.svg",
-            listOf(5, 10, 50),
+            listOf(5, 15, 30),
             listOf(10, 20, 30)
         )
     ),
@@ -129,9 +129,9 @@ enum class ProjectAchievement(
         Achievement(
             13,
             "Keyboard Master",
-            "Times the 'send_keys(...)' method<br/>was called on different WebElements",
+            "Send_keys method called<br/>on WebElements",
             "element_send_keys.svg",
-            listOf(5, 10, 50),
+            listOf(3, 5, 10),
             listOf(10, 20, 30)
         )
     ),
@@ -139,9 +139,9 @@ enum class ProjectAchievement(
         Achievement(
             14,
             "Display Detective",
-            "Times the 'isDisplayed()' method<br/>was called on different WebElements",
+            "IsDisplayed method called<br/>on WebElements",
             "element_displayed.svg",
-            listOf(5, 10, 50),
+            listOf(3, 5, 10),
             listOf(10, 20, 30)
         )
     ),
@@ -149,9 +149,9 @@ enum class ProjectAchievement(
         Achievement(
             15,
             "Checkmark Champion",
-            "Times the 'isSelected()' method<br/>was called on different WebElements",
+            "IsSelected method called<br/>on WebElements",
             "element_selected.svg",
-            listOf(5, 10, 50),
+            listOf(3, 5, 10),
             listOf(10, 20, 30)
         )
     ),
@@ -159,9 +159,9 @@ enum class ProjectAchievement(
         Achievement(
             16,
             "The Validator",
-            "Times the 'isEnabled()' method<br/>was called on different WebElements",
+            "IsEnabled method called<br/>on WebElements",
             "element_enabled.svg",
-            listOf(5, 10, 50),
+            listOf(3, 5, 10),
             listOf(10, 20, 30)
         )
     ),
@@ -169,9 +169,9 @@ enum class ProjectAchievement(
         Achievement(
             17,
             "Textual Treasure Hunter",
-            "Times the 'getText()' method<br/>was called on different WebElements",
+            "GetText method called<br/>on WebElements",
             "element_text.svg",
-            listOf(5, 10, 50),
+            listOf(5, 15, 30),
             listOf(10, 20, 30)
         )
     ),
@@ -179,9 +179,9 @@ enum class ProjectAchievement(
         Achievement(
             18,
             "Attribute Archaeologist",
-            "Times the 'getAttribute(...)' method<br/>was called on different WebElements",
+            "GetAttribute method called<br/>on WebElements",
             "element_attribute.svg",
-            listOf(5, 10, 50),
+            listOf(5, 10, 15),
             listOf(10, 20, 30)
         )
     ),
@@ -189,9 +189,9 @@ enum class ProjectAchievement(
         Achievement(
             19,
             "Styling Virtuoso",
-            "Times the 'getCssValue(...)' method<br/>was called on different WebElements",
+            "GetCssValue method called<br/>on WebElements",
             "element_css.svg",
-            listOf(5, 10, 50),
+            listOf(3, 5, 10),
             listOf(10, 20, 30)
         )
     ),
@@ -199,19 +199,19 @@ enum class ProjectAchievement(
         Achievement(
             20,
             "Keyblade Wielder",
-            "Times of attempted logins",
+            "Attempted logins",
             "login.svg",
-            listOf(5, 10, 50),
-            listOf(10, 20, 30)
+            listOf(1),
+            listOf(20)
         )
     ),
     NUM_SUBMIT(
         Achievement(
             21,
             "Form Filler",
-            "Times the 'submit()' method<br/>was called on different WebElements",
+            "Submit method called<br/>or submit buttons clicked",
             "submit.svg",
-            listOf(5, 10, 50),
+            listOf(3, 5, 10),
             listOf(10, 20, 30)
         )
     ),
@@ -219,9 +219,9 @@ enum class ProjectAchievement(
         Achievement(
             22,
             "Title Tracker",
-            "Times the WebDriver's 'getTitle()' method<br/>was executed",
+            "WebDriver's getTitle method<br/>executed",
             "title.svg",
-            listOf(5, 10, 50),
+            listOf(5, 10, 15),
             listOf(10, 20, 30)
         )
     ),
@@ -229,9 +229,9 @@ enum class ProjectAchievement(
         Achievement(
             23,
             "Click-and-Dismiss",
-            "Times interacted with an alert",
+            "Interaction with an alert",
             "alert.svg",
-            listOf(5, 10, 50),
+            listOf(1, 3, 5),
             listOf(10, 20, 30)
         )
     )

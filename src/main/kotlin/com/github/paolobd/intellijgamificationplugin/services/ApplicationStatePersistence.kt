@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.random.Random
 
-@State(name = "ApplicationState", storages = [Storage("gamegui.xml")])
+@State(name = "ApplicationState", storages = [Storage("gameGuiApplication.xml")])
 class ApplicationStatePersistence : PersistentStateComponent<ApplicationState> {
 
     private var myApplicationState = ApplicationState()

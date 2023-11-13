@@ -24,9 +24,9 @@ class AchievementService {
         for (event in events) {
 
             val found = projectEvents.contains(event)
-            projectEvents.add(event)
 
             if (!found) {
+                projectEvents.add(event)
                 var projectAchId: Int
                 var globalAchId: Int
                 var dailyAchId: Int
