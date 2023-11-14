@@ -2,6 +2,8 @@
 
 # intellij-plugin-template Changelog
 
+## Unreleased
+
 ## [0.0.1] - 2023-11-14
 ### Added
 - First Version Released.
