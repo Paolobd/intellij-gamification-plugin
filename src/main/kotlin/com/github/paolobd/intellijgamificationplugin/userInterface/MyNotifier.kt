@@ -64,7 +64,7 @@ class MyNotifier {
             content += if (milestoneIndex == achievement.milestone.size - 1) {
                 " '${achievement.name}' completed! Gained ${achievement.userExperience[milestoneIndex]} xp"
             } else {
-                " '${achievement.name} Milestone ${milestoneIndex + 1} completed! " +
+                " '${achievement.name}' Milestone ${milestoneIndex + 1} completed! " +
                         "Gained ${achievement.userExperience[milestoneIndex]} xp"
             }
             NotificationGroupManager.getInstance()

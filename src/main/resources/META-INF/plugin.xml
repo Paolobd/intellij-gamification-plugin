@@ -3,18 +3,21 @@
     <id>com.github.paolobd.intellijgamificationplugin</id>
     <name>Game GUI</name>
     <vendor>Paolo Stefanut Bodnarescul</vendor>
-    <description><![CDATA[
-        <p>Game GUI creates a gamified environment to support developers in scripted web application GUI testing.</br>
-        It must be used with the Game GUI library and a Selenium project to take full advantage of its characteristics.</br>
-        The plugin features:</p>
+
+    <description>
+        <![CDATA[
+        <p><b>Game GUI</b> creates a gamified environment to support developers in scripted web application GUI testing.<br/>
+        It must be used with the <b>Game GUI Java Library</b> and a <i>Selenium</i> project to take full advantage of its characteristics.<br/></p>
+        The plugin features:
         <ul>
-            <li>An user profile page that can be edited at will</li>
+            <li>A user profile page that can be edited at will</li>
             <li>Tracking of various achievements regarding the use of Selenium WebDriver and the web application testing
             of the GUIs</li>
         </ul>
-        <p>Plugin developed by Paolo Stefanut Bodnarescul as Master Thesis project at Politecnico di Torino
+        <p>Plugin developed by <i>Paolo Stefanut Bodnarescul</i> as <b>Master Thesis</b> project at <i>Politecnico di Torino</i>
         with the aid of the <a href="https://softeng.polito.it/">Software Engineering Group</a>.</p>
-    ]]></description>
+     ]]>
+    </description>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
@@ -38,8 +41,8 @@
 
         <applicationService
                 serviceImplementation="com.github.paolobd.intellijgamificationplugin.services.ApplicationStatePersistence"/>
-        
-        <postStartupActivity implementation="com.github.paolobd.intellijgamificationplugin.listeners.StartActivity" />
+
+        <postStartupActivity implementation="com.github.paolobd.intellijgamificationplugin.listeners.StartActivity"/>
 
     </extensions>
 
