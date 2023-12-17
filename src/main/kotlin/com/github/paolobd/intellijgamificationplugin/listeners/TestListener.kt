@@ -1,6 +1,7 @@
 package com.github.paolobd.intellijgamificationplugin.listeners
 
 import com.github.paolobd.intellijgamificationplugin.communication.Server
+import com.github.paolobd.intellijgamificationplugin.dataClasses.TestStatus
 import com.github.paolobd.intellijgamificationplugin.enums.DailyAchievement
 import com.github.paolobd.intellijgamificationplugin.enums.GlobalAchievement
 import com.github.paolobd.intellijgamificationplugin.enums.ProjectAchievement
@@ -53,6 +54,9 @@ class TestListener(private val project: Project) : SMTRunnerEventsListener {
             val projectState = ProjectStatePersistence.getInstance(project).state
 
             if (!projectState.testState.contains(test.name)) {
+                //Test added to map
+                projectState.testState[test.name] = TestStatus()
+
                 val currentHour = LocalTime.now().hour
 
                 if (currentHour in 6..8) {
@@ -78,7 +82,9 @@ class TestListener(private val project: Project) : SMTRunnerEventsListener {
 
             if (test.isPassed) {
                 //New test passed
-                if (!projectState.testState.contains(test.name)) {
+                if (!projectState.testState[test.name]!!.passedOnce) {
+                    projectState.testState[test.name]!!.passedOnce = true
+
                     service.addExp(
                         global = true, daily = false,
                         GlobalAchievement.NUM_TEST_PASSED.achievement, 1
@@ -98,7 +104,7 @@ class TestListener(private val project: Project) : SMTRunnerEventsListener {
                     }
                 } else {
                     //Test executed in the past but now passes
-                    if (projectState.testState[test.name] == false) {
+                    if (!projectState.testState[test.name]!!.lastPassed) {
                         service.addExp(
                             global = true, daily = false,
                             GlobalAchievement.NUM_TEST_FIXED.achievement, 1
@@ -109,16 +115,15 @@ class TestListener(private val project: Project) : SMTRunnerEventsListener {
                         )
                     }
                 }
-                projectState.testState[test.name] = true
+                projectState.testState[test.name]!!.lastPassed = true
             } else {
                 //Test not passed for the first time
-                if (!projectState.testState.contains(test.name)) {
-                    service.addExp(
-                        global = true, daily = false,
-                        GlobalAchievement.FIRST_FAILED.achievement, 1
-                    )
-                }
-                projectState.testState[test.name] = false
+                service.addExp(
+                    global = true, daily = false,
+                    GlobalAchievement.FIRST_FAILED.achievement, 1
+                )
+
+                projectState.testState[test.name]!!.lastPassed = false
             }
             service.analyzeEvents(eventList)
         } else {
